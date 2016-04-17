@@ -1,0 +1,62 @@
+a:hover{text-decoration: none;color: #00A65A;}
+a{color: #0060BB;}
+
+.nomargin{
+    margin: 0;
+}
+.nopadding{
+    padding: 0;
+}
+
+.headimage{
+    background: url('../../img/header_bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #1D9ADA;
+    padding-top: 10px;
+    padding-bottom: 12px;
+}
+
+.dikti-header .top-header{
+    padding: 8px 0;
+    background-color: #FDFDFD;
+    color: #708090;
+    border-bottom: 5px solid #708090;
+}
+.dikti-header .top-header .container img{
+    width: 36px;
+    margin-right: 10px;
+    display: table-cell;
+    vertical-align: middle;
+}
+.dikti-header .top-header .container a{
+    display: table;
+}
+.dikti-header .top-header h3.logo, .dikti-header .top-header h4.tagline, .dikti-agenda h3{
+    font-weight: 100;
+    display: table-cell;
+    vertical-align: middle;
+}
+.logo-mini img{
+    width: 36px;
+}
+.logo-lg img{
+    width: 36px;
+}
+.navbar-nav>.notifications-menu>.dropdown-menu>li .menu, .navbar-nav>.messages-menu>.dropdown-menu>li .menu, .navbar-nav>.tasks-menu>.dropdown-menu>li .menu a{
+    background-color: whitesmoke;
+}
+
+.skin-blue .sidebar-menu>form:hover{
+    cursor: pointer;
+    color: #fff;
+    background: #00A65A;
+    border-color:#708090;
+}
+.skin-blue .sidebar-menu>form{
+    border-left:3px solid transparent;
+}
+
+.table>tbody>tr>td { 
+    vertical-align: middle;
+}

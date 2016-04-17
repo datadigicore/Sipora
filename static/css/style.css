@@ -1,0 +1,179 @@
+/*==============================================================================
+	Custom CSS
+	Author: Kartika DS
+================================================================================*/
+
+/*----------------------------------------
+  Spacing Layout Style
+------------------------------------------*/
+.mt15{
+	margin-top: 15px;
+}
+.mb15{
+	margin-bottom: 15px;
+}
+.nomargin{
+    margin: 0;
+}
+
+/*----------------------------------------
+  General Layout Style
+------------------------------------------*/
+body {
+    background: #f2f2f2;
+    font-size: 13px;
+}
+
+.header{
+    background: url('../img/header_bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #1D9ADA;
+    padding-top: 10px;
+}	
+
+.main{
+	margin-bottom: 15px;
+    min-height: 350px;
+}
+
+.content-box {
+    background-color: #FFF;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    margin-bottom: 15px;
+    overflow-x: auto; 
+}
+
+.content-box-header, .content-box-footer {
+    padding: 8px 15px;
+    background-color: #2B91CF;
+    color: #FFF;
+    font-family: "Ruda", sans-serif;
+}
+
+.content-box-header h2{
+	color: #FFF;
+	font-size: 18px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+}
+
+.content-box-body {
+    font-family: "Open Sans", sans-serif;
+    padding: 10px 15px;
+}
+
+.footer{
+    width: 100%;
+    font-size: 11px;
+    padding: 10px 0px 10px 0px;
+    background: url('../img/line.gif') top left repeat-x;
+    margin-bottom:-50px;
+}
+
+.footer .copy a{
+    color: #333333;
+}
+
+.footer .copy a:hover{
+    color:#386b12;
+}
+
+
+/*----------------------------------------
+  Color Style
+------------------------------------------*/
+.bg-skyblue{
+    background-color: #B8E7FF;
+}
+
+/*----------------------------------------
+  Overwrite bootstrap css Layout Style
+------------------------------------------*/
+.navbar {
+    border-radius: 0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fceabb+0,fccd4d+49,fbdf93+100 */
+    background: rgb(252,234,187); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(252,234,187,1) 0%, rgba(252,205,77,1) 49%, rgba(251,223,147,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(252,234,187,1) 0%,rgba(252,205,77,1) 49%,rgba(251,223,147,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(252,234,187,1) 0%,rgba(252,205,77,1) 49%,rgba(251,223,147,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#fbdf93',GradientType=0 ); /* IE6-9 */
+
+}
+.navbar a{
+    font-weight: bold;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #4A4545;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #FCCE50;
+}
+.dropdown-menu > li > a:hover {
+    background-color: #FCCE50;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+    background-color: #ddd;
+}
+.nav-tabs > li > a {
+    border-radius: 0;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    border: 1px solid transparent;
+}
+.nav-tabs > li > a:hover {
+    border-color: transparent;
+}
+.tab-content {
+    border: 1px solid #ddd;
+    padding: 15px;
+}
+
+.control-label{
+	text-align: left !important;
+}
+
+#infoDialog{
+  height: 400px;
+  top: calc(50% - 150px) !important;
+}
+
+.table>thead{
+    background: #2B91CF;
+    color: white;
+}
+.table>thead>tr>th{
+    text-align: center;
+    vertical-align: middle;
+}
+.table>tbody>tr>td{
+    vertical-align: middle;
+}
+.table>tbody>tr>td:nth-child(1){
+    text-align: center;
+}
+.table>tbody>tr:nth-child(odd)>td{
+    background: #EEEEFF;
+}
+.table>tbody>tr:nth-child(even)>td{
+    background: #FFFFFF;
+}
+.table>tbody>tr:nth-child(odd)>td{
+    padding: 4px;
+}
+.table>tbody>tr:nth-child(even)>td{
+    padding: 4px;
+}
+.table>tbody>tr:nth-child(odd)>td #btnedt, tr:nth-child(odd)>td #btnhps{
+    border: 2px solid #EEEEFF;
+    padding: 4px 0;
+}
+.table>tbody>tr:nth-child(even)>td #btnedt, tr:nth-child(even)>td #btnhps{
+    border: 2px solid #FFFFFF;
+    padding: 4px 0;
+}
