@@ -14,7 +14,7 @@
         <div class="box">
           <div class="box-header with-border">
             <h3 class="box-title" style="margin-top:6px;">Tabel Pengguna</h3>
-            <a href="<?php echo $base_content;?>adduser" class="btn btn-flat btn-success btn-sm pull-right">Tambah Pengguna</a>
+            <a href="<?php echo $base_content;?>addpengguna" class="btn btn-flat btn-success btn-sm pull-right">Tambah Pengguna</a>
           </div>
           <div class="box-body">
             <?php include "view/include/contentAlert.php" ?>
@@ -41,7 +41,7 @@
 <div class="modal fade" id="editModal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="POST" action="<?php echo $base_process;?>user/edit">
+      <form method="POST" action="<?php echo $base_process;?>pengguna/edit">
         <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
@@ -93,7 +93,7 @@
 <div class="modal fade" id="hapusModal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="POST" action="<?php echo $base_process;?>user/delete">
+      <form method="POST" action="<?php echo $base_process;?>pengguna/delete">
         <div class="modal-header" style="background-color:#d33724 !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
@@ -151,7 +151,7 @@
       "serverSide": true,
       "scrollX": true,
       "ajax": {
-        "url": "<?php echo $base_process;?>user/table",
+        "url": "<?php echo $base_process;?>pengguna/table",
         "type": "POST"
       },
       "columnDefs" : [
@@ -181,7 +181,7 @@
       row_id = tabrow.data()[0];
       $.ajax({
         type: "post",
-        url : "<?php echo $base_process;?>user/activate",
+        url : "<?php echo $base_process;?>pengguna/activate",
         data: {key:row_id},
         success: function(data)
         {
@@ -196,7 +196,7 @@
       row_id = tabrow.data()[0];
       $.ajax({
         type: "post",
-        url : "<?php echo $base_process;?>user/deactivate",
+        url : "<?php echo $base_process;?>pengguna/deactivate",
         data: {key:row_id},
         success: function(data)
         {

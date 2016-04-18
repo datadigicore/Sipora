@@ -23,6 +23,9 @@
         case 'pengguna':          
           include "./view/content/contentPengguna.php";
         break;
+        case 'edtpengguna':          
+          include "./view/content/contentEditProfile.php";
+        break;
         case 'addpengguna':          
           include "./view/content/contentPenggunaAdd.php";
         break;

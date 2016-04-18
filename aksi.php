@@ -7,17 +7,20 @@
       case 'login':
         include "./core/prosesLogin.php";
       break;
-      case 'rkakl':
+      case 'anggaran':
         include "./core/process/prosesRkakl.php";
       break;
-      case 'rab':
+      case 'kegiatan':
         include "./core/process/prosesRab.php";
       break;
-      case 'user':
+      case 'pengguna':
         include "./core/process/prosesPengguna.php";
       break;
-      case 'report':
+      case 'laporan':
         include "./core/process/prosesReport.php";
+      break;
+      case 'triwulan':
+        include "./core/process/prosesTriwulan.php";
       break;
       default:
         $utility->location(".");

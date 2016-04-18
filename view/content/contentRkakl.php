@@ -40,7 +40,7 @@
 <div class="modal fade" id="importModal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="<?php echo $base_process;?>rkakl/import" method="POST" enctype="multipart/form-data">
+      <form action="<?php echo $base_process;?>anggaran/import" method="POST" enctype="multipart/form-data">
         <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
@@ -80,7 +80,7 @@
 <div class="modal fade" id="editModal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="<?php echo $base_process;?>rkakl/import" method="POST" enctype="multipart/form-data">
+      <form action="<?php echo $base_process;?>anggaran/import" method="POST" enctype="multipart/form-data">
         <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
@@ -168,7 +168,7 @@
       "serverSide": true,
       "scrollX": true,
       "ajax": {
-        "url": "<?php echo $base_process;?>rkakl/table",
+        "url": "<?php echo $base_process;?>anggaran/table",
         "type": "POST"
       },
       "columnDefs" : [

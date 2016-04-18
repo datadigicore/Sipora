@@ -35,40 +35,24 @@
   </section>
 </div>
 <script type="text/javascript">
-  var editor; // use a global for the submit and return data rendering in the examples
- 
-$(document).ready(function() {
-    editor = new $.fn.dataTable.Editor( {
-            ajax: "../php/standalone.php",
-            fields: [ {
-                    label: "Status:",
-                    name:  "enable",
-                    type:  'radio',
-                    options: [
-                        { label: 'Enabled',  value: 'Enabled' },
-                        { label: 'Disabled', value: 'Disabled' }
-                    ]
-                }, {
-                    label: "Server IP address:",
-                    name:  "server-ip"
-                }, {
-                    label:     "Polling period:",
-                    name:      "poll-period"
-                }, {
-                    name: "protocol", // `label` since `data-editor-label` is defined for this field
-                    type: "select",
-                    options: [
-                        { label: 'TCP', value: 'TCP' },
-                        { label: 'UDP', value: 'UDP' }
-                    ]
-                }
-            ]
-        } );
-     
-        $('[data-editor-field]').on( 'click', function (e) {
-            editor.inline( this, {
-                buttons: '_basic'
-            } );
-        } );
-    } );
+  var table = $(".table").DataTable({
+      "oLanguage": {
+        "sInfoFiltered": ""
+      },
+      "processing": true,
+      "serverSide": true,
+      "scrollX": true,
+      "ajax": {
+        "url": "<?php echo $base_process;?>triwulan/table",
+        "type": "POST"
+      },
+      "columnDefs" : [
+        {"targets" : 0},
+        {"targets" : 1},
+        {"targets" : 2},
+        {"targets" : 3},
+        {"targets" : 4},
+      ],
+      "order": [[ 0, "asc" ]]
+    });
 </script>

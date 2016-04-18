@@ -2,6 +2,7 @@
   <section class="content-header">
     <h1>
       Profil
+      <small>Management Control</small>
     </h1>
     <ol class="breadcrumb">
       <li><i class="fa fa-user"></i> Profil</li>
@@ -11,14 +12,12 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="box">
-          <div class="box-header">
+          <div class="box-header with-border">
             Profil
           </div>
-
           <div class="box-body">
-            <?php include "view/include/alert.php" ?>
+            <?php include "view/include/contentAlert.php" ?>
             <form class="form-horizontal" role="form" id="frmMode1" enctype="multipart/form-data" method="post" action="<?= $url_rewrite ?>process/user/edt2">
-              
               <div class="form-group ">
                 <label class="col-md-2 control-label">Nama</label>
                 <div class="col-md-9">
@@ -52,14 +51,12 @@
               <button class="btn btn-flat btn-primary" id="ubah-profil"><i class="fa fa-user"></i> Ubah Profil</button>
               <a class="btn btn-flat btn-primary" href="<?php echo $url_rewrite?>content/edit_pass" id="ubah-password"><i class="fa fa-key"></i> Ubah Password</a>
             </div>
-            
           </div>
         </div>
       </div>
     </div>
   </section>
 </div>
-
 <script>
   $(document).ready(function(){
     $(document).on('click','#ubah-profil',function(e){
