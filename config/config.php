@@ -18,7 +18,6 @@
     public $db_pass             = "";
     public $database            = "evaluasi";
     public $url_rewrite_class   = "http://localhost/sipora/";
-    public $hashing_number      = "";
     public static $debug        = 1;
     public static $session_time = 7200 /*2 hours*/;
     public function open_connection() {

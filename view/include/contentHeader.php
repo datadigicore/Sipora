@@ -20,7 +20,14 @@
               <li><a href="<?php echo $url_rewrite;?>content/anggaran">Anggaran</a></li>
               <li><a href="<?php echo $url_rewrite;?>content/kegiatan">Kegiatan</a></li>
               <li><a href="<?php echo $url_rewrite;?>content/laporan">Laporan</a></li>
-              <li><a href="<?php echo $url_rewrite;?>content/pengguna">Pengguna</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pengaturan <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" style="background: white;">
+                  <li><a href="<?php echo $url_rewrite;?>content/pengguna">Pengguna</a></li>
+                  <li class="divider"></li>
+                  <li><a href="<?php echo $url_rewrite;?>content/triwulan">Triwulan</a></li>
+                </ul>
+              </li>
             <?php endif ?>
             <?php if ($_SESSION['level'] != 0 ): ?>
               <li class="active"><a href="<?php echo $url_rewrite;?>content/home">Dashboard<span class="sr-only">(current)</span></a></li>

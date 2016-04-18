@@ -17,14 +17,17 @@
         case 'kegiatan':          
           include "./view/content/contentRabRkakl.php";
         break;
+        case 'laporan':          
+          include "./view/content/contentReport.php";
+        break;
         case 'pengguna':          
           include "./view/content/contentPengguna.php";
         break;
         case 'addpengguna':          
           include "./view/content/contentPenggunaAdd.php";
         break;
-        case 'laporan':          
-          include "./view/content/contentReport.php";
+        case 'triwulan':          
+          include "./view/content/contentTriwulan.php";
         break;
         default:
           $utility->location("content/home");
