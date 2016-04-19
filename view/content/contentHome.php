@@ -10,7 +10,7 @@
   </section>
   <section class="content">
     <div class="row">
-      <section class="col-lg-12 connectedSortable">
+      <section class="col-sm-10 col-sm-offset-1 connectedSortable">
         <div id="chartDonut"></div>
       </section>
     </div>

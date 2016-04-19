@@ -10,349 +10,135 @@
   </section>
   <section class="content">
     <div class="row">
-      <div class="col-md-12 col-xs-12">
+      <div class="col-sm-10 col-sm-offset-1">
         <div class="nav-tabs-custom">
           <ul class="nav nav-pills nav-justified" style="border-bottom: 1px solid #f4f4f4">
-
-            <!-- <li><a href="#tab_6" data-toggle="tab" aria-expanded="true"><b>Surat Pertanggung Jawaban Belanja</b></a></li>
-            <li><a href="#tab_5" data-toggle="tab" aria-expanded="true"><b>Rincian Permintaan Pengeluaran</b></a></li>
-            <li ><a href="#tab_7" data-toggle="tab" aria-expanded="true"><b>Surat Perintah <br>Pembayaran</b></a></li>
-             --><li class="active"><a href="#tab_8" data-toggle="tab" aria-expanded="true"><b>Realisasi Daya Serap Per kegiatan</b></a></li>
-            <li ><a href="#tab_9" data-toggle="tab" aria-expanded="true"><b>Rekap Realisasi Daya Serap Per kegiatan</b></a></li>
-            <li ><a href="#tab_10" data-toggle="tab" aria-expanded="true"><b>Rekap Total Realisasi Daya Serap</b></a></li>
-            <!-- <li ><a href="#tab_11" data-toggle="tab" aria-expanded="true"><b>Rekapitulasi Pajak Per Orang</b></a></li> -->
-            
-            
+            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><b>Realisasi Daya Serap Per kegiatan</b></a></li>
+            <li ><a href="#tab_2" data-toggle="tab" aria-expanded="true"><b>Rekap Realisasi Daya Serap Per kegiatan</b></a></li>
+            <li ><a href="#tab_3" data-toggle="tab" aria-expanded="true"><b>Rekap Total Realisasi Daya Serap</b></a></li>
           </ul>
           <div class="tab-content" style="padding:0 0;">
-            <div class="tab-pane" id="tab_5">
-              <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/Rincian_Permintaan_Pengeluaran">
-              <div class="box-body well" style="padding-bottom:0;">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Direktorat</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" class="direktorat" name="direktorat" onchange="" >
-                    <option value="" disabled selected>-- Pilih Direktorat --</option>
-                    <?php $report->selectDirektorat(); ?>
-                  </select>
-                  </div>
-                  <div class="col-sm-5">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Pilih Kode MAK</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" id="kode-mak" name="kode-mak" onchange="" >
-                      <option value="51" >51 Belanja Pegawai</option>
-                      <option value="52" >52 Belanja Barang</option>
-                      <option value="53" >53 Belanja Modal</option>
-                  </select>
-                  </div>
-                  <div class="col-sm-5">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Bulan</label>
-                  <div class="col-sm-4">
-                    <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
-                      <option value="01-Januari">Januari</option>
-                      <option value="02-Februari">Februari</option>
-                      <option value="03-Maret">Maret</option>
-                      <option value="04-April">April</option>
-                      <option value="05-Mei">Mei</option>
-                      <option value="06-Juni">Juni</option>
-                      <option value="07-Juli">Juli</option>
-                      <option value="08-Agustus">Agustus</option>
-                      <option value="09-September">September</option>
-                      <option value="10-Oktober">Oktober</option>
-                      <option value="11-November">November</option>
-                      <option value="12-Desember">Desember</option>
-                    </select>
-                  </div>
-                  <div class="col-sm-5">
-                  </div>
-                </div>
-              </div>
-              <div class="box-footer">
-                <button type="submit" class="btn btn-flat btn-success pull-left"><i class="fa fa-print"></i> Cetak</button>
-              </div>        
-              </form>
-            </div>
-            <div class="tab-pane" id="tab_6">
-              <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/SPTB">
-              <div class="box-body well" style="padding-bottom:0;">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Direktorat</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" class="direktorat" name="direktorat" onchange="" >
-                    <option value="" disabled selected>-- Pilih Direktorat --</option>
-                    <?php $report->selectDirektorat(); ?>
-                  </select>
-                  </div>
-                  <div class="col-sm-5">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Bulan</label>
-                  <div class="col-sm-4">
-                    <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
-                      <option value="01">Januari</option>
-                      <option value="02">Februari</option>
-                      <option value="03">Maret</option>
-                      <option value="04">April</option>
-                      <option value="05">Mei</option>
-                      <option value="06">Juni</option>
-                      <option value="07">Juli</option>
-                      <option value="08">Agustus</option>
-                      <option value="09">September</option>
-                      <option value="10">Oktober</option>
-                      <option value="11">November</option>
-                      <option value="12">Desember</option>
-                    </select>
-                </div>
-                <div class="col-sm-5">
-                </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Kode Akun</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" id="kode-akun" name="kode-akun" onchange="" >
-                                          
-                  </select>
-                </div>
-                <div class="col-sm-5">
-                </div>
-                </div>
-              </div>
-              <!-- <div class="box-body">
-                      <label class="col-sm-3 control-label">Format laporan</label>
-                      <div class="col-sm-4">
-                        <select name="format" id="format" class="form-control">
-                          <option value="pdf">PDF</option>
-                          <option value="word">Word</option>
-                        </select>
-                      </div>
-                    </div> -->
-              <div class="box-footer">
-                <button type="submit" class="btn btn-flat btn-success pull-left"><i class="fa fa-print"></i> Cetak</button>
-              </div>        
-              </form>
-            </div>
-            <div class="tab-pane" id="tab_7">
-              <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/SPP">
-              <div class="box-body well" style="padding-bottom:0;">
-
-<!--                 <div class="form-group">
-                  <label>Tanggal</label>
-                  <input type="text" name="tanggal" class="form-control tanggal" data-date-format="dd/mm/yyyy" id="tanggal" placeholder="dd/mm/yyyy">
-                </div> -->
-
-<!--                 <div class="form-group">
-                  <label class="col-sm-3 control-label">Tanggal</label>
-                  <div class="col-sm-4">
-                  <input type="text" name="tanggal" class="form-control tanggal" data-date-format="dd/mm/yyyy" id="tanggal" placeholder="dd/mm/yyyy">
-                </div>
-                <div class="col-sm-5">
-                </div>
-                </div> -->
-
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Nomor</label>
-                  <div class="col-sm-4">
-                  <input type="text" name="nomor" class="form-control" id="nomor" placeholder="Nomor">
-                  </div>
-                  <div class="col-sm-5">
-                  </div>
-                </div>
-                 <div class="form-group">
-                  <label class="col-sm-3 control-label">Direktorat</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" class="direktorat" name="direktorat" onchange="" >
-                    <option value="" disabled selected>-- Pilih Direktorat --</option>
-                    <?php $report->selectDirektorat(); ?>
-                  </select>
-                </div>
-                <div class="col-sm-5">
-                </div>
-                </div>
-                <div class="form-group">
-                <label class="col-sm-3 control-label">Pilih Kode MAK</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" id="kode-mak" name="kode-mak" onchange="" >
-                      <option value="51" >51 Belanja Pegawai</option>
-                      <option value="52" >52 Belanja Barang</option>
-                      <option value="53" >53 Belanja Modal</option>
-                  </select>
-                </div>
-                <div class="col-sm-5">
-                </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Bulan</label>
-                  <div class="col-sm-4">
-                    <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
-                      <option value="01-Januari">Januari</option>
-                      <option value="02-Februari">Februari</option>
-                      <option value="03-Maret">Maret</option>
-                      <option value="04-April">April</option>
-                      <option value="05-Mei">Mei</option>
-                      <option value="06-Juni">Juni</option>
-                      <option value="07-Juli">Juli</option>
-                      <option value="08-Agustus">Agustus</option>
-                      <option value="09-September">September</option>
-                      <option value="10-Oktober">Oktober</option>
-                      <option value="11-November">November</option>
-                      <option value="12-Desember">Desember</option>
-                    </select>
-                </div>       
-                <div class="col-sm-5">        
-                </div>               
-                </div>               
-              </div>
-              <div class="box-footer">
-                <button type="submit" class="btn btn-flat btn-success pull-left"><i class="fa fa-print"></i> Cetak</button>
-              </div>        
-              </form>
-            </div>
-            <div class="tab-pane active" id="tab_8">
+            <div class="tab-pane active" id="tab_1">
               <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/Daya_Serap">
-              <div class="box-body well" style="padding-bottom:0;">
-                 <div class="form-group">
-                  <label class="col-sm-3 control-label">Direktorat</label>
-                  <div class="col-sm-6">
-                  <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
-                    <option value="" disabled selected>-- Pilih Direktorat --</option>
-                    <?php $report->selectDirektorat(); ?>
-                  </select>
+                <div class="row">
+                  <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Direktorat</label>
+                      <div class="col-sm-8">
+                      <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
+                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                        <?php $report->selectDirektorat(); ?>
+                      </select>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Bulan</label>
+                      <div class="col-sm-8">
+                        <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
+                          <option value="01">Januari</option>
+                          <option value="02">Februari</option>
+                          <option value="03">Maret</option>
+                          <option value="04">April</option>
+                          <option value="05">Mei</option>
+                          <option value="06">Juni</option>
+                          <option value="07">Juli</option>
+                          <option value="08">Agustus</option>
+                          <option value="09">September</option>
+                          <option value="10">Oktober</option>
+                          <option value="11">November</option>
+                          <option value="12">Desember</option>
+                        </select>
+                    </div>               
+                    </div>               
+                  </div>
                 </div>
-                <div class="col-sm-5">
-                </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Bulan</label>
-                  <div class="col-sm-6">
-                    <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
-                      <option value="01">Januari</option>
-                      <option value="02">Februari</option>
-                      <option value="03">Maret</option>
-                      <option value="04">April</option>
-                      <option value="05">Mei</option>
-                      <option value="06">Juni</option>
-                      <option value="07">Juli</option>
-                      <option value="08">Agustus</option>
-                      <option value="09">September</option>
-                      <option value="10">Oktober</option>
-                      <option value="11">November</option>
-                      <option value="12">Desember</option>
-                    </select>
-                </div>
-                <div class="col-sm-5">               
-                </div>               
-                </div>               
-              </div>
-              <div class="box-footer">
-                <div class="col-md-9">
-                  <button type="submit" class="btn btn-flat btn-success pull-right col-md-2"><i class="fa fa-print"></i> Cetak</button>
-                </div>
-              </div>        
+                <div class="box-footer">
+                  <div class="col-sm-9">
+                    <button type="submit" class="btn btn-flat btn-success pull-right col-sm-2"><i class="fa fa-print"></i> Cetak</button>
+                  </div>
+                </div>        
               </form>
             </div>
-            <div class="tab-pane" id="tab_9">
+            <div class="tab-pane" id="tab_2">
               <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/Rekap_Daya_Serap">
-              <div class="box-body well" style="padding-bottom:0;">
-                 <div class="form-group">
-                  <label class="col-sm-3 control-label">Direktorat</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" class="direktorat" name="direktorat" onchange="" required>
-                    <option value="" disabled selected>-- Pilih Direktorat --</option>
-                    <?php $report->selectDirektorat(); ?>
-                  </select>
+                <div class="row">
+                  <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Direktorat</label>
+                      <div class="col-sm-8">
+                      <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
+                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                        <?php $report->selectDirektorat(); ?>
+                      </select>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Bulan</label>
+                      <div class="col-sm-8">
+                        <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
+                          <option value="01">Januari</option>
+                          <option value="02">Februari</option>
+                          <option value="03">Maret</option>
+                          <option value="04">April</option>
+                          <option value="05">Mei</option>
+                          <option value="06">Juni</option>
+                          <option value="07">Juli</option>
+                          <option value="08">Agustus</option>
+                          <option value="09">September</option>
+                          <option value="10">Oktober</option>
+                          <option value="11">November</option>
+                          <option value="12">Desember</option>
+                        </select>
+                    </div>               
+                    </div>               
+                  </div>
                 </div>
-                <div class="col-sm-5">
-                </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Bulan</label>
-                  <div class="col-sm-4">
-                    <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
-                      <option value="01">Januari</option>
-                      <option value="02">Februari</option>
-                      <option value="03">Maret</option>
-                      <option value="04">April</option>
-                      <option value="05">Mei</option>
-                      <option value="06">Juni</option>
-                      <option value="07">Juli</option>
-                      <option value="08">Agustus</option>
-                      <option value="09">September</option>
-                      <option value="10">Oktober</option>
-                      <option value="11">November</option>
-                      <option value="12">Desember</option>
-                    </select>
-                </div>
-                <div class="col-sm-5">               
-                </div>               
-                </div>               
-              </div>
-              <div class="box-footer">
-                <button type="submit" class="btn btn-flat btn-success pull-left"><i class="fa fa-print"></i> Cetak</button>
-              </div>        
+                <div class="box-footer">
+                  <div class="col-sm-9">
+                    <button type="submit" class="btn btn-flat btn-success pull-right col-sm-2"><i class="fa fa-print"></i> Cetak</button>
+                  </div>
+                </div>        
               </form>
             </div>
-            <div class="tab-pane" id="tab_10">
+            <div class="tab-pane" id="tab_3">
               <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/serapan">
-              <div class="box-body well" style="padding-bottom:0;">
-                 <div class="form-group">
-                  <label class="col-sm-3 control-label">Direktorat</label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" class="direktorat" name="direktorat" onchange="" required >
-                    <option value="" disabled selected>-- Pilih Direktorat --</option>
-                    <?php $report->selectDirektorat(); ?>
-                  </select>
+                <div class="row">
+                  <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Direktorat</label>
+                      <div class="col-sm-8">
+                      <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
+                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                        <?php $report->selectDirektorat(); ?>
+                      </select>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">Bulan</label>
+                      <div class="col-sm-8">
+                        <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
+                          <option value="01">Januari</option>
+                          <option value="02">Februari</option>
+                          <option value="03">Maret</option>
+                          <option value="04">April</option>
+                          <option value="05">Mei</option>
+                          <option value="06">Juni</option>
+                          <option value="07">Juli</option>
+                          <option value="08">Agustus</option>
+                          <option value="09">September</option>
+                          <option value="10">Oktober</option>
+                          <option value="11">November</option>
+                          <option value="12">Desember</option>
+                        </select>
+                    </div>               
+                    </div>               
                   </div>
-                  <div class="col-sm-5"></div>
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Bulan</label>
-                  <div class="col-sm-4">
-                    <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
-                      <option value="01">Januari</option>
-                      <option value="02">Februari</option>
-                      <option value="03">Maret</option>
-                      <option value="04">April</option>
-                      <option value="05">Mei</option>
-                      <option value="06">Juni</option>
-                      <option value="07">Juli</option>
-                      <option value="08">Agustus</option>
-                      <option value="09">September</option>
-                      <option value="10">Oktober</option>
-                      <option value="11">November</option>
-                      <option value="12">Desember</option>
-                    </select>
+                <div class="box-footer">
+                  <div class="col-sm-9">
+                    <button type="submit" class="btn btn-flat btn-success pull-right col-sm-2"><i class="fa fa-print"></i> Cetak</button>
                   </div>
-                  <div class="col-sm-5"></div>
-                </div>               
-              </div>
-              <div class="box-footer">
-                <button type="submit" class="btn btn-flat btn-success pull-left"><i class="fa fa-print"></i> Cetak</button>
-              </div>        
-              </form>
-            </div>
-            <div class="tab-pane" id="tab_11">
-              <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/pajak_orang">
-              <div class="box-body well" style="padding-bottom:0;">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Penerima </label>
-                  <div class="col-sm-4">
-                  <select style="margin:5px auto" class="form-control" id="penerima" name="penerima" onchange="" ></select>
-                </div>
-                <div class="col-sm-5">
-                </div>
-                </div>             
-              </div>
-              <div class="box-footer">
-                <button type="submit" class="btn btn-flat btn-success pull-left"><i class="fa fa-print"></i>Cetak</button>
-              </div>        
+                </div>       
               </form>
             </div>
           </div>

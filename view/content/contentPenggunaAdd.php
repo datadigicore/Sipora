@@ -10,7 +10,7 @@
   </section>
   <section class="content">
     <div class="row">
-      <div class="col-md-12 col-xs-12">
+      <div class="col-sm-10 col-sm-offset-1">
         <div class="box">
           <div class="box-header with-border">
             <h3 class="box-title" style="margin-top:6px;">Tambah Pengguna</h3>

@@ -24,17 +24,6 @@
                   <?php include "view/include/contentAlert.php" ?>
                   <div class="form-group">
                     <div class="col-md-12">
-                      <label>Status Triwulan</label>
-                      <select class="form-control">
-                        <option>Triwulan 1</option>
-                        <option>Triwulan 2</option>
-                        <option>Triwulan 3</option>
-                        <option>Triwulan 4</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-md-12">
                       <label>Tahun Anggaran</label>
                       <select class="form-control" required>
                         <?php $earliest_year = date('Y');
@@ -42,6 +31,18 @@
                         foreach (range(date('Y'), $earliest_year+1) as $x) {
                           echo '<option value="'.$x.'">'.$x.'</option>';
                         }?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-12">
+                      <label>Status Triwulan</label>
+                      <select class="form-control" required>
+                        <option disabled selected>-- Pilih Status Triwulan --</option>
+                        <option>Triwulan 1</option>
+                        <option>Triwulan 2</option>
+                        <option>Triwulan 3</option>
+                        <option>Triwulan 4</option>
                       </select>
                     </div>
                   </div>
