@@ -18,38 +18,44 @@
         include "./logout.php";
       break;
       case 'home':
-        $view[] = "./view/include/homeHead.php";
-        $view[] = "./view/homeIndex.php";
-        cekandgo($view, $utility, $home);
+        if ($_SESSION['username'] != '') {
+          $utility->location("content/home");
+        }
+        else {
+          include "./view/include/homeHead.php";
+          include "./view/homeIndex.php";
+        }
       break;
       case 'dekon':
-        $view[] = "./view/include/homeHead.php";
-        $view[] = "./view/homeDekon.php";
-        cekandgo($view, $utility, $home);
+        if ($_SESSION['username'] != '') {
+          $utility->location("content/home");
+        }
+        else {
+          include "./view/include/homeHead.php";
+          include "./view/homeDekon.php";
+        }
       break;
       case 'review':
-        $view[] = "./view/include/homeHead.php";
-        $view[] = "./view/homeReview.php";
-        cekandgo($view, $utility, $home);
+        if ($_SESSION['username'] != '') {
+          $utility->location("content/home");
+        }
+        else {
+          include "./view/include/homeHead.php";
+          include "./view/homeReview.php";
+        }
       break;
       case 'login':
-        $view[] = "./view/include/homeHead.php";
-        $view[] = "./view/homeLogin.php";
-        cekandgo($view, $utility);
+        if ($_SESSION['username'] != '') {
+          $utility->location("content/home");
+        }
+        else {
+          include "./view/include/homeHead.php";
+          include "./view/homeLogin.php";
+        }
       break;
       default:
         $utility->location(".");
       break;
-    }
-  }
-  function cekandgo($view, $utility, $home=null) {
-    if ($_SESSION['username'] != '') {
-      $utility->location("content/home");
-    }
-    else {
-      for ($i=0; $i < count($view) ; $i++) { 
-        include $view[$i];
-      }
     }
   }
 ?>

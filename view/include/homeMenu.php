@@ -11,12 +11,12 @@
       </div>
       <div class='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
         <ul class='nav navbar-nav'>
-          <li><a href='home'><b>Evaluasi Pusat</b></a></li>
-          <li><a href='review'><b>Review Evaluasi Pusat</b></a></li>
-          <li><a href='dekon'><b>Evaluasi Dekon</b></a></li>
+          <li><a href="<?php echo $base_url; ?>home"><b>Evaluasi Pusat</b></a></li>
+          <li><a href="<?php echo $base_url; ?>review"><b>Review Evaluasi Pusat</b></a></li>
+          <li><a href="<?php echo $base_url; ?>dekon"><b>Evaluasi Dekon</b></a></li>
         </ul>
-        <ul class='nav navbar-nav navbar-right'>
-          <li><a href='login'><b><i class='fa fa-user'></i> Login</b></a></li>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="<?php echo $base_url; ?>login"><b><i class='fa fa-user'></i> Login</b></a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
