@@ -18,7 +18,7 @@
           <form method="POST" action="<?php echo $base_process;?>pengguna/add">
             <div class="row">
               <div class="col-md-6 col-md-offset-3">
-                <div class="box-body form-horizontal">
+                <div class="box-body well form-horizontal">
                   <?php include "view/include/contentAlert.php" ?>
                   <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Nama</label>

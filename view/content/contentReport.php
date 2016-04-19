@@ -24,7 +24,7 @@
             
             
           </ul>
-          <div class="tab-content" style="padding:20px 0 0 0;">
+          <div class="tab-content" style="padding:0 0;">
             <div class="tab-pane" id="tab_5">
               <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/Rincian_Permintaan_Pengeluaran">
               <div class="box-body well" style="padding-bottom:0;">
@@ -220,7 +220,7 @@
               <div class="box-body well" style="padding-bottom:0;">
                  <div class="form-group">
                   <label class="col-sm-3 control-label">Direktorat</label>
-                  <div class="col-sm-4">
+                  <div class="col-sm-6">
                   <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
                     <option value="" disabled selected>-- Pilih Direktorat --</option>
                     <?php $report->selectDirektorat(); ?>
@@ -231,7 +231,7 @@
                 </div>
                 <div class="form-group">
                   <label class="col-sm-3 control-label">Bulan</label>
-                  <div class="col-sm-4">
+                  <div class="col-sm-6">
                     <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
                       <option value="01">Januari</option>
                       <option value="02">Februari</option>
@@ -252,7 +252,9 @@
                 </div>               
               </div>
               <div class="box-footer">
-                <button type="submit" class="btn btn-flat btn-success pull-left"><i class="fa fa-print"></i> Cetak</button>
+                <div class="col-md-9">
+                  <button type="submit" class="btn btn-flat btn-success pull-right col-md-2"><i class="fa fa-print"></i> Cetak</button>
+                </div>
               </div>        
               </form>
             </div>

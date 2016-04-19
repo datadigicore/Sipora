@@ -94,7 +94,7 @@
           </div>
           <div class="form-group">
             <label>Tanggal DIPA</label>
-            <input type="text" class="form-control tanggal" id="tanggal" name="tanggal" placeholder="dd/mm/yyyy">
+            <input type="text" class="form-control tanggal" id="tanggald" name="tanggal" placeholder="dd/mm/yyyy">
           </div>
           <div class="form-group">
             <label>Nomor DIPA</label>
@@ -184,8 +184,8 @@
       ],
       "order": [[ 0, "desc" ]]
     });
-    $('.tanggal').mask('00/00/0000');
-    $(".tanggal").datepicker({ 
+    $('#tanggal, #tanggald').mask('00/00/0000');
+    $("#tanggal, #tanggald").datepicker({ 
       changeMonth: true,
       changeYear: true,
       format: 'dd/mm/yyyy' 
@@ -212,7 +212,7 @@
       var f = document.createElement('form');
       f.setAttribute('method','post');
       f.setAttribute('target','_blank');
-      f.setAttribute('action','<?php echo $url_rewrite;?>process/rkakl/view');
+      f.setAttribute('action','<?php echo $url_rewrite;?>process/anggaran/view');
       var i = document.createElement('input');
       i.setAttribute('type','hidden');
       i.setAttribute('name','filename');

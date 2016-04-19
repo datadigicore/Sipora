@@ -42,13 +42,13 @@
       break;
     }
   }
-  function cekandgo($data, $utility, $home=null) {
+  function cekandgo($view, $utility, $home=null) {
     if ($_SESSION['username'] != '') {
       $utility->location("content/home");
     }
     else {
-      for ($i=0; $i < count($data) ; $i++) { 
-        include $data[$i];
+      for ($i=0; $i < count($view) ; $i++) { 
+        include $view[$i];
       }
     }
   }

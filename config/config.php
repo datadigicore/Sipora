@@ -6,11 +6,11 @@
   $base_process      = "http://localhost/sipora/process/";
   $url_rewrite       = "http://localhost/sipora/";
   $url_img           = "http://localhost/sipora/";
-  $path              = "/var/www/html/sipora/";
-  $path_upload       = "/var/www/html/sipora/static/uploads/";
+  // $path              = "/var/www/html/sipora/";
+  // $path_upload       = "/var/www/html/sipora/static/uploads/";
   //================== PATH UPLOAD LOCAL WINDOWS =================//
-  // $path              = "C:/xampp/htdocs/sipora/";
-  // $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
+  $path              = "C:/xampp/htdocs/sipora/";
+  $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
   
   class config {
     public $db_host             = "localhost";
