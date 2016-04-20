@@ -2,10 +2,6 @@
 	switch ($link[3]) {
     case 'add':
       $data = $purifier->purifyArray($_POST);
-      $tgl  = explode('/', $_POST['start_date']);
-      $data['start_date'] = $tgl[2].'-'.$tgl[1].'-'.$tgl[0];
-      $tgl  = explode('/', $_POST['end_date']);
-      $data['end_date'] = $tgl[2].'-'.$tgl[1].'-'.$tgl[0];
       $result = $triwulan->cekTriwulan($data);
       if ($result == 0) {
         $triwulan->addTriwulan($data);
@@ -65,6 +61,45 @@
         }),
       );
       $datatable->get_rkakl_view($table, $primaryKey, $columns);
+    break;
+    case 'table2':
+      $table      = "rkakl_full";
+      $primaryKey = "idrkakl";
+      $columns    = array(
+        array( 'db' => 'idrkakl',    'dt' => 0 ),
+        array( 'db' => 'kdgiat',     'dt' => 2 ),
+        array( 'db' => 'nmgiat',     'dt' => 3 ),
+        array( 'db' => '(SELECT rabview.STATUS FROM rabview WHERE rkakl_full.kdgiat = rabview.kdgiat)',   'dt' => 4, 'formatter' => function( $d, $row ) {
+          if ($d == 1) {
+            return '<div class="label label-success col-md-12"><i class="fa fa-check-circle"></i> Active</div>';
+          }
+          elseif ($d == 2) {
+            return '<div class="label label-warning col-md-12"><i class="fa fa-warning"></i> Revised</div>';
+          }
+          elseif ($d != '') {
+            return '<div class="label label-danger col-md-12"><i class="fa fa-check-circle"></i> Locked</div>';
+          }
+          else {
+            return '<div class="label label-default col-md-12"><i class="fa fa-warning"></i> Not Available</div>';
+          }
+        }),
+        array( 'db' => 'status',     'dt' => 5, 'formatter' => function( $d, $row ) {
+          if ($row[3] == 1) {
+            return '<a style="margin:1px 2px;" id="btn-viw" class="btn btn-flat btn-danger btn-xs col-md-12"><i class="fa fa-warning"></i> Lock</a>';
+          }
+          elseif ($row[3] == 2) {
+            return '<a style="margin:1px 2px;" id="btn-viw" class="btn btn-flat btn-danger btn-xs col-md-12"><i class="fa fa-warning"></i> Lock</a>';
+          }
+          elseif ($row[3] != '') {
+            return '<a style="margin:1px 2px;" id="btn-viw" class="btn btn-flat btn-warning btn-xs col-md-12"><i class="fa fa-warning"></i> Revise</a>';
+          }
+          else {
+            return '<div class="label label-default col-md-12"><i class="fa fa-warning"></i> Not Available</div>';
+          }
+        })
+      );
+      $where="KDGIAT IS NOT NULL AND KDOUTPUT IS NULL AND KDSOUTPUT IS NULL AND KDKMPNEN IS NULL AND KDSKMPNEN IS NULL AND KDSKMPNEN IS NULL AND KDAKUN IS NULL AND KDITEM IS NULL";
+      $datatable->get_table_group($table, $primaryKey, $columns, $where);
     break;
     default:
       $utility->location("content/triwulan");

@@ -112,9 +112,8 @@ var table;
             api.column(1, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00DD80;"><td colspan="9">'+group+'</td></tr>'
                     );
- 
                     last = group;
                 }
             } );

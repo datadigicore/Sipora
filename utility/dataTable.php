@@ -16,7 +16,7 @@ class datatable extends config {
             SSP::simplewhere( $_POST, $sql_details, $table, $primaryKey, $columns, $where, $dataArray)
         );        
     }
-    function get_table_group($table, $primaryKey, $columns, $where, $group, $dataArray, $order=null){
+    function get_table_group($table, $primaryKey, $columns, $where, $group=null, $dataArray=null, $order=null){
         $config = new config();
         $sql_details = $config->sql_details();
         require( 'ssp.class.php' );
