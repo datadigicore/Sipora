@@ -1,5 +1,9 @@
 <?php 
 	switch ($link[3]) {
+    case 'unlock':
+      $data = $purifier->purifyArray($_POST);
+      $triwulan->unlock($data);
+    break;
     case 'aktifkan':
       $data = $purifier->purifyArray($_POST);
       $triwulan->activate($data);
@@ -63,10 +67,13 @@
         }),
         array( 'db' => 'status',     'dt' => 5, 'formatter' => function( $d, $row ) {
           if ($d == 1) {
-            return '<div class="label label-success col-md-12"><i class="fa fa-warning"></i> Sedang Aktif</div>';
+            return '<div class="label label-success col-md-12"><i class="fa fa-check-circle"></i> Sedang Aktif</div>';
+          }
+          if ($d == 4) {
+            return '<div class="label label-warning col-md-12"><i class="fa fa-warning"></i> Sedang Revisi</div>';
           }
           else {
-            return '<div class="label label-danger col-md-12"><i class="fa fa-check-circle"></i> Tidak Aktif</div>';
+            return '<div class="label label-danger col-md-12"><i class="fa fa-warning"></i> Tidak Aktif</div>';
           }
         }),
         array( 'db' => 'status',     'dt' => 6, 'formatter' => function( $d, $row ) {
@@ -78,6 +85,9 @@
           }
           elseif ($d == 2) {
             return '<a style="margin:1px 2px;" id="btn-act" class="btn btn-flat btn-success btn-xs col-md-12"><i class="fa fa-warning"></i> Aktifkan</a>';
+          }
+          elseif ($d == 4) {
+            return '<a style="margin:1px 2px;" id="btn-non" class="btn btn-flat btn-danger btn-xs col-md-12"><i class="fa fa-warning"></i> Non Aktif</a>';
           }
           else {
             return '<a style="margin:1px 2px;" class="btn btn-flat btn-default btn-xs col-md-12"><i class="fa fa-warning"></i> No available</a>';

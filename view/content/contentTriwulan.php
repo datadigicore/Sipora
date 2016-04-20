@@ -107,30 +107,28 @@
       cell.innerHTML = i+1;
     });
   }).draw();
+  $(document).on("click", "#btn-unl", function (){
+    var data = [$(this).closest('tr'),"unlock"];
+    ajaxPost(data);
+  });
   $(document).on("click", "#btn-non", function (){
-    var tr = $(this).closest('tr');
-    tabrow = table.row( tr );
-    id = tabrow.data()[0];
-    $.ajax({
-      type: "post",
-      url : "<?php echo $base_process;?>triwulan/nonaktif",
-      data: {id:id},
-      success: function(data) {
-        table.draw();
-      }
-    });
+    var data = [$(this).closest('tr'),"nonaktif"];
+    ajaxPost(data);
   });
   $(document).on("click", "#btn-act", function (){
-    var tr = $(this).closest('tr');
-    tabrow = table.row( tr );
+    var data = [$(this).closest('tr'),"aktifkan"];
+    ajaxPost(data);
+  });
+  function ajaxPost(data){
+    tabrow = table.row(data[0]);
     id = tabrow.data()[0];
     $.ajax({
       type: "post",
-      url : "<?php echo $base_process;?>triwulan/aktifkan",
+      url : "<?php echo $base_process;?>triwulan/"+data[1],
       data: {id:id},
       success: function(data) {
         table.draw();
       }
     });
-  });
+  }
 </script>

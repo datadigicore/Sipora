@@ -1,5 +1,15 @@
 <?php
   class modelTriwulan extends mysql_db {
+    public function unlock($data) {
+      $query  = "SELECT end_date FROM triwulan WHERE id = '$data[id]'";
+      $result = $this->query($query);
+      $fetch  = $this->fetch_object($result);
+      $extract = explode('-', $fetch->end_date);
+      if ($extract[1] != '00' && $extract[2] != '00') {
+        $query  = "UPDATE triwulan SET status = '4' WHERE id = '$data[id]'";
+        $result = $this->query($query);
+      }
+    }
     public function activate($data) {
       $data[prev] = $data[id] - 1;
       $query      = "SELECT end_date FROM triwulan WHERE end_date = CURDATE() && id = '$data[prev]'";
@@ -14,16 +24,23 @@
       }
     }
     public function deactivate($data) {
-      $query      = "SELECT start_date FROM triwulan WHERE (start_date = CURDATE() OR start_date = CURDATE()+1) && id = '$data[id]'";
+      $query      = "SELECT status FROM triwulan WHERE id = '$data[id]'";
       $result     = $this->query($query);
-      if ($result->num_rows == 0) {
-        $query      = "UPDATE triwulan SET status = '0', end_date = CURDATE() WHERE id = '$data[id]'";
-        $result     = $this->query($query);
-        $data[next] = $data[id] + 1;
-        $query      = "UPDATE triwulan SET status = '2' WHERE id = '$data[next]'";
-        $result     = $this->query($query);
+      $fetch      = $this->fetch_object($result);
+      if ($fetch->status == 4) {
+        $query  = "UPDATE triwulan SET status = '0' WHERE id = '$data[id]'";
+        $result = $this->query($query);
       }
       else {
+        $query  = "SELECT start_date FROM triwulan WHERE (start_date = CURDATE() OR start_date = CURDATE()+1) && id = '$data[id]'";
+        $result = $this->query($query);
+        if ($result->num_rows == 0) {
+          $query      = "UPDATE triwulan SET status = '0', end_date = CURDATE() WHERE id = '$data[id]'";
+          $result     = $this->query($query);
+          $data[next] = $data[id] + 1;
+          $query      = "UPDATE triwulan SET status = '2' WHERE id = '$data[next]'";
+          $result     = $this->query($query);
+        }
       }
     }
     public function cekTahunAnggaran() {
