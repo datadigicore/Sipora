@@ -78,17 +78,6 @@ class utilityCode extends config {
       unset($_SESSION[$key]);
     }
   }
-  
-  public function cekandgo($data) {
-    if (!empty($_SESSION)) {
-      $this->location("content/home");
-    }
-    else {
-      for ($i=0; $i < count($data) ; $i++) { 
-        include $data[$i];
-      }
-    }
-  }
 
   public function show_data($temp) {
     if ($this->debug != "") {

@@ -16,6 +16,14 @@ class mysql_db extends config {
     $this->connect = $this->open_connection();
   }
 
+  public function setdata($data) {
+    foreach ($data as $key => $value) {
+      $setdata .= "$key = '$value', ";
+    }
+    $setdata = rtrim($setdata,', ');
+    return $setdata;
+  }
+
   public function where($data) {
     $parameter = "";
     $count     = 0;
