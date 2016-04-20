@@ -24,36 +24,9 @@
                     <div class="col-md-12">
                       <label>Tahun Anggaran</label>
                       <select class="form-control" name="thang" required>
-                        <?php $earliest_year = date('Y');
-                        echo '<option  value="" disabled selected>-- Pilih Tahun Anggaran --</option>';
-                        foreach (range(date('Y'), $earliest_year+1) as $x) {
-                          echo '<option value="'.$x.'">'.$x.'</option>';
-                        }?>
+                        <option  value="" disabled selected>-- Pilih Tahun Anggaran --</option>
+                        <?php $triwulan->cekTahunAnggaran();?>
                       </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-md-12">
-                      <label>Status Triwulan</label>
-                      <select class="form-control" name="nama" required>
-                        <option value="" disabled selected>-- Pilih Status Triwulan --</option>
-                        <option value="Triwulan 1">Triwulan 1</option>
-                        <option value="Triwulan 2">Triwulan 2</option>
-                        <option value="Triwulan 3">Triwulan 3</option>
-                        <option value="Triwulan 4">Triwulan 4</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-md-12">
-                      <label>Tanggal Awal</label>
-                      <input type="text" class="form-control" id="tanggalAwal" name="start_date" placeholder="dd/mm/yyyy" required>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-md-12">
-                      <label>Tanggal Akhir</label>
-                      <input type="text" class="form-control" id="tanggalAkhir" name="end_date" placeholder="dd/mm/yyyy" required>
                     </div>
                   </div>
                 </div>
@@ -76,8 +49,8 @@
             <h3 class="box-title" style="margin-top:6px;">Tabel Triwulan</h3>
             <div class="pull-right">
             <select class="form-control" onchange="search()">
-              <option value="">-- Semua Tahun --</option>
-              <option selected>2016</option>
+              <option value="all">-- Semua Tahun --</option>
+              <?php $triwulan->cekTahunAnggaran();?>
             </select>
             </div>
           </div>
@@ -97,56 +70,67 @@
               </thead>
             </table>
           </div>
-        </div>        
+        </div>
       </div>
     </div>
   </section>
 </div>
 <script type="text/javascript">
-  var table = $(".table").DataTable({
-      "oLanguage": {
-        "sInfoFiltered": ""
-      },
-      "processing": true,
-      "serverSide": true,
-      "scrollX": true,
-      "ajax": {
-        "url": "<?php echo $base_process;?>triwulan/table",
-        "type": "POST"
-      },
-      "columnDefs" : [
-        {"targets": 0,
-         "visible": false},
-        {"targets": 1,
-         "data"   : null,
-         "searchable": false,
-         "orderable": false},
-        {"targets": 2},
-        {"targets": 3},
-        {"targets": 4},
-        {"targets": 5},
-        {"targets": 6},
-      ],
-      "order": [[ 2, "asc" ]]
+  var table = $("#table").DataTable({
+    "oLanguage": {
+      "sInfoFiltered": ""
+    },
+    "processing": true,
+    "serverSide": true,
+    "scrollX": true,
+    "ajax": {
+      "url": "<?php echo $base_process;?>triwulan/table",
+      "type": "POST"
+    },
+    "columnDefs" : [
+      {"targets": 0,
+       "visible": false},
+      {"targets": 1,
+       "data"   : null,
+       "searchable": false,
+       "orderable": false},
+      {"targets": 2},
+      {"targets": 3},
+      {"targets": 4},
+      {"targets": 5},
+      {"targets": 6},
+    ],
+    "order": [[ 2, "asc" ]]
+  });
+  table.on( 'order.dt search.dt draw.dt', function () {
+    table.column(1, {search:'applied', order:'applied', draw:'applied'}).nodes().each( function (cell, i) {
+      cell.innerHTML = i+1;
     });
-    table.on( 'order.dt search.dt draw.dt', function () {
-        table.column(1, {search:'applied', order:'applied', draw:'applied'}).nodes().each( function (cell, i) {
-            cell.innerHTML = i+1;
-        } );
-    } ).draw();
-    $("#tanggalAwal").datepicker({
-      autoclose  : true,
-      monthNames : [ "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
-      changeMonth: true,
-      dateFormat : 'dd/mm/yy',
-      onClose: function(selectedDate) {
-        $("#tanggalAkhir").datepicker("option", "minDate", selectedDate);
+  }).draw();
+  $(document).on("click", "#btn-non", function (){
+    var tr = $(this).closest('tr');
+    tabrow = table.row( tr );
+    id = tabrow.data()[0];
+    $.ajax({
+      type: "post",
+      url : "<?php echo $base_process;?>triwulan/nonaktif",
+      data: {id:id},
+      success: function(data) {
+        table.draw();
       }
     });
-    $("#tanggalAkhir").datepicker({ 
-      autoclose  : true,
-      monthNames : [ "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
-      changeMonth: true,
-      dateFormat : 'dd/mm/yy'
+  });
+  $(document).on("click", "#btn-act", function (){
+    var tr = $(this).closest('tr');
+    tabrow = table.row( tr );
+    id = tabrow.data()[0];
+    $.ajax({
+      type: "post",
+      url : "<?php echo $base_process;?>triwulan/aktifkan",
+      data: {id:id},
+      success: function(data) {
+        table.draw();
+      }
     });
+  });
 </script>

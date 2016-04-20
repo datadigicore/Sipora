@@ -9,8 +9,8 @@
   // $path              = "/var/www/html/sipora/";
   // $path_upload       = "/var/www/html/sipora/static/uploads/";
   //================== PATH UPLOAD LOCAL WINDOWS =================//
-  $path              = "C:/xampp/htdocs/sipora/";
-  $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
+  $path              = "/opt/lampp/htdocs/sipora/";
+  $path_upload       = "/opt/lampp/htdocs/sipora/static/uploads/";
   
   class config {
     public $db_host             = "localhost";

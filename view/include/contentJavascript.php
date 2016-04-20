@@ -11,6 +11,7 @@
   <!-- DataTables -->
   <script src="<?php echo $url_rewrite;?>static/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
   <script src="<?php echo $url_rewrite;?>static/plugins/datatables/media/js/dataTables.bootstrap.min.js"></script>
+  <script src="<?php echo $url_rewrite;?>static/plugins/datatables/media/js/dataTables.fixedColumns.min.js"></script>
   <!-- Morris.js charts -->
   <script src="<?php echo $url_rewrite;?>static/dist/js/raphael-min.js"></script>
   <script src="<?php echo $url_rewrite;?>static/plugins/morris/morris.min.js"></script>  
