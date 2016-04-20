@@ -4,7 +4,6 @@
       $utility->location(".");
     }
     else {
-      $triwulan->autoUpdStatTriwulan();
       include './view/include/contentMeta.php';
       include './view/include/contentJavascript.php';
       include './view/include/contentHeader.php';

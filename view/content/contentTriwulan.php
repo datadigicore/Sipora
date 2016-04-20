@@ -71,31 +71,6 @@
             </table>
           </div>
         </div>
-        <div class="box">
-          <div class="box-header with-border">
-            <h3 class="box-title" style="margin-top:6px;">Tabel Triwulan</h3>
-            <div class="pull-right">
-            <select class="form-control" onchange="search()">
-              <option value="all">-- Semua Tahun --</option>
-              <?php $triwulan->cekTahunAnggaran();?>
-            </select>
-            </div>
-          </div>
-          <div class="box-body">
-            <table id="table2" class="display nowrap table table-bordered table-striped" cellspacing="0" width="100%">
-              <thead style="background-color:#2B91CF;color:white;">
-                <tr>
-                  <th>Id</th>
-                  <th>No</th>
-                  <th>Kode Direktorat</th>
-                  <th>Nama Direktorat</th>
-                  <th>Status</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-        </div>        
       </div>
     </div>
   </section>
@@ -127,40 +102,35 @@
     ],
     "order": [[ 2, "asc" ]]
   });
-  var table2 = $("#table2").DataTable({
-    "oLanguage": {
-      "sInfoFiltered": ""
-    },
-    "processing": true,
-    "serverSide": true,
-    "scrollX": true,
-    "fixedColumns": true,
-    "ajax": {
-      "url": "<?php echo $base_process;?>triwulan/table2",
-      "type": "POST"
-    },
-    "columnDefs" : [
-      {"targets": 0,
-       "visible": false},
-      {"targets": 1,
-       "data"   : null,
-       "searchable": false,
-       "orderable": false},
-      {"targets": 2},
-      {"targets": 3},
-      {"targets": 4},
-      {"targets": 5}
-    ],
-    "order": [[ 2, "asc" ]]
-  });
   table.on( 'order.dt search.dt draw.dt', function () {
     table.column(1, {search:'applied', order:'applied', draw:'applied'}).nodes().each( function (cell, i) {
       cell.innerHTML = i+1;
     });
   }).draw();
-  table2.on( 'order.dt search.dt draw.dt', function () {
-    table2.column(1, {search:'applied', order:'applied', draw:'applied'}).nodes().each( function (cell, i) {
-      cell.innerHTML = i+1;
+  $(document).on("click", "#btn-non", function (){
+    var tr = $(this).closest('tr');
+    tabrow = table.row( tr );
+    id = tabrow.data()[0];
+    $.ajax({
+      type: "post",
+      url : "<?php echo $base_process;?>triwulan/nonaktif",
+      data: {id:id},
+      success: function(data) {
+        table.draw();
+      }
     });
-  }).draw();
+  });
+  $(document).on("click", "#btn-act", function (){
+    var tr = $(this).closest('tr');
+    tabrow = table.row( tr );
+    id = tabrow.data()[0];
+    $.ajax({
+      type: "post",
+      url : "<?php echo $base_process;?>triwulan/aktifkan",
+      data: {id:id},
+      success: function(data) {
+        table.draw();
+      }
+    });
+  });
 </script>
