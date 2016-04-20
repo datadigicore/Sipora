@@ -203,49 +203,117 @@ switch ($link[3]) {
           return $row[0]." - ".$d;
         }),
         array( 'db' => 'NMOUTPUT',      'dt' => 2, 'formatter' => function($d,$row){
-          return $row[10]." - ".$d;
+          if ($_SESSION['direktorat'] != "") {
+            return 'Output : '.$row[12]." - ".$d;
+          }else{
+            return $row[12]." - ".$d;
+          }
         }),
         array( 'db' => 'NMSOUTPUT',      'dt' => 3, 'formatter' => function($d,$row){
-          return $row[11]." - ".$d;
+          return $row[13]." - ".$d;
         }),
         array( 'db' => 'NMKMPNEN',      'dt' => 4, 'formatter' => function($d,$row){
-          return $row[12]." - ".$d;
+          return $row[14]." - ".$d;
         }),
         array( 'db' => 'NMSKMPNEN',      'dt' => 5, 'formatter' => function($d,$row){
-          return $row[13]." - ".$d;
+          return $row[15]." - ".$d;
         }),
         array( 'db' => 'SUM(JUMLAH)',      'dt' => 6, 'formatter' => function($d,$row){
           return number_format($d,0,".",".");
         }),
-        array( 'db' => 'SUM(realisasi)',      'dt' => 7, 'formatter' => function($d,$row){
-          if(is_null($d)){
+        array( 'db' => '(SELECT SUM(rabview.jumlah) from rabview 
+                        where rabview.kdprogram = rkakl_full.KDPROGRAM 
+                        and rabview.kdgiat = rkakl_full.KDGIAT 
+                        and rabview.kdoutput = rkakl_full.KDOUTPUT 
+                        and CASE when rabview.kdsoutput is not null then rabview.kdsoutput = rkakl_full.KDSOUTPUT ELSE TRUE END
+                        and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END 
+                        and CASE when rabview.kdskmpnen is not null then rabview.kdskmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END 
+                      limit 1)', 'dt' => 7, 'formatter' => function($d,$row){
+          if(is_null($row[7])){
             return 0;
           } else {
-            return number_format($d,0,".",".");
+            return number_format($row[7],0,".",".");
           }
           
         }),
-        array( 'db' => 'SUM(usulan)',      'dt' => 8, 'formatter' => function($d,$row){
-          if(is_null($d)){
+        array( 'db' => 'SUM(JUMLAH)','dt' => 8, 'formatter' => function($d,$row){
+          if(is_null($row[7])){
+            return '<div class="pull-right">&nbsp;<span class="label label-danger"> 0 %</span></div>';
+          } else {
+            $persen = ($row[7] / $d) * 100;
+            if ($persen < 50) {
+              $status = 'danger';
+            }elseif ($persen < 80) {
+              $status = 'warning';
+            }elseif ($persen <= 100) {
+              $status = 'success';
+            }
+            return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
+                    <div class="progress progress-sm active">
+                      <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
+                        <span class="sr-only">'.number_format($persen,2).'% Complete</span>
+                      </div>
+                    </div>';
+          }
+        }),
+        
+        array( 'db' => '(SELECT SUM(rabview.volume) from rabview 
+                        where rabview.kdprogram = rkakl_full.KDPROGRAM 
+                        and rabview.kdgiat = rkakl_full.KDGIAT 
+                        and rabview.kdoutput = rkakl_full.KDOUTPUT 
+                        and CASE when rabview.kdsoutput is not null then rabview.kdsoutput = rkakl_full.KDSOUTPUT ELSE TRUE END
+                        and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END 
+                        and CASE when rabview.kdskmpnen is not null then rabview.kdskmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END 
+                      limit 1)', 'dt' => 9, 'formatter' => function($d,$row){
+          if(is_null($row[9])){
             return 0;
           } else {
-            return number_format($d,0,".",".");
+            return number_format($row[9]).' '.$row[10];
           }
           
         }),
-        array( 'db' => 'KDSKMPNEN',      'dt' => 9, 'formatter' => function($d,$row){
-          return number_format($row[6]+$row[7],0,".",".");
+        array( 'db' => 'SATKEG','dt' => 10, 'formatter' => function($d,$row){
+          if(is_null($row[17]) && is_null($row[9])){
+            return '<div class="pull-right">&nbsp;<span class="label label-danger"> 0 %</span></div>';
+          } else {
+            $persen = ($row[9] / $row[17]) * 100;
+            if ($persen < 50) {
+              $status = 'danger';
+            }elseif ($persen < 80) {
+              $status = 'warning';
+            }elseif ($persen <= 100) {
+              $status = 'success';
+            }
+            return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
+                    <div class="progress progress-sm active">
+                      <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
+                        <span class="sr-only">'.number_format($persen,2).'% Complete</span>
+                      </div>
+                    </div>';
+          }
+          // return '$a';
         }),
-        array( 'db' => 'KDOUTPUT',      'dt' => 10, 'formatter' => function($d,$row, $dataArray){
-          $button = '<div class="btn-group"><a style="margin:0 2px;" href="'.$dataArray['url_rewrite'].'content/kegiatan-rinci/'.$row[14].'" class="btn btn-flat btn-primary btn-sm" ><i class="fa fa-plus"></i>&nbsp; Tambah Kegiatan</a><div>';
+        array( 'db' => 'KDOUTPUT','dt' => 11, 'formatter' => function($d,$row){
+          if(is_null($row[7])){
+            return '0 %';
+          } else {
+            $sisa = $row[6] - $row[7];
+            return number_format($sisa,2,',','.');
+          }
+          // return '$a';
+        }),
+        array( 'db' => 'KDOUTPUT',      'dt' => 12, 'formatter' => function($d,$row, $dataArray){
+          $button = '<div class="btn-group"><a style="margin:0 2px;" href="'.$dataArray['url_rewrite'].'content/kegiatan-rinci/'.$row[16].'" class="btn btn-flat btn-primary btn-sm" ><i class="fa fa-plus"></i>&nbsp; Tambah Kegiatan</a><div>';
+          $button .= '<div class="btn-group"><a style="margin:0 2px;" id="btn-vol" href="#mdl-vol" class="btn btn-flat btn-warning btn-sm" data-toggle="modal"><i class="fa fa-pencil"></i>&nbsp; Edit Volume</a><div>';
           return $button;
         }),
 
         //kode
-        array( 'db' => 'KDSOUTPUT',      'dt' => 11),
-        array( 'db' => 'KDKMPNEN',      'dt' => 12),
-        array( 'db' => 'KDSKMPNEN',      'dt' => 13),
-        array( 'db' => 'IDRKAKL',      'dt' => 14),
+        array( 'db' => 'KDSOUTPUT',      'dt' => 13),
+        array( 'db' => 'KDKMPNEN',      'dt' => 14),
+        array( 'db' => 'KDSKMPNEN',      'dt' => 15),
+        array( 'db' => 'IDRKAKL',      'dt' => 16),
+        array( 'db' => 'VOLKEG',      'dt' => 17),
         //kode
       );
       $where=" KDAKUN is not null AND (KDITEM is not null and NMITEM not like '>%') ";

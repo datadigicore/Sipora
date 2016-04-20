@@ -27,7 +27,7 @@
                     <?php $rab->getYear(); ?>
                 </select>
               </div>
-              <input type="hidden" id="prog" name="prog" value="06" />
+              <input type="hidden" id="prog" name="prog" value="01" />
               <?php if ($_SESSION['direktorat'] == "") { ?>
               <div class="form-group">
                 <label>Kode Kegiatan</label>

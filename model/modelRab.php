@@ -23,6 +23,21 @@
         echo "<option value='$fetch[thang]'>$fetch[thang]</option>";
       }
     }
+    public function getvolkeg($id){
+      $query  = "SELECT volkeg FROM rkakl_full as r where IDRKAKL = '$id'";
+      print_r($query);
+      $result = $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        echo "<input id='input-vol' value='$fetch[volkeg]' type='text' name='input-vol' />";
+      }
+    }
+    public function getsatkeg($id){
+      $query  = "SELECT satkeg FROM rkakl_full as r where IDRKAKL = '$id'";
+      $result = $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        echo "<input id='input-vol' value='$fetch[satkeg]' type='text' name='input-vol' />";
+      }
+    }
 
     public function getinfo($id){
       $query  = "SELECT * FROM rkakl_full as r where IDRKAKL = '$id' ";
