@@ -1,5 +1,12 @@
 <?php
   class modelTriwulan extends mysql_db {
+    public function cekTahunAnggaran() {
+      $query   = "SELECT THANG FROM rkakl GROUP BY THANG";
+      $result  = $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        echo "<option value='$fetch[THANG]'>$fetch[THANG]</option>";
+      }
+    }
     public function cekTriwulan($data) {
       $query   = "SELECT thang, nama FROM triwulan where thang='$data[thang]' AND nama='$data[nama]'";
       $result  = $this->query($query);

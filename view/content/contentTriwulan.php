@@ -24,11 +24,8 @@
                     <div class="col-md-12">
                       <label>Tahun Anggaran</label>
                       <select class="form-control" name="thang" required>
-                        <?php $earliest_year = date('Y');
-                        echo '<option  value="" disabled selected>-- Pilih Tahun Anggaran --</option>';
-                        foreach (range(date('Y'), $earliest_year+1) as $x) {
-                          echo '<option value="'.$x.'">'.$x.'</option>';
-                        }?>
+                        <option  value="" disabled selected>-- Pilih Tahun Anggaran --</option>
+                        <?php $triwulan->cekTahunAnggaran();?>
                       </select>
                     </div>
                   </div>
@@ -76,8 +73,8 @@
             <h3 class="box-title" style="margin-top:6px;">Tabel Triwulan</h3>
             <div class="pull-right">
             <select class="form-control" onchange="search()">
-              <option value="">-- Semua Tahun --</option>
-              <option selected>2016</option>
+              <option value="all">-- Semua Tahun --</option>
+              <?php $triwulan->cekTahunAnggaran();?>
             </select>
             </div>
           </div>

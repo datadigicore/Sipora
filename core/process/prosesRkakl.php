@@ -14,7 +14,11 @@ switch ($link[3]) {
         $path = $_FILES['fileimport']['name'];
         $ext  = pathinfo($path, PATHINFO_EXTENSION);
         if($ext != 'xls' && $ext != 'xlsx' && $ext != 'XLS' && $ext != 'XLSX') {
-          $utility->load("content/rkakl","error","Jenis file RKAKL yang di upload tidak sesuai");
+          $flash  = array(
+            'category' => "error",
+            'messages' => "Jenis file RKAKL yang di upload tidak sesuai"
+          );
+          $utility->location("content/anggaran",$flash);
         }
         else {
           $time        = time();
@@ -50,27 +54,18 @@ switch ($link[3]) {
             if ($allDataInSheet[1]['A'] != NULL && $allDataInSheet[1]['G'] != NULL) {
               $rkakl->insertRkakl($data_insert);
               $result = $rkakl->importRkakl($allDataInSheet, $data_insert["tahun"]);
-              if ($result) {
-                $flash  = array(
-                  'category' => "success",
-                  'messages' => "Data Anggaran berhasil di import ke dalam database"
-                );
-                $utility->location("content/rkakl", $flash);
-              }
-              else {
-                $flash  = array(
-                  'category' => "error",
-                  'messages' => "Maaf jumlah anggaran kurang dari realisasi yang ada harap diperiksa kembali"
-                );
-                $utility->location("content/rkakl", $flash);
-              }
+              $flash  = array(
+                'category' => "success",
+                'messages' => "Data Anggaran berhasil di import ke dalam database"
+              );
+              $utility->location("content/anggaran", $flash);
             }
             else {
               $flash  = array(
                 'category' => "error",
                 'messages' => "Maaf file excel yang anda lampirkan format datanya tidak sesuai"
               );
-              $utility->location("content/rkakl", $flash);
+              $utility->location("content/anggaran", $flash);
             }
           }
         }
@@ -80,7 +75,7 @@ switch ($link[3]) {
           'category' => "warning",
           'messages' => "Belum ada file excel yang di lampirkan"
         );
-        $utility->location("content/rkakl", $flash);
+        $utility->location("content/anggaran", $flash);
       }
     }
     else {
@@ -88,7 +83,7 @@ switch ($link[3]) {
         'category' => "warning",
         'messages' => "Maaf data tahun anggaran ".$thang." sudah ada, jika ingin melakukan perubahan harap revisi"
       );
-      $utility->location("content/rkakl", $flash);
+      $utility->location("content/anggaran", $flash);
     }
   break;
   case 'table':
@@ -174,7 +169,7 @@ switch ($link[3]) {
     }
   break;
   default:
-    $utility->location_goto(".");
+    $utility->location(".");
   break;
 }
 ?>

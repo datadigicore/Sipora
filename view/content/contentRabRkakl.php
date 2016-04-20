@@ -10,7 +10,7 @@
   </section>
   <section class="content">
     <div class="row">
-      <div class="col-sm-12 ">
+      <div class="col-sm-10 col-sm-offset-1">
         <div class="box">
           <div class="box-header">
             <h3 class="box-title" style="margin-top:6px;">Tabel Rencana Kegiatan</h3>
@@ -106,10 +106,9 @@ var table;
             {"targets" : 6},
           ],
           "drawCallback": function ( settings ) {
-            var api = this.api();
+            var api  = this.api();
             var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
- 
+            var last = null;
             api.column(1, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
