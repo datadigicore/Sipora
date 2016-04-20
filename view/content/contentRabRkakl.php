@@ -10,15 +10,10 @@
   </section>
   <section class="content">
     <div class="row">
-      <div class="col-sm-10 col-sm-offset-1">
+      <div class="col-sm-12 ">
         <div class="box">
           <div class="box-header">
             <h3 class="box-title" style="margin-top:6px;">Tabel Rencana Kegiatan</h3>
-            <?php 
-            if ($_SESSION['level'] != '0') {
-              echo '<a href="'.$base_content.'rab/tambah" class="btn btn-flat btn-success btn-md pull-right"><i class="fa fa-plus"></i>&nbsp;Tambah RAB</a>';
-            }
-            ?>
           </div>
           <div class="box-body">
             <?php include "view/include/contentAlert.php" ?>
@@ -45,8 +40,7 @@
               <tr>
                 <td><label>Direktorat</label></td>
                 <td>
-                  <label><?php echo $direk[$_SESSION['direktorat']];?></label>
-                  <input type="hidden" id="direktorat2" name="direktorat2" value="<?php echo $_SESSION['direktorat']; ?>" />
+                  <label><?php echo $rab->kdkegiatanbyID($_SESSION['direktorat']);?></label>
                 </td>
               </tr>
               <?php } ?>
@@ -78,6 +72,7 @@
 </div>
 <script>
 var table;
+
   $(function () {
      $( "#datepicker" ).datepicker({
         changeMonth: true,
@@ -87,13 +82,13 @@ var table;
 
     var tahun = $('#tahun2').val();
     var direktorat = $('#direktorat2').val();
+            
     table = $("#table").DataTable({
-      
         "processing": true,
         "serverSide": true,
         "scrollX": true,
         "ajax": {
-          "url": "<?php echo $base_process;?>rab/table-rkakl",
+          "url": "<?php echo $base_process;?>kegiatan/table-rkakl",
           "type": "POST",
           "data": {'tahun':tahun,
                     'direktorat':direktorat }
@@ -101,18 +96,7 @@ var table;
         <?php if ($_SESSION['direktorat'] == "") { ?>
           "columnDefs" : [
             {"targets" : 0,
-             "visible" : false},
-            {"targets" : 1},
-            {"targets" : 2},
-            {"targets" : 3},
-            {"targets" : 4},
-            {"targets" : 5},
-            {"targets" : 6},
-          ],
-        <?php }else{?>
-          "columnDefs" : [
-            {"targets" : 0,
-             "visible" : false},
+              "visible" : false},
             {"targets" : 1,
               "visible" : false},
             {"targets" : 2},
@@ -121,8 +105,51 @@ var table;
             {"targets" : 5},
             {"targets" : 6},
           ],
+          "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(1, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        },
+        <?php }else{?>
+          "columnDefs" : [
+            {"targets" : 0,
+              "visible" : false},
+            {"targets" : 1,
+              "visible" : false},
+            {"targets" : 2,
+              "visible" : false},
+            {"targets" : 3},
+            {"targets" : 4},
+            {"targets" : 5},
+            {"targets" : 6},
+          ],
+          "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        },
         <?php } ?>
-        "order": [[ 0, "desc" ]]
+        "order": [[ 0, "desc" ]]        
     });
     
     $(document).on("click", "#btn-aju", function (){
@@ -152,21 +179,17 @@ var table;
     });
     chprog();
   });
-
+  
   function search(){
     var tahun = $('#tahun2').val();
     var direktorat = $('#direktorat2').val();
     table.destroy();
     table = $("#table").DataTable({
-        "info":false,
-        "oLanguage": {
-          "sInfoFiltered": ""
-        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
         "ajax": {
-          "url": "<?php echo $base_process;?>rab/table-rkakl",
+          "url": "<?php echo $base_process;?>kegiatan/table-rkakl",
           "type": "POST",
           "data": {'tahun':tahun,
                     'direktorat':direktorat }
@@ -174,18 +197,7 @@ var table;
         <?php if ($_SESSION['direktorat'] == "") { ?>
           "columnDefs" : [
             {"targets" : 0,
-             "visible" : false},
-            {"targets" : 1},
-            {"targets" : 2},
-            {"targets" : 3},
-            {"targets" : 4},
-            {"targets" : 5},
-            {"targets" : 6},
-          ],
-        <?php }else{?>
-          "columnDefs" : [
-            {"targets" : 0,
-             "visible" : false},
+              "visible" : false},
             {"targets" : 1,
               "visible" : false},
             {"targets" : 2},
@@ -194,111 +206,51 @@ var table;
             {"targets" : 5},
             {"targets" : 6},
           ],
+          "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(1, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        },
+        <?php }else{?>
+          "columnDefs" : [
+            {"targets" : 0,
+              "visible" : false},
+            {"targets" : 1,
+              "visible" : false},
+            {"targets" : 2,
+              "visible" : false},
+            {"targets" : 3},
+            {"targets" : 4},
+            {"targets" : 5},
+            {"targets" : 6},
+          ],
+          "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+ 
+            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                    );
+ 
+                    last = group;
+                }
+            } );
+        },
         <?php } ?>
-        "order": [[ 0, "desc" ]]
-    });
-  }
-
-  function chprog(){
-    $("#output option").remove();   
-    $("#soutput option").remove();   
-    $("#komp option").remove();   
-    $("#skomp option").remove();   
-    $('#output').append('<option>-- Pilih Output --</option>');
-    $('#soutput').append('<option>-- Pilih Sub Output --</option>');
-    $('#komp').append('<option>-- Pilih Komponen --</option>');
-    $('#skomp').append('<option>-- Pilih Sub Komponen --</option>');
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    var prog = $('#prog').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $base_process;?>rab/getout",
-      data: { 'prog' : prog,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDOUTPUT.length; i++) {
-          $('#output').append('<option value="'+obj.KDOUTPUT[i]+'">'+obj.KDOUTPUT[i]+' - '+obj.NMOUTPUT[i]+'</option>')
-        };
-      },
-    });
-  }
-  function chout(){
-    var prog = $('#prog').val();
-    var output = $('#output').val();
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $base_process;?>rab/getsout",
-      data: { 'prog' : prog,
-              'output' : output,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDSOUTPUT.length; i++) {
-          $('#soutput').append('<option value="'+obj.KDSOUTPUT[i]+'">'+obj.KDSOUTPUT[i]+' - '+obj.NMSOUTPUT[i]+'</option>')
-        };
-      },
-    });
-  }
-  function chsout(){
-    $("#komp option").remove();   
-    $("#skomp option").remove();   
-    $('#komp').append('<option>-- Pilih Komponen --</option>');
-    $('#skomp').append('<option>-- Pilih Sub Komponen --</option>');
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    var prog = $('#prog').val();
-    var output = $('#output').val();
-    var soutput = $('#soutput').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $base_process;?>rab/getkomp",
-      data: { 'prog' : prog,
-              'output' : output,
-              'soutput' : soutput,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDKMPNEN.length; i++) {
-          $('#komp').append('<option value="'+obj.KDKMPNEN[i]+'">'+obj.KDKMPNEN[i]+' - '+obj.NMKMPNEN[i]+'</option>')
-        };
-      },
-    });
-  }
-  function chkomp(){
-    $("#skomp option").remove();   
-    $('#skomp').append('<option>-- Pilih Sub Komponen --</option>');
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    var prog = $('#prog').val();
-    var output = $('#output').val();
-    var soutput = $('#soutput').val();
-    var komp = $('#komp').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $base_process;?>rab/getskomp",
-      data: { 'prog' : prog,
-              'output' : output,
-              'soutput' : soutput,
-              'komp' : komp,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDSKMPNEN.length; i++) {
-          $('#skomp').append('<option value="'+obj.KDSKMPNEN[i]+'">'+obj.KDSKMPNEN[i]+' - '+obj.NMSKMPNEN[i]+'</option>')
-        };
-      },
+        "order": [[ 0, "desc" ]]        
     });
   }
 </script>

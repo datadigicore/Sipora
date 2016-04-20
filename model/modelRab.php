@@ -9,11 +9,38 @@
         echo "<option value='$fetch[KDGIAT]'>$fetch[KDGIAT] -- $fetch[NMGIAT]</option>";
       }
     }
+    public function kdkegiatanbyID($id){
+      $query  = "SELECT KDGIAT, NMGIAT FROM rkakl_full WHERE KDGIAT = '".$id."' GROUP BY KDGIAT";
+      $result = $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        echo "<input type='hidden' value='$fetch[KDGIAT]' /><label>($fetch[KDGIAT]) $fetch[NMGIAT]</label>";
+      }
+    }
     public function getYear(){
       $query  = "SELECT thang FROM rkakl_full as r where thang != '' group by r.thang";
       $result = $this->query($query);
       while ($fetch = $this->fetch_array($result)) {
         echo "<option value='$fetch[thang]'>$fetch[thang]</option>";
+      }
+    }
+
+    public function getinfo($id){
+      $query  = "SELECT * FROM rkakl_full as r where IDRKAKL = '$id' ";
+      $result = $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        echo "<tr><td valign='top'>Tahun</td> <td valign='top'>:&nbsp;</td> <td valign='top'>$fetch[THANG]</td></tr>
+              <tr><td valign='top'>Kegiatan</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMGIAT]</td></tr>
+              <tr><td valign='top'>Output</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMOUTPUT]</td></tr>
+              <tr><td valign='top'>Sub Output</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMSOUTPUT]</td></tr>
+              <tr><td valign='top'>Komponen</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMKMPNEN]</td></tr>
+              <tr><td valign='top'>Sub Komponen</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NmSkmpnen]</td></tr>
+              <input type='hidden' id='thang' value='$fetch[THANG]' />
+              <input type='hidden' id='kdgiat' value='$fetch[KDGIAT]' />
+              <input type='hidden' id='kdoutput' value='$fetch[KDOUTPUT]' />
+              <input type='hidden' id='kdsoutput' value='$fetch[KDSOUTPUT]' />
+              <input type='hidden' id='kdkmpnen' value='$fetch[KDKMPNEN]' />
+              <input type='hidden' id='kdskmpnen' value='$fetch[KDSKMPNEN]' />
+            ";
       }
     }
 
@@ -45,60 +72,91 @@
       return $data;
     }
 
-    public function getout($prog, $th, $dr) {
+    public function getout($idrkakl) {
+      $getrkakl = "SELECT * from rkakl_full where idrkakl = '$idrkakl'";
+      $resrkakl = $this->query($getrkakl);
+      $fetch = $this->fetch_array($resrkakl);
+      $prog = $fetch['KDPROGRAM'];
+      $thang = $fetch['THANG'];
+      $kdgiat = $fetch['KDGIAT'];
+      $kdoutput = $fetch['KDOUTPUT'];
       $query  = "SELECT KDOUTPUT, NMOUTPUT FROM rkakl_full as r 
-                where kdprogram='$prog' and thang='$th' and kdgiat='$dr' 
+                where kdprogram='$prog' and thang='$thang' and kdgiat='$kdgiat' 
                   group by r.KDOUTPUT";
       $result = $this->query($query);
-      $i=0;
       while($fetch  = $this->fetch_object($result)) {
-        $data['KDOUTPUT'][$i] = $fetch->KDOUTPUT;
-        $data['NMOUTPUT'][$i] = $fetch->NMOUTPUT;
-        $i++;
+        if ($fetch->KDOUTPUT == $kdoutput) {
+          echo '<option selected value="'.$fetch->KDOUTPUT.'">'.$fetch->KDOUTPUT.' - '.$fetch->NMOUTPUT.'</option>';
+        }
       }
-      return $data;
     }
 
-    public function getsout($prog, $output, $th, $dr) {
+    public function getsout($idrkakl) {
+      $getrkakl = "SELECT * from rkakl_full where idrkakl = '$idrkakl'";
+      $resrkakl = $this->query($getrkakl);
+      $fetch = $this->fetch_array($resrkakl);
+      $prog = $fetch['KDPROGRAM'];
+      $thang = $fetch['THANG'];
+      $kdgiat = $fetch['KDGIAT'];
+      $kdoutput = $fetch['KDOUTPUT'];
+      $kdsoutput = $fetch['KDSOUTPUT'];
       $query  = "SELECT KDSOUTPUT, NMSOUTPUT FROM rkakl_full as r 
-                  where kdprogram='$prog' and kdoutput='$output' and thang='$th' and kdgiat='$dr' 
+                  where kdprogram='$prog' and kdoutput='$kdoutput' and thang='$thang' and kdgiat='$kdgiat' 
                   group by r.KDSOUTPUT";
+
       $result = $this->query($query);
-      $i=0;
       while($fetch  = $this->fetch_object($result)) {
-        $data['KDSOUTPUT'][$i] = $fetch->KDSOUTPUT;
-        $data['NMSOUTPUT'][$i] = $fetch->NMSOUTPUT;
-        $i++;
+        if ($fetch->KDSOUTPUT == $kdsoutput) {
+          echo '<option selected value="'.$fetch->KDSOUTPUT.'">'.$fetch->KDSOUTPUT.' - '.$fetch->NMSOUTPUT.'</option>';
+        }
       }
-      return $data;
     }
 
-    public function getkomp($prog, $output, $soutput, $th, $dr) {
+    public function getkomp($idrkakl) {
+      $getrkakl = "SELECT * from rkakl_full where idrkakl = '$idrkakl'";
+      $resrkakl = $this->query($getrkakl);
+      $fetch = $this->fetch_array($resrkakl);
+      $prog = $fetch['KDPROGRAM'];
+      $thang = $fetch['THANG'];
+      $kdgiat = $fetch['KDGIAT'];
+      $kdoutput = $fetch['KDOUTPUT'];
+      $kdsoutput = $fetch['KDSOUTPUT'];
+      $kdkmpnen = $fetch['KDKMPNEN'];
+
       $query  = "SELECT KDKMPNEN, NMKMPNEN FROM rkakl_full as r 
-                  where kdprogram='$prog' and kdoutput='$output' and kdsoutput='$soutput' and thang='$th' and kdgiat='$dr' 
+                  where kdprogram='$prog' and kdoutput='$kdoutput' and kdsoutput='$kdsoutput' and thang='$thang' and kdgiat='$kdgiat' 
                   group by r.KDKMPNEN";
+
       $result = $this->query($query);
-      $i=0;
       while($fetch  = $this->fetch_object($result)) {
-        $data['KDKMPNEN'][$i] = $fetch->KDKMPNEN;
-        $data['NMKMPNEN'][$i] = $fetch->NMKMPNEN;
-        $i++;
+        if ($fetch->KDKMPNEN == $kdkmpnen) {
+          echo '<option selected value="'.$fetch->KDKMPNEN.'">'.$fetch->KDKMPNEN.' - '.$fetch->NMKMPNEN.'</option>';
+        }
       }
-      return $data;
     }
 
-    public function getskomp($prog, $output, $soutput, $komp, $th, $dr) {
+    public function getskomp($idrkakl) {
+      $getrkakl = "SELECT * from rkakl_full where idrkakl = '$idrkakl'";
+      $resrkakl = $this->query($getrkakl);
+      $fetch = $this->fetch_array($resrkakl);
+      $prog = $fetch['KDPROGRAM'];
+      $thang = $fetch['THANG'];
+      $kdgiat = $fetch['KDGIAT'];
+      $kdoutput = $fetch['KDOUTPUT'];
+      $kdsoutput = $fetch['KDSOUTPUT'];
+      $kdkmpnen = $fetch['KDKMPNEN'];
+      $kdskmpnen = $fetch['KDSKMPNEN'];
+
       $query  = "SELECT KDSKMPNEN, NMSKMPNEN FROM rkakl_full as r 
-                  where kdprogram='$prog' and kdoutput='$output' and kdsoutput='$soutput' and kdkmpnen='$komp' and thang='$th' and kdgiat='$dr' 
+                  where kdprogram='$prog' and kdoutput='$kdoutput' and kdsoutput='$kdsoutput' and kdkmpnen='$kdkmpnen' and thang='$thang' and kdgiat='$kdgiat' 
                   group by r.KDSKMPNEN";
+
       $result = $this->query($query);
-      $i=0;
       while($fetch  = $this->fetch_object($result)) {
-        $data['KDSKMPNEN'][$i] = $fetch->KDSKMPNEN;
-        $data['NMSKMPNEN'][$i] = $fetch->NMSKMPNEN;
-        $i++;
+        if ($fetch->KDSKMPNEN == $kdskmpnen) {
+          echo '<option selected value="'.$fetch->KDSKMPNEN.'">'.$fetch->KDSKMPNEN.' - '.$fetch->NMSKMPNEN.'</option>';
+        }
       }
-      return $data;
     }
 
     public function getakunrkakl51($prog, $output, $soutput, $komp, $skomp, $th, $dr) {
@@ -143,6 +201,10 @@
       $tgl_akhir  = $t2[2].'-'.$t2[1].'-'.$t2[0];
       $lokasi     = $data['lokasi'];
       $tempat     = $data['tempat'];
+      $realisasi  = explode(".", $data['realisasi']);
+      $realisasi  = implode("", $realisasi);
+      $volume     = $data['volume'];
+      $satuan     = $data['satuan'];
 
       $query      = "INSERT INTO rabview SET
         thang       = '$tahun',
@@ -157,7 +219,11 @@
         tanggal_akhir = '$tgl_akhir',
         lokasi      = '$lokasi',
         tempat      = '$tempat',
-        status      = '0'
+        status      = '0',
+
+        jumlah      = '$realisasi',
+        volume      = '$volume',
+        satuan      = '$satuan'
       ";
       $result = $this->query($query);
       return $result;

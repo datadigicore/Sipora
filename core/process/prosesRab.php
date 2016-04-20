@@ -191,7 +191,7 @@ switch ($link[3]) {
     $group='';
     $datatable->get_table_group($table, $key, $column,$where,$group,$dataArray);
     break;
-    case 'table-rkakl':
+  case 'table-rkakl':
       $table                    = "rkakl_full";
       $key                      = "KDGIAT";
       $dataArray['url_rewrite'] = $base_url; 
@@ -199,7 +199,9 @@ switch ($link[3]) {
       $direktorat               = $_POST['direktorat'];
       $column                   = array(
         array( 'db' => 'KDGIAT',      'dt' => 0 ),
-        array( 'db' => 'NMGIAT',      'dt' => 1),
+        array( 'db' => 'NMGIAT',      'dt' => 1, 'formatter' => function($d,$row){
+          return $row[0]." - ".$d;
+        }),
         array( 'db' => 'NMOUTPUT',      'dt' => 2, 'formatter' => function($d,$row){
           return $row[10]." - ".$d;
         }),
@@ -235,7 +237,7 @@ switch ($link[3]) {
           return number_format($row[6]+$row[7],0,".",".");
         }),
         array( 'db' => 'KDOUTPUT',      'dt' => 10, 'formatter' => function($d,$row, $dataArray){
-          $button = '<div class="btn-group"><a style="margin:0 2px;" href="'.$dataArray['url_rewrite'].'content/rab/?kdoutput='.$d.'&kdsoutput='.$row[11].'&kdkmpnen='.$row[12].'&kdskmpnen='.$row[13].'" class="btn btn-flat btn-primary btn-sm" ><i class="fa fa-list"></i>&nbsp; Rincian</a><div>';
+          $button = '<div class="btn-group"><a style="margin:0 2px;" href="'.$dataArray['url_rewrite'].'content/kegiatan-rinci/'.$row[14].'" class="btn btn-flat btn-primary btn-sm" ><i class="fa fa-plus"></i>&nbsp; Tambah Kegiatan</a><div>';
           return $button;
         }),
 
@@ -243,9 +245,10 @@ switch ($link[3]) {
         array( 'db' => 'KDSOUTPUT',      'dt' => 11),
         array( 'db' => 'KDKMPNEN',      'dt' => 12),
         array( 'db' => 'KDSKMPNEN',      'dt' => 13),
+        array( 'db' => 'IDRKAKL',      'dt' => 14),
         //kode
       );
-      $where="";
+      $where=" KDAKUN is not null AND (KDITEM is not null and NMITEM not like '>%') ";
       // if ($tahun != "") {
       //   $where = 'thang = "'.$tahun.'"';
       // }
@@ -256,8 +259,126 @@ switch ($link[3]) {
           $where .= 'AND KDGIAT = "'.$direktorat.'"';
         }
       }
-      $group='KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN';
-      $datatable->get_table_group($table, $key, $column, $where, $group, $dataArray);
+      $group='KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN';
+      $order="ORDER BY KDGIAT ASC";
+      $datatable->get_table_group($table, $key, $column, $where, $group, $dataArray, $order);
+    break;
+  case 'table-kegiatan':
+    $table = "rabview";
+    $key   = "id";
+    $dataArray['url_rewrite'] = $url_rewrite; 
+    $tahun = $_POST['tahun'];
+    if ($_SESSION['direktorat'] == "") {
+      $direktorat = $_POST['direktorat'];
+    }else{
+      $direktorat = $_SESSION['direktorat'];
+    }
+    $kdoutput = $_POST['kdoutput'];
+    $kdsoutput = $_POST['kdsoutput'];
+    $kdkmpnen = $_POST['kdkmpnen'];
+    $kdskmpnen = $_POST['kdskmpnen'];
+
+    $column = array(
+      array( 'db' => 'id',      'dt' => 0 ),
+      array( 'db' => 'deskripsi',  'dt' => 1),
+      array( 'db' => 'tanggal',  'dt' => 2, 'formatter' => function( $d, $row ) {
+        $arrbulan = array(
+                '01'=>"Januari",
+                '02'=>"Februari",
+                '03'=>"Maret",
+                '04'=>"April",
+                '05'=>"Mei",
+                '06'=>"Juni",
+                '07'=>"Juli",
+                '08'=>"Agustus",
+                '09'=>"September",
+                '10'=>"Oktober",
+                '11'=>"November",
+                '12'=>"Desember",
+        );
+        $pecahtgl1 = explode("-", $d);
+        $tglawal = $pecahtgl1[2].' '.$arrbulan[$pecahtgl1[1]].' '.$pecahtgl1[0];
+        $pecahtgl2 = explode("-", $row[15]);
+        $tglakhir = $pecahtgl2[2].' '.$arrbulan[$pecahtgl2[1]].' '.$pecahtgl2[0];
+        return $tglawal.' - '.$tglakhir;
+      }),
+      array( 'db' => 'lokasi',  'dt' => 3, 'formatter' => function($d,$row){
+        return $row[14].', '.$d;
+      }),
+      array( 'db' => 'jumlah','dt' => 4, 'formatter' => function($d,$row){
+        return 'Rp '.number_format($d,2,',','.');
+      }),
+      array( 'db' => 'status', 'dt' => 5, 'formatter' => function($d,$row){ 
+        if($d==0){
+          return '<i>-</i>';
+        }
+        elseif($d==1){
+          return '<i>Telah Ditutup</i>';
+        }
+      }),
+      array( 'db' => 'status',  'dt' => 6, 'formatter' => function($d,$row, $dataArray){ 
+        $button = '<div class="btn-group">';
+        if($_SESSION['level'] != 0){
+          $button .= '<a style="margin:0 2px;" id="btn-trans" href="'.$dataArray['url_rewrite'].'content/rab/edit/'.$row[0].'" class="btn btn-flat btn-warning btn-sm" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
+          $button .= '<a style="margin:0 2px;" id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
+        }
+        
+        $button .= '</div>';
+        return $button;
+      }),
+      array( 'db' => 'volume',  'dt' => 7, 'formatter' => function($d, $row, $dataArray){
+        return $d.' '.$row[8];
+      }),
+      array( 'db' => 'satuan',  'dt' => 8),
+      array( 'db' => 'kdoutput',  'dt' => 9),
+      array( 'db' => 'kdsoutput',  'dt' => 10),
+      array( 'db' => 'kdkmpnen',  'dt' => 11),
+      array( 'db' => 'kdskmpnen',  'dt' => 12),
+      array( 'db' => 'pesan',  'dt' => 13),
+      array( 'db' => 'tempat',  'dt' => 14),
+      array( 'db' => 'tanggal_akhir',  'dt' => 15),
+    );
+    $where="";
+    if ($tahun != "") {
+      $where = 'thang = "'.$tahun.'"';
+    }
+    if ($direktorat != "") {
+      if ($where == "") {
+        $where .= 'kdgiat = "'.$direktorat.'"';
+      }else{
+        $where .= 'AND kdgiat = "'.$direktorat.'"';
+      }
+    }
+    if ($kdoutput != "") {
+      if ($where == "") {
+        $where .= 'kdoutput = "'.$kdoutput.'"';
+      }else{
+        $where .= 'AND kdoutput = "'.$kdoutput.'"';
+      }
+    }
+    if ($kdsoutput != "") {
+      if ($where == "") {
+        $where .= 'kdsoutput = "'.$kdsoutput.'"';
+      }else{
+        $where .= 'AND kdsoutput = "'.$kdsoutput.'"';
+      }
+    }
+    if ($kdkmpnen != "") {
+      if ($where == "") {
+        $where .= 'kdkmpnen = "'.$kdkmpnen.'"';
+      }else{
+        $where .= 'AND kdkmpnen = "'.$kdkmpnen.'"';
+      }
+    }
+    if ($kdskmpnen != "") {
+      if ($where == "") {
+        $where .= 'kdskmpnen = "'.$kdskmpnen.'"';
+      }else{
+        $where .= 'AND kdskmpnen = "'.$kdskmpnen.'"';
+      }
+    }
+    $group='';
+    $datatable->get_table_group($table, $key, $column,$where,$group,$dataArray);
     break;
   case 'getnpwp':
     $jenis = $data[3];
@@ -265,8 +386,7 @@ switch ($link[3]) {
     echo json_encode($npwp);
     break;
   case 'getout':
-    // print_r($_POST);die;
-    $output = $mdl_rab->getout($_POST['prog'],$_POST['tahun'],$_POST['direktorat']);
+    $output = $rab->getout($_POST['prog'],$_POST['tahun'],$_POST['direktorat']);
     echo json_encode($output);
     break;
   case 'getsout':
@@ -282,8 +402,13 @@ switch ($link[3]) {
     echo json_encode($skomp);
     break;
   case 'save':
-    $mdl_rab->save($_POST);
-    $utility->load("content/rab","success","Data RAB berhasil dimasukkan ke dalam database");
+    $idrkakl = $_POST['idrkakl'];
+    $rab->save($_POST);
+    $flash  = array(
+          'category' => "success",
+          'messages' => "Data Kegiatan berhasil ditambahkan"
+        );
+        $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
     break;
   case 'edit':
     $mdl_rab->edit($_POST);

@@ -352,7 +352,7 @@ class SSP {
         );
     }
 
-    static function simplewheregroup( $request, $conn, $table, $primaryKey, $columns, $whereResult=null, $groupby=null, $dataArray )
+    static function simplewheregroup( $request, $conn, $table, $primaryKey, $columns, $whereResult=null, $groupby=null, $dataArray, $order=null )
     {
         $bindings = array();
         $db = self::db( $conn );
@@ -363,7 +363,9 @@ class SSP {
 
         // Build the SQL query string from the request
         $limit = self::limit( $request, $columns );
-        $order = self::order( $request, $columns );
+        if (is_null($order)) {
+            $order = self::order( $request, $columns );
+        }
         $where = self::filter( $request, $columns, $bindings );
 
         $whereResult = self::_flatten( $whereResult );
@@ -382,7 +384,7 @@ class SSP {
         //      FROM `$table`
         //      $where
         //      $group
-        //      ORDER BY id DESC";
+        //      $order";
         // print_r($tes);die;
 
         // Main query to actually get the data

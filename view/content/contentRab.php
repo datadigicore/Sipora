@@ -1,84 +1,41 @@
-<?php
-  if(isset($_GET['kdoutput']) && isset($_GET['kdsoutput']) && isset($_GET['kdkmpnen']) && isset($_GET['kdskmpnen']))
-  {
-
-    $kdoutput =$_GET['kdoutput'];
-    $kdsoutput =$_GET['kdsoutput'];
-    $kdkmpnen =$_GET['kdkmpnen'];
-    $kdskmpnen =$_GET['kdskmpnen'];
-  } else {
-    $kdoutput ="";
-    $kdsoutput ="";
-    $kdkmpnen ="";
-    $kdskmpnen ="";
-  }
-  
-
-?>
-
-<div class="content-wrapper">
+ <div class="content-wrapper">
   <section class="content-header">
-    <h1>
+    <!-- <h1>
       Data RAB
       <small>Menu</small>
-    </h1>
+    </h1> -->
     <ol class="breadcrumb">
       <li><i class="fa fa-table"></i> <b>Data RAB</b></li>
     </ol>
   </section>
   <section class="content">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-10 col-sm-offset-1">
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title" style="margin-top:6px;">Table Rencana Anggaran Biaya</h3>
+            <h3 class="box-title" style="margin-top:6px;">Table Kegiatan</h3>
 
             <?php if ($_SESSION['level'] != '0') {
-              echo '<a href="'.$url_rewrite.'content/rab/tambah" class="btn btn-flat btn-success btn-md pull-right"><i class="fa fa-plus"></i>&nbsp;Tambah RAB</a>';
+              echo '<a href="'.$url_rewrite.'content/kegiatan-tambah/'.$idrkakl.'" class="btn btn-flat btn-success btn-md pull-right"><i class="fa fa-plus"></i>&nbsp;Tambah RAB</a>';
             }?>
 
           </div>
           <div class="box-body">
-            <?php include "view/include/alert.php" ?>
-            <table class="display table table-bordered table-striped" style="width:750px">
+            <?php include "view/include/contentAlert.php" ?>
+            <table class="display table table-bordered table-striped">
               <tr>
-                <td><label>Tahun</label></td>
-                <td>
-                  <select class="form-control select2" name="tahun2" id="tahun2" required>
-                    <?php for ($i=0; $i < count($tahun); $i++) { 
-                      echo "<option value='".$tahun[$i]."'>".$tahun[$i].'</option>';
-                    }?>
-                  </select>
+                <th><label>Info</label></th>
+              <tr>
+                <td valign="top" class="col-md-1">
+                  <table class="table-striped col-md-12">
+                      <?php $rab->getinfo($idrkakl); ?>
+                  </table>
                 </td>
-              </tr>
-              <?php if ($_SESSION['direktorat'] == "") { ?>
-              <tr>
-                <td><label>Direktorat</label></td>
-                  <td>
-                    <select id="direktorat2" name="direktorat2" class="form-control" onchange="search()">
-                      <option value="">All</option>
-                      <?php foreach ($direk as $key => $value) {
-                        echo "<option value='".$key."'>".$value.'</option>';
-                      }?>
-                    </select>
-                  </td>
-              </tr>
-              <?php } else{ ?>
-              <tr>
-                <td><label>Direktorat</label></td>
-                <td>
-                  <label><?php echo $direk[$_SESSION['direktorat']];?></label>
-                  <input type="hidden" id="direktorat2" name="direktorat2" value="<?php echo $_SESSION['direktorat']; ?>" />
-                </td>
-              </tr>
-              <?php } ?>
             </table>
             <table id="table" class="display table table-bordered table-striped " cellspacing="0" width="100%">
               <thead style="background-color:#2B91CF;color:white;">
                 <tr>
                   <th>No</th>
-                  <th width="12%">Kode RKAKL</th>
-                  <th width="20%">Direktorat</th>
                   <th width="15%">Uraian Acara</th>
                   <th width="18%">Tanggal</th>
                   <th width="10%">Lokasi</th>
@@ -290,14 +247,6 @@
 <script>
 var table;
   $(function () {
-     $( "#datepicker" ).datepicker({
-        changeMonth: true,
-        changeYear: true,
-        format: 'dd/mm/yyyy'
-      });
-
-    var tahun = $('#tahun2').val();
-    var direktorat = $('#direktorat2').val();
     table = $("#table").DataTable({
       "info":false,
         "oLanguage": {
@@ -307,14 +256,14 @@ var table;
         "serverSide": true,
         "scrollX": true,
         "ajax": {
-          "url": "<?php echo $url_rewrite;?>process/rab/table",
+          "url": "<?php echo $base_process;?>kegiatan/table-kegiatan",
           "type": "POST",
-          "data": {'tahun':tahun,
-                    'direktorat':direktorat,
-                    'kdoutput':'<?php echo $kdoutput?>',
-                    'kdsoutput':'<?php echo $kdsoutput?>',
-                    'kdkmpnen':'<?php echo $kdkmpnen?>',
-                    'kdskmpnen':'<?php echo $kdskmpnen?>',
+          "data": {'tahun':$('#thang').val(),
+                    'direktorat':$('#kdgiat').val(),
+                    'kdoutput':$('#kdoutput').val(),
+                    'kdsoutput':$('#kdsoutput').val(),
+                    'kdkmpnen':$('#kdkmpnen').val(),
+                    'kdskmpnen':$('#kdskmpnen').val(),
                      }
         },
         <?php if ($_SESSION['direktorat'] == "") { ?>
@@ -333,8 +282,7 @@ var table;
             {"targets" : 0,
              "visible" : false},
             {"targets" : 1},
-            {"targets" : 2, 
-              "visible": false},
+            {"targets" : 2},
             {"targets" : 3},
             {"targets" : 4},
             {"targets" : 5},
@@ -372,151 +320,4 @@ var table;
     chprog();
   });
 
-  function search(){
-    var tahun = $('#tahun2').val();
-    var direktorat = $('#direktorat2').val();
-    table.destroy();
-    table = $("#table").DataTable({
-        "oLanguage": {
-          "sInfoFiltered": ""
-        },
-        "processing": true,
-        "serverSide": true,
-        "scrollX": true,
-        "ajax": {
-          "url": "<?php echo $url_rewrite;?>process/rab/table",
-          "type": "POST",
-          "data": {'tahun':tahun,
-                    'direktorat':direktorat }
-        },
-        <?php if ($_SESSION['direktorat'] == "") { ?>
-          "columnDefs" : [
-            {"targets" : 0,
-             "visible" : false},
-            {"targets" : 1},
-            {"targets" : 2},
-            {"targets" : 3},
-            {"targets" : 4},
-            {"targets" : 5},
-            {"targets" : 6},
-          ],
-        <?php }else{?>
-          "columnDefs" : [
-            {"targets" : 0,
-             "visible" : false},
-            {"targets" : 1},
-            {"targets" : 2, 
-              "visible": false},
-            {"targets" : 3},
-            {"targets" : 4},
-            {"targets" : 5},
-            {"targets" : 6},
-          ],
-        <?php } ?>
-        "order": [[ 0, "desc" ]]
-    });
-  }
-
-  function chprog(){
-    $("#output option").remove();   
-    $("#soutput option").remove();   
-    $("#komp option").remove();   
-    $("#skomp option").remove();   
-    $('#output').append('<option>-- Pilih Output --</option>');
-    $('#soutput').append('<option>-- Pilih Sub Output --</option>');
-    $('#komp').append('<option>-- Pilih Komponen --</option>');
-    $('#skomp').append('<option>-- Pilih Sub Komponen --</option>');
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    var prog = $('#prog').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $url_rewrite;?>process/rab/getout",
-      data: { 'prog' : prog,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDOUTPUT.length; i++) {
-          $('#output').append('<option value="'+obj.KDOUTPUT[i]+'">'+obj.KDOUTPUT[i]+' - '+obj.NMOUTPUT[i]+'</option>')
-        };
-      },
-    });
-  }
-  function chout(){
-    var prog = $('#prog').val();
-    var output = $('#output').val();
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $url_rewrite;?>process/rab/getsout",
-      data: { 'prog' : prog,
-              'output' : output,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDSOUTPUT.length; i++) {
-          $('#soutput').append('<option value="'+obj.KDSOUTPUT[i]+'">'+obj.KDSOUTPUT[i]+' - '+obj.NMSOUTPUT[i]+'</option>')
-        };
-      },
-    });
-  }
-  function chsout(){
-    $("#komp option").remove();   
-    $("#skomp option").remove();   
-    $('#komp').append('<option>-- Pilih Komponen --</option>');
-    $('#skomp').append('<option>-- Pilih Sub Komponen --</option>');
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    var prog = $('#prog').val();
-    var output = $('#output').val();
-    var soutput = $('#soutput').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $url_rewrite;?>process/rab/getkomp",
-      data: { 'prog' : prog,
-              'output' : output,
-              'soutput' : soutput,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDKMPNEN.length; i++) {
-          $('#komp').append('<option value="'+obj.KDKMPNEN[i]+'">'+obj.KDKMPNEN[i]+' - '+obj.NMKMPNEN[i]+'</option>')
-        };
-      },
-    });
-  }
-  function chkomp(){
-    $("#skomp option").remove();   
-    $('#skomp').append('<option>-- Pilih Sub Komponen --</option>');
-    var tahun = $('#tahun').val();
-    var direktorat = $('#direktorat').val();
-    var prog = $('#prog').val();
-    var output = $('#output').val();
-    var soutput = $('#soutput').val();
-    var komp = $('#komp').val();
-    $.ajax({
-      type: "POST",
-      url: "<?php echo $url_rewrite;?>process/rab/getskomp",
-      data: { 'prog' : prog,
-              'output' : output,
-              'soutput' : soutput,
-              'komp' : komp,
-              'tahun' : tahun,
-              'direktorat' : direktorat
-            },
-      success: function(data){
-        var obj = jQuery.parseJSON(data);
-        for (var i = 0; i < obj.KDSKMPNEN.length; i++) {
-          $('#skomp').append('<option value="'+obj.KDSKMPNEN[i]+'">'+obj.KDSKMPNEN[i]+' - '+obj.NMSKMPNEN[i]+'</option>')
-        };
-      },
-    });
-  }
 </script>

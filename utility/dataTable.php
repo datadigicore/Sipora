@@ -16,13 +16,12 @@ class datatable extends config {
             SSP::simplewhere( $_POST, $sql_details, $table, $primaryKey, $columns, $where, $dataArray)
         );        
     }
-    function get_table_group($table, $primaryKey, $columns, $where, $group, $dataArray){
+    function get_table_group($table, $primaryKey, $columns, $where, $group, $dataArray, $order=null){
         $config = new config();
-        print_r($table, $primaryKey, $columns, $where, $group, $dataArray);
         $sql_details = $config->sql_details();
         require( 'ssp.class.php' );
         echo json_encode(
-            SSP::simplewheregroup( $_POST, $sql_details, $table, $primaryKey, $columns, $where,$group, $dataArray)
+            SSP::simplewheregroup( $_POST, $sql_details, $table, $primaryKey, $columns, $where,$group, $dataArray, $order)
         );        
     }
     function get_table_join($table,$table2, $primaryKey, $columns, $on, $where, $group, $dataArray){

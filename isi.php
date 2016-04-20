@@ -17,6 +17,14 @@
         case 'kegiatan':          
           include "./view/content/contentRabRkakl.php";
         break;
+        case 'kegiatan-rinci':       
+          $idrkakl = $link[3];   
+          include "./view/content/contentRab.php";
+        break;
+        case 'kegiatan-tambah':   
+          $idrkakl = $link[3];   
+          include "./view/content/contentRabTambah.php";
+        break;
         case 'laporan':          
           include "./view/content/contentReport.php";
         break;
