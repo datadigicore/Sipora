@@ -56,7 +56,9 @@
                   <th width="10%">Subkomponen</th>
                   <th width="10%">Jumlah Pagu</th>
                   <th width="10%">Realisasi</th>
-                  <th width="10%">Usulan</th>
+                  <th width="10%">Persentase Realisasi</th>
+                  <th width="10%">Volume</th>
+                  <th width="10%">Persentase Volume</th>
                   <th width="10%">Sisa Anggaran</th>
                   <th width="5%">Aksi</th>
                 </tr>
@@ -69,6 +71,37 @@
       </div>
     </div>
   </section>
+</div>
+<div class="modal fade" id="mdl-vol">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="<?php echo $url_rewrite;?>process/rab/revisi" method="POST">
+        <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color:white">×</span></button>
+          <h4 class="modal-title">Dialog Box</h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="id_rab_rev" name="id_rab_rev" value="" />
+          <div class="form-group">
+            <label>Volume Kegiatan</label>
+          </div>
+          <div class="form-group">
+            <label>Volume</label>
+            <input type="text" id="volume" class="form-control" name="input-volume" value="" />
+          </div>
+          <div class="form-group">
+            <label>Satuan</label>
+            <input type="text" id="satuan" class="form-control" name="input-satuan" value="" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
+          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 <script>
 var table;
@@ -112,7 +145,7 @@ var table;
             api.column(1, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00DD80;"><td colspan="9">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
                     );
                     last = group;
                 }
@@ -139,7 +172,7 @@ var table;
             api.column(2, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
                     );
  
                     last = group;
@@ -150,10 +183,15 @@ var table;
         "order": [[ 0, "desc" ]]        
     });
     
-    $(document).on("click", "#btn-aju", function (){
+    $(document).on("click", "#btn-vol", function (){
       var tr = $(this).closest('tr');
       tabrow = table.row(tr);
-      $("#id_rab_aju").val(tabrow.data()[0]);
+      // alert();
+      volume =tabrow.data()[17]; 
+      satuan =tabrow.data()[10]; 
+      $("#volume").val(volume);
+      $("#satuan").val(satuan);
+
     });
     $(document).on("click", "#btn-sah", function (){
       var tr = $(this).closest('tr');
@@ -212,7 +250,7 @@ var table;
             api.column(1, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
                     );
  
                     last = group;
@@ -240,7 +278,7 @@ var table;
             api.column(2, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="9">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
                     );
  
                     last = group;

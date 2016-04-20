@@ -16,7 +16,7 @@
             <h3 class="box-title" style="margin-top:6px;">Table Kegiatan</h3>
 
             <?php if ($_SESSION['level'] != '0') {
-              echo '<a href="'.$url_rewrite.'content/kegiatan-tambah/'.$idrkakl.'" class="btn btn-flat btn-success btn-md pull-right"><i class="fa fa-plus"></i>&nbsp;Tambah RAB</a>';
+              echo '<a href="'.$url_rewrite.'content/kegiatan-tambah/'.$idrkakl.'" class="btn btn-flat btn-success btn-md pull-right"><i class="fa fa-plus"></i>&nbsp;Tambah Kegiatan Baru</a>';
             }?>
 
           </div>
