@@ -1,5 +1,9 @@
 <?php
   class modelTriwulan extends mysql_db {
+    public function progress($data) {
+      $query  = "UPDATE triwulan SET prog_high = '$data[high]', prog_med = '$data[med]', prog_low = '$data[low]' WHERE id = '$data[id]'";
+      $result = $this->query($query);
+    }
     public function unlock($data) {
       $query  = "SELECT end_date FROM triwulan WHERE id = '$data[id]'";
       $result = $this->query($query);

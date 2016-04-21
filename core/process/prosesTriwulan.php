@@ -1,5 +1,14 @@
 <?php 
 	switch ($link[3]) {
+    case 'progress':
+      $data = $purifier->purifyArray($_POST);
+      $triwulan->progress($data);
+      $flash  = array(
+        'category' => "success",
+        'messages' => "Data progress $data[triwulan] tahun anggaran $data[thang] berhasil disimpan"
+      );
+      $utility->location("content/progress",$flash);
+    break;
     case 'unlock':
       $data = $purifier->purifyArray($_POST);
       $triwulan->unlock($data);
@@ -92,6 +101,22 @@
           else {
             return '<a style="margin:1px 2px;" class="btn btn-flat btn-default btn-xs col-md-12"><i class="fa fa-warning"></i> No available</a>';
           }
+        })
+      );
+      $datatable->get_rkakl_view($table, $primaryKey, $columns);
+    break;
+    case 'tablepro':
+      $table      = "triwulan";
+      $primaryKey = "id";
+      $columns    = array(
+        array( 'db' => 'id',         'dt' => 0 ),
+        array( 'db' => 'nama',       'dt' => 2 ),
+        array( 'db' => 'thang',      'dt' => 3 ),
+        array( 'db' => 'prog_high',  'dt' => 4 ),
+        array( 'db' => 'prog_med',   'dt' => 5 ),
+        array( 'db' => 'prog_low',   'dt' => 6 ),
+        array( 'db' => 'status',     'dt' => 7, 'formatter' => function( $d, $row ) {
+            return '<a style="margin:1px 2px;" id="btn-edt" class="btn btn-flat btn-success btn-xs col-md-12"><i class="fa fa-pencil"></i> Edit Progress</a>';
         })
       );
       $datatable->get_rkakl_view($table, $primaryKey, $columns);

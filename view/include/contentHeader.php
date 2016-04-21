@@ -20,12 +20,13 @@
               <li <?php if ($link[2] == 'anggaran'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/anggaran">Anggaran</a></li>
               <li <?php if ($link[2] == 'kegiatan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/kegiatan">Kegiatan</a></li>
               <li <?php if ($link[2] == 'laporan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/laporan">Laporan</a></li>
-              <li <?php if ($link[2] == 'pengguna' OR $link[2] == 'triwulan'){ echo "class='dropdown active'";} else{ echo "class='dropdown'";}?>>
+              <li <?php if ($link[2] == 'pengguna' OR $link[2] == 'triwulan' OR $link[2] == 'progress'){ echo "class='dropdown active'";} else{ echo "class='dropdown'";}?>>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pengaturan <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" style="background: white;">
-                  <li><a href="<?php echo $url_rewrite;?>content/pengguna">Pengguna</a></li>
-                  <li class="divider"></li>
                   <li><a href="<?php echo $url_rewrite;?>content/triwulan">Triwulan</a></li>
+                  <li><a href="<?php echo $url_rewrite;?>content/progress">Progress</a></li>
+                  <li class="divider"></li>
+                  <li><a href="<?php echo $url_rewrite;?>content/pengguna">Pengguna</a></li>
                 </ul>
               </li>
             <?php endif ?>

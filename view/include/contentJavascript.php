@@ -1,7 +1,7 @@
   <!-- jQuery 2.1.4 -->
   <script src="<?php echo $url_rewrite;?>static/plugins/jQuery/jQuery-2.1.4.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
-  <script src="<?php echo $url_rewrite;?>static/dist/js/jquery-ui.min.js"></script>
+  <script src="<?php echo $url_rewrite;?>static/plugins/jQueryUI/jquery-ui.js"></script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
     $.widget.bridge('uibutton', $.ui.button);

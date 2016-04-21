@@ -40,6 +40,9 @@
         case 'triwulan':          
           include "./view/content/contentTriwulan.php";
         break;
+        case 'progress':          
+          include "./view/content/contentProgress.php";
+        break;
         default:
           $utility->location("content/home");
         break;
