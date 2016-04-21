@@ -1,13 +1,13 @@
 <?php 
 	switch ($link[3]) {
-    case 'progress':
+    case 'prosentase':
       $data = $purifier->purifyArray($_POST);
-      $triwulan->progress($data);
+      $triwulan->prosentase($data);
       $flash  = array(
         'category' => "success",
-        'messages' => "Data progress $data[triwulan] tahun anggaran $data[thang] berhasil disimpan"
+        'messages' => "Data prosentase $data[triwulan] tahun anggaran $data[thang] berhasil disimpan"
       );
-      $utility->location("content/progress",$flash);
+      $utility->location("content/prosentase",$flash);
     break;
     case 'unlock':
       $data = $purifier->purifyArray($_POST);

@@ -1,19 +1,19 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Data Progress
+      Data Prosentase
       <small>Management Control</small>
     </h1>
     <ol class="breadcrumb">
-      <li><i class="fa fa-table"></i> Data Progress</li>
+      <li><i class="fa fa-table"></i> Data Prosentase</li>
     </ol>
   </section>
   <section class="content">
     <div class="row" id="row">
-      <div class="col-sm-10 col-sm-offset-1" id="tableprogress">
+      <div class="col-sm-10 col-sm-offset-1" id="tableprosentase">
         <div class="box">
           <div class="box-header with-border">
-            <h3 class="box-title" style="margin-top:6px;">Tabel Progress</h3>
+            <h3 class="box-title" style="margin-top:6px;">Tabel Prosentase</h3>
             <div class="pull-right">
             <select class="form-control" onchange="search()">
               <option value="all">-- Semua Tahun --</option>
@@ -90,15 +90,15 @@
     high   = tabrow.data()[4];
     med    = tabrow.data()[5];
     low    = tabrow.data()[6];
-    $("#tableprogress").switchClass( "col-sm-10", "col-sm-7", 1000, "easeInOutQuad" );
+    $("#tableprosentase").switchClass( "col-sm-10", "col-sm-7", 1000, "easeInOutQuad" );
     window.setTimeout(function(){
       $("#hidden").html(`<div class="col-sm-3">
         <div class="box">
           <div class="box-header with-border">
-            <h3 class="box-title" style="margin-top:6px;">Edit Progress</h3>
+            <h3 class="box-title" style="margin-top:6px;">Edit Prosentase</h3>
           </div>
           <div class="box-body">
-            <form method="POST" action="<?php echo $base_process;?>triwulan/progress">
+            <form method="POST" action="<?php echo $base_process;?>triwulan/prosentase">
             <div class="row">
               <div class="col-md-12">
                 <div class="box-body well form-horizontal">
@@ -118,19 +118,19 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <label class="label label-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;<label>Baik</label>
-                      <input type="text" name="high" class="form-control" value="`+high+`">
+                      <input type="number" id="high" name="high" class="form-control" value="`+high+`">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="col-md-12">
                       <label class="label label-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;<label>Sedang</label>
-                      <input type="text" name="med" class="form-control" value="`+med+`">
+                      <input type="number" id="med" name="med" class="form-control" value="`+med+`">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="col-md-12">
                       <label class="label label-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;<label>Cukup</label>
-                      <input type="text" name="low" class="form-control" value="`+low+`">
+                      <input type="number" id="low" name="low" class="form-control" value="`+low+`">
                     </div>
                   </div>
                 </div>
@@ -148,5 +148,51 @@
         </div>        
       </div>`);
     }, 750)
+  });
+  var h, m, l;
+  $(document).on("change", "#high", function(){
+    h = $(this).val();
+    if (h < 0) {
+      alert("Data input tidak boleh minus");
+      $(this).val(0);h=0;
+    }
+    else if (h <= m) {
+      alert("Data input tidak boleh kurang dari prosentase baik");
+      $(this).val(0);h=0;
+    }
+    else if (h <= l) {
+      alert("Data input tidak boleh kurang dari prosentase cukup");
+      $(this).val(0);h=0;
+    }
+  });
+  $(document).on("change", "#med", function(){
+    m = $(this).val();
+    if (m < 0) {
+      alert("Data input tidak boleh minus");
+      $(this).val(0);m=0;
+    }
+    else if (m <= l) {
+      alert("Data input tidak boleh kurang dari prosentase cukup");
+      $(this).val(0);m=0;
+    }
+    else if (m >= h) {
+      alert("Data input tidak boleh lebih dari prosentase baik");
+      $(this).val(0);m=0;
+    }
+  });
+  $(document).on("change", "#low", function(){
+    l = $(this).val();
+    if (l < 0) {
+      alert("Data input tidak boleh minus");
+      $(this).val(0);l=0;
+    }
+    else if (l >= m) {
+      alert("Data input tidak boleh lebih dari prosentasi sedang");
+      $(this).val(0);l=0;
+    }
+    else if (l >= h) {
+      alert("Data input tidak boleh lebih dari prosentasi baik");
+      $(this).val(0);l=0;
+    }
   });
 </script>

@@ -40,7 +40,7 @@
         case 'triwulan':          
           include "./view/content/contentTriwulan.php";
         break;
-        case 'progress':          
+        case 'prosentase':          
           include "./view/content/contentProgress.php";
         break;
         default:

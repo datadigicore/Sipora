@@ -1,6 +1,6 @@
 <?php
   class modelTriwulan extends mysql_db {
-    public function progress($data) {
+    public function prosentase($data) {
       $query  = "UPDATE triwulan SET prog_high = '$data[high]', prog_med = '$data[med]', prog_low = '$data[low]' WHERE id = '$data[id]'";
       $result = $this->query($query);
     }
@@ -68,12 +68,6 @@
       $result  = $this->query($query);
       return $result;
     }
-    // public function addTriwulan($data) {
-    //   $setdata = $this->setdata($data);
-    //   $query   = "INSERT INTO triwulan set $setdata";
-    //   $result  = $this->query($query);
-    //   return $result;
-    // }
   }
 
 ?>
