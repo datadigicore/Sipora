@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 4.5.0.2
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 13, 2016 at 10:24 PM
--- Server version: 5.5.47-MariaDB-1ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.14
+-- Generation Time: Apr 21, 2016 at 02:06 
+-- Server version: 10.0.17-MariaDB
+-- PHP Version: 5.5.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `evaluasi`
@@ -23,114 +23,26 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `direktorat`
---
-
-CREATE TABLE IF NOT EXISTS `direktorat` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `nama` varchar(255) DEFAULT NULL,
-  `kode` varchar(255) DEFAULT NULL,
-  `ppk` varchar(255) DEFAULT NULL,
-  `nip_ppk` varchar(30) DEFAULT NULL,
-  `bpp` varchar(255) DEFAULT NULL,
-  `nip_bpp` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `kuitansi`
---
-
-CREATE TABLE IF NOT EXISTS `kuitansi` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `no_kuitansi` int(20) DEFAULT NULL,
-  `no_kuitansi_update` int(20) DEFAULT NULL,
-  `rabview_id` int(20) DEFAULT NULL,
-  `thang` varchar(20) DEFAULT NULL,
-  `kdprogram` varchar(20) DEFAULT NULL,
-  `kdgiat` varchar(20) DEFAULT NULL,
-  `kdoutput` varchar(20) DEFAULT NULL,
-  `kdsoutput` varchar(20) DEFAULT NULL,
-  `kdkmpnen` varchar(20) DEFAULT NULL,
-  `kdskmpnen` varchar(20) DEFAULT NULL,
-  `kdakun` varchar(20) DEFAULT NULL,
-  `noitem` varchar(20) DEFAULT NULL,
-  `deskripsi` text,
-  `tanggal` date DEFAULT NULL,
-  `tanggal_akhir` date NOT NULL,
-  `tempat` varchar(255) NOT NULL,
-  `lokasi` varchar(255) DEFAULT NULL,
-  `uang_muka` decimal(20,3) DEFAULT '0.000',
-  `realisasi_spj` decimal(20,3) DEFAULT '0.000',
-  `realisasi_pajak` decimal(20,3) DEFAULT '0.000',
-  `sisa` decimal(20,3) DEFAULT '0.000',
-  `status` int(5) DEFAULT '0',
-  `jenis` int(5) DEFAULT NULL,
-  `penerima` varchar(255) DEFAULT NULL,
-  `npwp` varchar(255) DEFAULT NULL,
-  `nip` varchar(255) NOT NULL,
-  `pajak` varchar(255) DEFAULT NULL,
-  `ppn` decimal(20,3) DEFAULT NULL,
-  `pph` decimal(20,3) DEFAULT NULL,
-  `golongan` varchar(200) DEFAULT NULL,
-  `jabatan` varchar(255) DEFAULT NULL,
-  `value` decimal(20,3) DEFAULT '0.000',
-  `belanja` decimal(20,3) DEFAULT '0.000',
-  `honor_output` decimal(20,3) DEFAULT '0.000',
-  `honor_profesi` decimal(20,3) DEFAULT '0.000',
-  `uang_saku` decimal(20,3) DEFAULT '0.000',
-  `trans_lokal` decimal(20,3) DEFAULT '0.000',
-  `uang_harian` decimal(20,3) DEFAULT '0.000',
-  `tiket` decimal(20,3) DEFAULT '0.000',
-  `tgl_mulai` date DEFAULT NULL,
-  `tgl_akhir` date DEFAULT NULL,
-  `tingkat_jalan` varchar(10) DEFAULT NULL,
-  `alat_trans` varchar(255) DEFAULT NULL,
-  `kota_asal` varchar(255) DEFAULT NULL,
-  `kota_tujuan` varchar(255) DEFAULT NULL,
-  `taxi_asal` decimal(20,3) DEFAULT '0.000',
-  `taxi_tujuan` decimal(20,3) DEFAULT '0.000',
-  `airport_tax` decimal(20,3) DEFAULT '0.000',
-  `rute1` varchar(255) DEFAULT NULL,
-  `rute2` varchar(255) DEFAULT NULL,
-  `rute3` varchar(255) DEFAULT NULL,
-  `rute4` varchar(255) DEFAULT NULL,
-  `harga_tiket` varchar(255) DEFAULT NULL,
-  `lama_hari` varchar(255) DEFAULT NULL,
-  `klmpk_hr` varchar(255) DEFAULT NULL,
-  `pns` int(3) DEFAULT NULL,
-  `malam` varchar(255) DEFAULT NULL,
-  `biaya_akom` decimal(20,3) DEFAULT '0.000',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `pengguna`
 --
 
-CREATE TABLE IF NOT EXISTS `pengguna` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `pengguna` (
+  `id` int(255) NOT NULL,
   `nama` varchar(50) NOT NULL,
   `username` varchar(25) NOT NULL,
   `password` varchar(128) NOT NULL,
   `email` varchar(50) NOT NULL,
   `level` tinyint(1) NOT NULL DEFAULT '2',
   `status` tinyint(1) NOT NULL DEFAULT '0',
-  `direktorat` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  `direktorat` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pengguna`
 --
 
 INSERT INTO `pengguna` (`id`, `nama`, `username`, `password`, `email`, `level`, `status`, `direktorat`) VALUES
-(1, 'Yohanes Christomas Daimler', 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'yohanes.christomas@gmail.com', 0, 1, ''),
-(2, 'Bendahara Pengeluaran 3802', 'bpp3802', '3e162394472f9b09c72321b192bf13816df99aff55020c70d83719c1d01c1f80a62951ad466516080479be82f28ebd1ac268d3051725cdb9f4e6260530bb7c5f', 'bpp3802@siluasipora.com', 2, 1, '3802');
+(1, 'Yohanes Christomas Daimler', 'admin', 'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec', 'yohanes.christomas@gmail.com', 0, 1, '');
 
 -- --------------------------------------------------------
 
@@ -138,8 +50,8 @@ INSERT INTO `pengguna` (`id`, `nama`, `username`, `password`, `email`, `level`, 
 -- Table structure for table `rabfull`
 --
 
-CREATE TABLE IF NOT EXISTS `rabfull` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `rabfull` (
+  `id` int(20) NOT NULL,
   `rabview_id` int(20) DEFAULT NULL,
   `thang` varchar(20) DEFAULT NULL,
   `kdprogram` varchar(20) DEFAULT NULL,
@@ -197,9 +109,8 @@ CREATE TABLE IF NOT EXISTS `rabfull` (
   `uang_saku` decimal(20,2) NOT NULL,
   `honor_profesi` decimal(20,2) NOT NULL,
   `honor_output` decimal(20,2) NOT NULL,
-  `belanja` decimal(20,2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `belanja` decimal(20,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -207,8 +118,8 @@ CREATE TABLE IF NOT EXISTS `rabfull` (
 -- Table structure for table `rabview`
 --
 
-CREATE TABLE IF NOT EXISTS `rabview` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `rabview` (
+  `id` int(20) NOT NULL,
   `thang` varchar(20) DEFAULT NULL,
   `kdprogram` varchar(20) DEFAULT NULL,
   `kdgiat` varchar(20) DEFAULT NULL,
@@ -224,15 +135,17 @@ CREATE TABLE IF NOT EXISTS `rabview` (
   `uang_muka` decimal(20,3) NOT NULL,
   `realisasi_spj` decimal(20,3) DEFAULT NULL,
   `realisasi_pajak` decimal(20,3) DEFAULT NULL,
+  `volume` int(16) NOT NULL DEFAULT '0',
+  `satuan` varchar(16) DEFAULT NULL,
+  `jumlah` decimal(20,3) NOT NULL DEFAULT '0.000',
   `sisa` decimal(20,3) DEFAULT NULL,
   `status` int(5) NOT NULL DEFAULT '0',
   `pesan` text,
   `submit_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `submit_by` int(20) NOT NULL,
   `approve_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `approve_by` int(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `approve_by` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -240,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `rabview` (
 -- Table structure for table `rkakl_full`
 --
 
-CREATE TABLE IF NOT EXISTS `rkakl_full` (
+CREATE TABLE `rkakl_full` (
   `IDRKAKL` varchar(255) NOT NULL,
   `THANG` varchar(20) DEFAULT NULL,
   `KDDEPT` varchar(4) DEFAULT NULL,
@@ -268,8 +181,7 @@ CREATE TABLE IF NOT EXISTS `rkakl_full` (
   `USULAN` decimal(20,3) NOT NULL DEFAULT '0.000',
   `SDANA` varchar(4) DEFAULT NULL,
   `STATUS` tinyint(4) NOT NULL DEFAULT '0',
-  `VERSI` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`IDRKAKL`)
+  `VERSI` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -278,8 +190,8 @@ CREATE TABLE IF NOT EXISTS `rkakl_full` (
 -- Table structure for table `rkakl_view`
 --
 
-CREATE TABLE IF NOT EXISTS `rkakl_view` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `rkakl_view` (
+  `id` int(255) NOT NULL,
   `tanggal` date NOT NULL,
   `no_dipa` varchar(255) NOT NULL,
   `filename` varchar(255) NOT NULL,
@@ -288,10 +200,96 @@ CREATE TABLE IF NOT EXISTS `rkakl_view` (
   `tahun` int(4) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `versi` int(12) NOT NULL DEFAULT '0',
-  `pesan` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `pesan` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `triwulan`
+--
+
+CREATE TABLE `triwulan` (
+  `id` int(32) NOT NULL,
+  `thang` int(4) NOT NULL,
+  `nama` varchar(16) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `prog_high` int(8) NOT NULL DEFAULT '0',
+  `prog_med` int(8) NOT NULL DEFAULT '0',
+  `prog_low` int(8) NOT NULL DEFAULT '0',
+  `status` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `pengguna`
+--
+ALTER TABLE `pengguna`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `rabfull`
+--
+ALTER TABLE `rabfull`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `rabview`
+--
+ALTER TABLE `rabview`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `rkakl_full`
+--
+ALTER TABLE `rkakl_full`
+  ADD PRIMARY KEY (`IDRKAKL`);
+
+--
+-- Indexes for table `rkakl_view`
+--
+ALTER TABLE `rkakl_view`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `triwulan`
+--
+ALTER TABLE `triwulan`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `pengguna`
+--
+ALTER TABLE `pengguna`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `rabfull`
+--
+ALTER TABLE `rabfull`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `rabview`
+--
+ALTER TABLE `rabview`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `rkakl_view`
+--
+ALTER TABLE `rkakl_view`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `triwulan`
+--
+ALTER TABLE `triwulan`
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
