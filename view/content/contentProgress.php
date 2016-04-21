@@ -178,6 +178,9 @@
     else if (m >= h) {
       alert("Data input tidak boleh lebih dari prosentase baik");
       $(this).val(0);m=0;
+      if (m <= l) {
+        $("#low").val(0);l=0;
+      }
     }
   });
   $(document).on("change", "#low", function(){
