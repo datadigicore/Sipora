@@ -1419,7 +1419,7 @@
                     <tr>
                         <td align="left">Sudah Terima Dari </td>
                         <td align="left">: </td>
-                        <td align="left" style="font-weight:bold"> Kuasa Pengguna Anggaran Direktorat Jenderal Kelembagaan IPTEK dan DIKTI</td>
+                        <td align="left" style="font-weight:bold"> Kuasa Pengguna Anggaran Kementerian Pemuda dan Olahraga</td>
                         
                     </tr> 
                     <tr>
@@ -2724,7 +2724,7 @@ public function daftar_peng_riil($result,$det){
                 <tr>
                   <td colspan="2">Nama Satker</td>
                   <td align="left" width="2%">:</td>
-                  <td align="left" > Direktorat Jenderal Kelembagaan Iptek dan Dikti</td>
+                  <td align="left" > Kementerian Pemuda dan Olahraga</td>
                   
                 </tr>
                 <tr>
@@ -2741,11 +2741,6 @@ public function daftar_peng_riil($result,$det){
                   <td colspan="2">Propinsi DKI</td>
                   <td>:</td>
                   <td align="left">DKI</td> 
-                <tr>
-                  <td colspan="2">Departemen</td>
-                  <td>:</td>
-                  <td align="left">Kementerian Pemuda dan Olahraga</td>
-                </tr>
                 </tr>
                 <tr>
                   <td colspan="2">Program</td>
@@ -2999,7 +2994,7 @@ public function daftar_peng_riil($result,$det){
                 <tr>
                   <td colspan="2">Nama Satker</td>
                   <td align="left" width="2%">:</td>
-                  <td align="left" > Direktorat Jenderal Kelembagaan Iptek dan Dikti</td>
+                  <td align="left" > Kementerian Pemuda dan Olahraga</td>
                   
                 </tr>
                 <tr>
@@ -3015,12 +3010,7 @@ public function daftar_peng_riil($result,$det){
                 <tr>
                   <td colspan="2">Propinsi DKI</td>
                   <td>:</td>
-                  <td align="left">DKI</td> 
-                <tr>
-                  <td colspan="2">Departemen</td>
-                  <td>:</td>
-                  <td align="left">Kementerian Pemuda dan Olahraga</td>
-                </tr>
+                  <td align="left">DKI</td>   
                 </tr>
                 <tr>
                   <td colspan="2">Program</td>
@@ -3446,7 +3436,7 @@ public function daftar_peng_riil($result,$det){
         $objPHPExcel->getActiveSheet()->getStyle("A5:F5")->getFont()->setSize(12);
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1',"REKAPTULASI PAJAK PER-ORANG TA 2016" )
-                ->setCellValue('A2',"DIREKTORAT JENDERAL KELEMBAGAAN IPTEK DAN DIKTI" )
+                ->setCellValue('A2',"Kementerian Pemuda dan Olahraga" )
                 ->setCellValue('A3',"KEMENTERIAN RISET, TEKNOLOGI, DAN PENDIDIKAN TINGGI" )
                 ->setCellValue('A5',"Nama Pegawai" )
                 ->setCellValue('B5',"No_Kuitansi" )
@@ -3497,7 +3487,7 @@ public function daftar_peng_riil($result,$det){
       $cell->setCellValue('D'.$row, "Jakarta,");
       $row+=1;
       $sheet->mergeCells('D'.$row.':F'.$row);
-      $cell->setCellValue('D'.$row, "Direktorat Jenderal Kelembagaan Iptek dan Dikti");
+      $cell->setCellValue('D'.$row, "Kementerian Pemuda dan Olahraga");
       $row+=1;
       $sheet->mergeCells('D'.$row.':F'.$row);
       $cell->setCellValue('D'.$row, "Bendahara Pengeluaran,");
@@ -3640,7 +3630,7 @@ public function daftar_peng_riil($result,$det){
       return $data['jml'];
     }
 
-    function konversi_tanggal($tgl,$type)
+    function konversi_tanggal($tgl,$type=null)
     {
       $data_tgl = explode("-",$tgl);
       $bulan ="";
@@ -3694,7 +3684,7 @@ public function daftar_peng_riil($result,$det){
             {
                 $bulan="Desember";
             }
-      if($type==""){
+      if($type==null){
         $array = array($data_tgl[2],$bulan,$data_tgl[0]);
         $tanggal = implode(" ", $array );
       }
@@ -3818,7 +3808,7 @@ public function daftar_peng_riil($result,$det){
 
       $objPHPExcel->setActiveSheetIndex(0)
               ->setCellValue('A1', $title)
-              ->setCellValue('A2', '1')->setCellValue('B2', 'Satker')->setCellValue('C2', ':')->setCellValue('D2', '(401196) Direktorat Jenderal Kelembagaan Iptek dan Dikti')
+              ->setCellValue('A2', '1')->setCellValue('B2', 'Satker')->setCellValue('C2', ':')->setCellValue('D2', '(401196) Kementerian Pemuda dan Olahraga')
               ->setCellValue('A3', '2')->setCellValue('B3', 'Kegiatan')->setCellValue('C3', ':')->setCellValue('D3', '('.$id_giat[kdprogram].') '.$id_giat[NMGIAT])
               ->setCellValue('A4', '3')->setCellValue('B4', 'Output')->setCellValue('C4', ':')->setCellValue('D4', '('.$id_giat[kdoutput].') '.$id_giat[NMOUTPUT])
               ->setCellValue('A5', '4')->setCellValue('B5', 'Sub Output')->setCellValue('C5', ':')->setCellValue('D5', '('.$id_giat[kdsoutput].') '.$id_giat[NMSOUTPUT])

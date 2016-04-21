@@ -19,7 +19,7 @@
           </ul>
           <div class="tab-content" style="padding:0 0;">
             <div class="tab-pane active" id="tab_1">
-              <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/Daya_Serap">
+              <form class="form-horizontal" method="POST" action="<?php echo $base_process ?>laporan/Daya_Serap">
                 <div class="row">
                   <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
                     <div class="form-group">
@@ -60,7 +60,7 @@
               </form>
             </div>
             <div class="tab-pane" id="tab_2">
-              <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/Rekap_Daya_Serap">
+              <form class="form-horizontal" method="POST" action="<?php echo $base_process ?>laporan/Rekap_Daya_Serap">
                 <div class="row">
                   <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
                     <div class="form-group">
@@ -101,7 +101,7 @@
               </form>
             </div>
             <div class="tab-pane" id="tab_3">
-              <form class="form-horizontal" method="POST" action="<?php echo $url_rewrite;?>process/report/serapan">
+              <form class="form-horizontal" method="POST" action="<?php echo $base_process ?>laporan/serapan">
                 <div class="row">
                   <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
                     <div class="form-group">

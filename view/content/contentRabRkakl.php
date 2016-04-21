@@ -10,41 +10,45 @@
   </section>
   <section class="content">
     <div class="row">
-      <div class="col-sm-10 col-sm-offset-1">
+      <div class="col-sm-12">
         <div class="box">
           <div class="box-header">
             <h3 class="box-title" style="margin-top:6px;">Tabel Rencana Kegiatan</h3>
           </div>
           <div class="box-body">
             <?php include "view/include/contentAlert.php" ?>
-            <table class="display table table-bordered table-striped" style="width:750px">
-              <tr>
-                <td><label>Tahun</label></td>
-                <td>
-                  <select class="form-control select2" name="tahun2" id="tahun2" required>
-                    <?php $rab->getYear(); ?>
-                  </select>
-                </td>
-              </tr>
-              <?php if ($_SESSION['direktorat'] == "") { ?>
-              <tr>
-                <td><label>Direktorat</label></td>
-                  <td>
-                    <select id="direktorat2" name="direktorat2" class="form-control" onchange="search()">
-                      <option value="">Semua Direktorat</option>
-                      <?php $rab->kdkegiatan(); ?>
-                    </select>
-                  </td>
-              </tr>
-              <?php } else{ ?>
-              <tr>
-                <td><label>Direktorat</label></td>
-                <td>
-                  <label><?php echo $rab->kdkegiatanbyID($_SESSION['direktorat']);?></label>
-                </td>
-              </tr>
-              <?php } ?>
-            </table>
+            <div class="row">
+              <div class="col-md-6">
+                <table class="display table table-bordered table-striped">
+                  <tr>
+                    <td><label>Tahun</label></td>
+                    <td>
+                      <select class="form-control select2" name="tahun2" id="tahun2" required>
+                        <?php $rab->getYear(); ?>
+                      </select>
+                    </td>
+                  </tr>
+                  <?php if ($_SESSION['direktorat'] == "") { ?>
+                  <tr>
+                    <td><label>Direktorat</label></td>
+                      <td>
+                        <select id="direktorat2" name="direktorat2" class="form-control" onchange="search()">
+                          <option value="">Semua Direktorat</option>
+                          <?php $rab->kdkegiatan(); ?>
+                        </select>
+                      </td>
+                  </tr>
+                  <?php } else{ ?>
+                  <tr>
+                    <td><label>Direktorat</label></td>
+                    <td>
+                      <label><?php echo $rab->kdkegiatanbyID($_SESSION['direktorat']);?></label>
+                    </td>
+                  </tr>
+                  <?php } ?>
+                </table>
+              </div>
+            </div>
             <table id="table" class="display table table-bordered table-striped " cellspacing="0" width="100%">
               <thead style="background-color:#2B91CF;color:white;">
                 <tr>
@@ -145,7 +149,7 @@ var table;
             api.column(1, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
                     );
                     last = group;
                 }
