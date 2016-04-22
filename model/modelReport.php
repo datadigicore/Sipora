@@ -3198,10 +3198,10 @@ public function daftar_peng_riil($result,$det){
                 <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Bulan :  '.''.' 2016</td>
               </tr>
               <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;"> Direktorat Jenderal Kelembagaan Ilmu Pengetahuan Teknologi dan Pendidikan Tinggi</td>
+                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;"> Kementrian Pemuda dan Olahraga</td>
               </tr>
               <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Satker Ditjen Kelembagaan Iptek dan Dikti</td>
+                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;"></td>
               </tr>
               <tr>
                 <td colspan="20"><br></br></td>
