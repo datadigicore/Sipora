@@ -427,6 +427,7 @@ switch ($link[3]) {
     $table = "rabview";
     $key   = "id";
     $dataArray['url_rewrite'] = $url_rewrite; 
+    $dataArray['idrkakl'] = $_POST['idrkakl']; 
     $tahun = $_POST['tahun'];
     if ($_SESSION['direktorat'] == "") {
       $direktorat = $_POST['direktorat'];
@@ -482,7 +483,7 @@ switch ($link[3]) {
       array( 'db' => 'status',  'dt' => 6, 'formatter' => function($d,$row, $dataArray){ 
         $button = '<div class="col-md-12">';
         if($_SESSION['level'] != 0 && ($d == 1 || $d == 4)){
-          $button .= '<a id="btn-trans" href="'.$dataArray['url_rewrite'].'content/rab/edit/'.$row[0].'" class="btn btn-flat btn-warning btn-sm col-md-6" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
+          $button .= '<a id="btn-trans" href="'.$dataArray['url_rewrite'].'content/kegiatan-edit/'.$row[0].'/'.$dataArray['idrkakl'].'" class="btn btn-flat btn-warning btn-sm col-md-6" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
           $button .= '<a id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
         }
         elseif($_SESSION['level'] != 0 && $d == 0){
@@ -579,8 +580,12 @@ switch ($link[3]) {
         $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
     break;
   case 'edit':
-    $mdl_rab->edit($_POST);
-    $utility->load("content/rab","success","Data RAB berhasil diubah");
+    $rab->edit($_POST);
+    $flash  = array(
+          'category' => "success",
+          'messages' => "Data Kegiatan berhasil diubah"
+        );
+    $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
     break;
   case 'ajukan':
     $id_rabview = $_POST['id_rab_aju'];

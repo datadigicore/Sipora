@@ -258,7 +258,8 @@ var table;
         "ajax": {
           "url": "<?php echo $base_process;?>kegiatan/table-kegiatan",
           "type": "POST",
-          "data": {'tahun':$('#thang').val(),
+          "data": {'idrkakl':'<?php echo $idrkakl;?>',
+                    'tahun':$('#thang').val(),
                     'direktorat':$('#kdgiat').val(),
                     'kdoutput':$('#kdoutput').val(),
                     'kdsoutput':$('#kdsoutput').val(),

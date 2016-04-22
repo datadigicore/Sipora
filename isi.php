@@ -25,6 +25,12 @@
           $idrkakl = $link[3];   
           include "./view/content/contentRabTambah.php";
         break;
+        case 'kegiatan-edit':   
+          $idrkakl = $link[4];   
+          $idview = $link[3];   
+          $getview = $rab->getview($idview);
+          include "./view/content/contentRabEdit.php";
+        break;
         case 'laporan':          
           include "./view/content/contentReport.php";
         break;
