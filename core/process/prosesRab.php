@@ -292,10 +292,10 @@ switch ($link[3]) {
               return 0;
             }
             else {
-              return number_format($row[19]).' '.$row[10];  
+              return number_format($row[19]);  
             }
           } else {
-            return number_format($row[9]).' '.$row[10];
+            return number_format($row[9]);
           }  
         }),
         array( 'db' => 'SATKEG','dt' => 10, 'formatter' => function($d,$row){
@@ -335,20 +335,20 @@ switch ($link[3]) {
                       </div>
                     </div>';
           } else {
-            // $persen = ($row[19] / $row[17]) * 100;
-            // if ($persen < 50) {
-            //   $status = 'danger';
-            // }elseif ($persen < 80) {
-            //   $status = 'warning';
-            // }elseif ($persen <= 100) {
-            //   $status = 'success';
-            // }
-            // return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
-            //         <div class="progress progress-sm active">
-            //           <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
-            //             <span class="sr-only">'.number_format($persen,2).'% Complete</span>
-            //           </div>
-            //         </div>';
+            $persen = ($row[19] / $row[17]) * 100;
+            if ($persen < 50) {
+              $status = 'danger';
+            }elseif ($persen < 80) {
+              $status = 'warning';
+            }elseif ($persen <= 100) {
+              $status = 'success';
+            }
+            return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
+                    <div class="progress progress-sm active">
+                      <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
+                        <span class="sr-only">'.number_format($persen,2).'% Complete</span>
+                      </div>
+                    </div>';
           }
           // return '$a';
         }),
@@ -404,7 +404,7 @@ switch ($link[3]) {
           if(is_null($row[19])){
             return 0;
           } else {
-            return number_format($row[19]).' '.$row[10];
+            return number_format($row[19]);
           }
         }),
       );

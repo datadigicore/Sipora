@@ -2995,7 +2995,6 @@ public function daftar_peng_riil($result,$det){
                   <td colspan="2">Nama Satker</td>
                   <td align="left" width="2%">:</td>
                   <td align="left" > Kementerian Pemuda dan Olahraga</td>
-                  
                 </tr>
                 <tr>
                   <td colspan="2">Kode Kegiatan</td>
@@ -3176,6 +3175,7 @@ public function daftar_peng_riil($result,$det){
       echo '</table>';
       $html = ob_get_contents();
       ob_clean();
+      // var_dump($html);
       $this->create_pdf("Pengajuan UMK","A4-L",$html);
     }
 

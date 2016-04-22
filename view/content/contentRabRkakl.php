@@ -88,7 +88,7 @@
         <div class="modal-body">
           <input type="hidden" id="id_rab_rev" name="id_rab_rev" value="" />
           <div class="form-group">
-            <label>Volume Kegiatan</label>
+            <label>Maximum Volume Kegiatan Seluruh Kegiatan</label>
           </div>
           <div class="form-group">
             <label>Volume</label>
