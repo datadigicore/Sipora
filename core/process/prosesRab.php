@@ -300,7 +300,25 @@ switch ($link[3]) {
         }),
         array( 'db' => 'SATKEG','dt' => 10, 'formatter' => function($d,$row){
           if(is_null($row[17]) && is_null($row[9])){
-            return '<div class="pull-right">&nbsp;<span class="label label-danger"> 0 %</span></div>';
+            if (is_null($row[17]) && is_null($row[19])) {
+              return '<div class="pull-right">&nbsp;<span class="label label-danger"> 0 %</span></div>';
+            }
+            else {
+              $persen = ($row[19] / $row[17]) * 100;
+              if ($persen < 50) {
+                $status = 'danger';
+              }elseif ($persen < 80) {
+                $status = 'warning';
+              }elseif ($persen <= 100) {
+                $status = 'success';
+              }
+              return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
+                      <div class="progress progress-sm active">
+                        <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
+                          <span class="sr-only">'.number_format($persen,2).'% Complete</span>
+                        </div>
+                      </div>';
+            }
           } elseif(is_null($row[17]) && !is_null($row[9])){
             $persen = ($row[9] / $row[17]) * 100;
             if ($persen < 50) {
@@ -317,20 +335,20 @@ switch ($link[3]) {
                       </div>
                     </div>';
           } else {
-            $persen = ($row[19] / $row[17]) * 100;
-            if ($persen < 50) {
-              $status = 'danger';
-            }elseif ($persen < 80) {
-              $status = 'warning';
-            }elseif ($persen <= 100) {
-              $status = 'success';
-            }
-            return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
-                    <div class="progress progress-sm active">
-                      <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
-                        <span class="sr-only">'.number_format($persen,2).'% Complete</span>
-                      </div>
-                    </div>';
+            // $persen = ($row[19] / $row[17]) * 100;
+            // if ($persen < 50) {
+            //   $status = 'danger';
+            // }elseif ($persen < 80) {
+            //   $status = 'warning';
+            // }elseif ($persen <= 100) {
+            //   $status = 'success';
+            // }
+            // return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
+            //         <div class="progress progress-sm active">
+            //           <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
+            //             <span class="sr-only">'.number_format($persen,2).'% Complete</span>
+            //           </div>
+            //         </div>';
           }
           // return '$a';
         }),
