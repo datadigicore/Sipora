@@ -2712,7 +2712,7 @@ public function daftar_peng_riil($result,$det){
       $sql    = "SELECT nmgiat FROM rkakl_full where kdgiat = '$dir'";
       $result = $this->query($sql);
       $fetch  = $this->fetch_object($result);
-      $sql    = " SELECT kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun, NMAKUN,  sum(jumlah) as jumlah  FROM rkakl_full where kdgiat like '%$dir%' group by kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun order by kdgiat asc, kdoutput asc, kdsoutput asc, kdkmpnen asc, kdskmpnen asc, kdakun asc ";
+      $sql    = " SELECT kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun, NMAKUN,  sum(jumlah) as jumlah  FROM rkakl_full where kdgiat like '%$dir%' AND NMITEM not like '>%' group by kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun order by kdgiat asc, kdoutput asc, kdsoutput asc, kdkmpnen asc, kdskmpnen asc, kdakun asc ";
       $res = $this->query($sql);
       ob_start();
       $res_sql = $this->query("SELECT * from rkakl_view where status=1 ");
@@ -3192,16 +3192,13 @@ public function daftar_peng_riil($result,$det){
 
       echo '<table style="width: 100%;  text-align:left; border-collapse:collapse; font-size:0.7em;">
               <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Laporan Realisasi Daya Serap Pelaksanaan DIPA TA 2016</td>
+                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Laporan Realisasi Daya Serap Pelaksanaan DIPA</td>
               </tr>
               <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Bulan :  '.''.' 2016</td>
+                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Tahun Anggaran :  '.''.' 2016</td>
               </tr>
               <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;"> Direktorat Jenderal Kelembagaan Ilmu Pengetahuan Teknologi dan Pendidikan Tinggi</td>
-              </tr>
-              <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Satker Ditjen Kelembagaan Iptek dan Dikti</td>
+                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;"> Kementerian Pemuda dan Olahraga</td>
               </tr>
               <tr>
                 <td colspan="20"><br></br></td>

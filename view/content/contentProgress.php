@@ -118,19 +118,19 @@
                   <div class="form-group">
                     <div class="col-md-12">
                       <label class="label label-success">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;<label>Baik</label>
-                      <input type="number" id="high" name="high" class="form-control" value="`+high+`">
+                      <input type="text" id="high" name="high" class="form-control nomor" value="`+high+`">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="col-md-12">
                       <label class="label label-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;<label>Sedang</label>
-                      <input type="number" id="med" name="med" class="form-control" value="`+med+`">
+                      <input type="text" id="med" name="med" class="form-control nomor" value="`+med+`">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="col-md-12">
                       <label class="label label-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>&nbsp;&nbsp;<label>Cukup</label>
-                      <input type="number" id="low" name="low" class="form-control" value="`+low+`">
+                      <input type="text" id="low" name="low" class="form-control nomor" value="`+low+`">
                     </div>
                   </div>
                 </div>
@@ -150,6 +150,9 @@
     }, 750)
   });
   var h, m, l;
+  $(document).on("keyup", ".nomor", function(){
+    $(this).mask('00');
+  });
   $(document).on("change", "#high", function(){
     h = $(this).val();
     if (h < 0) {

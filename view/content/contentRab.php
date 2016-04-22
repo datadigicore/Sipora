@@ -1,11 +1,11 @@
  <div class="content-wrapper">
   <section class="content-header">
-    <!-- <h1>
-      Data RAB
+    <h1>
+      Data Kegiatan
       <small>Menu</small>
-    </h1> -->
+    </h1>
     <ol class="breadcrumb">
-      <li><i class="fa fa-table"></i> <b>Data RAB</b></li>
+      <li><i class="fa fa-table"></i> <b>Data Kegiatan</b></li>
     </ol>
   </section>
   <section class="content">

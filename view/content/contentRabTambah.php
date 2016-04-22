@@ -13,88 +13,108 @@
   </section>
   <section class="content">
     <div class="row">
-      <div class="col-md-9 col-xs-12">
+      <div class="col-md-10 col-md-offset-1">
         <div class="box">
           <div class="box-header with-border">
             <h3 class="box-title" style="margin-top:6px;">Tambah RAB</h3>
           </div>
           <form action="<?php echo $base_process;?>kegiatan/save" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="idrkakl" value="<?php echo $idrkakl;?>">
-            <div class="box-body">
-              <div class="form-group">
-                <label>Tahun Anggaran</label>
-                <select class="form-control" name="tahun" id="tahun" required>
-                    <?php $rab->getYear(); ?>
-                </select>
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">    
+                <div class="box-body well">
+                  <div class="form-group">
+                    <label>Tahun Anggaran</label>
+                    <select class="form-control" name="tahun" id="tahun" required>
+                        <?php $rab->getYear(); ?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Status Triwulan</label>
+                    <?php $triwulan->triwulanActive(); ?>
+                  </div>
+                  <input type="hidden" id="prog" name="prog" value="01" />
+                  <?php if ($_SESSION['direktorat'] == "") { ?>
+                  <div class="form-group">
+                    <label>Kode Kegiatan</label>
+                    <select class="form-control" id="direktorat" name="direktorat" onchange="chout()">
+                          <?php $rab->kdkegiatan(); ?>
+                    </select>
+                  </div>
+                  <?php } else{ ?>
+                  <input type="hidden" id="direktorat" name="direktorat" value="<?php echo $_SESSION['direktorat']; ?>" />
+                  <?php } ?>
+                  <div class="form-group">
+                    <label>Output</label>
+                    <select class="form-control" id="output" name="output" onchange="chout()" required>
+                      <?php $rab->getout($idrkakl);?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Suboutput</label>
+                    <select class="form-control" id="soutput" name="soutput" onchange="chsout()" >
+                      <?php $rab->getsout($idrkakl);?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Komponen</label>
+                    <select class="form-control" id="komp" name="komp" onchange="chkomp()">
+                      <?php $rab->getkomp($idrkakl);?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Sub Komponen</label>
+                    <select class="form-control" id="skomp" name="skomp" onchange="chskomp()" >
+                      <?php $rab->getskomp($idrkakl);?>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Uraian Acara</label>
+                    <textarea rows="5" type="text" class="form-control" id="uraian" name="uraian" placeholder="Uraian Acara" style="resize:none;" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Tanggal Awal</label>
+                    <input class="form-control tanggal" onchange="cektanggal()" type="text" id="tanggal" name="tanggal" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Tanggal Akhir</label>
+                    <input class="form-control tanggal" onchange="cektanggal()" type="text" id="tanggal_akhir" name="tanggal_akhir" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Tempat Kegiatan</label>
+                    <input type="text" class="form-control" id="tempat" name="tempat" placeholder="Tempat Kegiatan" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Kota</label>
+                    <input type="text" class="form-control" id="lokasi" name="lokasi" placeholder="Kota" required />
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-8">
+                        <label>Volume Kegiatan</label>
+                        <input type="text" class="form-control nomor" id="volume" name="volume" placeholder="Volume" required />
+                      </div>
+                      <div class="col-md-4">
+                        <label>Satuan Kegiatan</label>
+                        <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Satuan" required />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Realisasi</label>
+                    <input type="text" class="form-control uang" id="realisasi" name="realisasi" placeholder="Realisasi" required />
+                  </div> 
+                </div>
               </div>
-              <input type="hidden" id="prog" name="prog" value="01" />
-              <?php if ($_SESSION['direktorat'] == "") { ?>
-              <div class="form-group">
-                <label>Kode Kegiatan</label>
-                <select class="form-control" id="direktorat" name="direktorat" onchange="chout()">
-                      <?php $rab->kdkegiatan(); ?>
-                </select>
-              </div>
-              <?php } else{ ?>
-              <input type="hidden" id="direktorat" name="direktorat" value="<?php echo $_SESSION['direktorat']; ?>" />
-              <?php } ?>
-              <div class="form-group">
-                <label>Output</label>
-                <select class="form-control" id="output" name="output" onchange="chout()" required>
-                  <?php $rab->getout($idrkakl);?>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Suboutput</label>
-                <select class="form-control" id="soutput" name="soutput" onchange="chsout()" >
-                  <?php $rab->getsout($idrkakl);?>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Komponen</label>
-                <select class="form-control" id="komp" name="komp" onchange="chkomp()">
-                  <?php $rab->getkomp($idrkakl);?>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Sub Komponen</label>
-                <select class="form-control" id="skomp" name="skomp" onchange="chskomp()" >
-                  <?php $rab->getskomp($idrkakl);?>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Uraian Acara</label>
-                <textarea rows="5" type="text" class="form-control" id="uraian" name="uraian" placeholder="Uraian Acara" style="resize:none;" required></textarea>
-              </div>
-              <div class="form-group">
-                <label>Tanggal Awal</label>
-                <input class="form-control tanggal" onchange="cektanggal()" type="text" id="tanggal" name="tanggal" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" required />
-              </div>
-              <div class="form-group">
-                <label>Tanggal Akhir</label>
-                <input class="form-control tanggal" onchange="cektanggal()" type="text" id="tanggal_akhir" name="tanggal_akhir" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" required />
-              </div>
-              <div class="form-group">
-                <label>Tempat Kegiatan</label>
-                <input type="text" class="form-control" id="tempat" name="tempat" placeholder="Tempat Kegiatan" required />
-              </div>
-              <div class="form-group">
-                <label>Kota</label>
-                <input type="text" class="form-control" id="lokasi" name="lokasi" placeholder="Kota" required />
-              </div>
-              <div class="form-group">
-                <label>Volume Kegiatan</label>
-                <input type="text" style="width:30%" class="form-control nomor" id="volume" name="volume" placeholder="Volume" required />
-                <input type="text" style="width:20%" class="form-control" id="satuan" name="satuan" placeholder="Satuan" required />
-              </div>
-              <div class="form-group">
-                <label>Realisasi</label>
-                <input type="text" class="form-control uang" id="realisasi" name="realisasi" placeholder="Realisasi" required />
-              </div>
-              
             </div>
-            <div class="box-footer">
-              <button type="submit" class="btn btn-flat btn-success">Save</button>
+            <div class="row">
+              <div class="col-md-12">
+              <div class="box-footer">
+                <div class="col-md-11">
+                <button type="submit" class="btn btn-flat btn-success pull-right col-md-2">Simpan</button>
+                </div>
+              </div>
+              </div>
             </div>
           </form>
          </div>        
@@ -105,10 +125,16 @@
 
 <script>
 $(function() {
-
+  $('.readonly').bind('paste', function (e) {
+      e.preventDefault();
+  });
+  $(".readonly").keydown(function(e){
+      e.preventDefault();
+  });
   $("#tanggal").datepicker({
       autoclose: true,
       monthNames: [ "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
+      maxDate: 0,
       changeMonth: true,
       dateFormat: 'dd/mm/yy',
       onClose: function(selectedDate) {
@@ -119,8 +145,8 @@ $(function() {
   $("#tanggal_akhir").datepicker({ 
       autoclose: true,
       monthNames: [ "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
+      maxDate: 0,
       changeMonth: true,
-      changeYear: true,
       dateFormat: 'dd/mm/yy'
   });
   $("#tanggal_akhir").datepicker({ 

@@ -42,7 +42,7 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="<?php echo $url_rewrite;?>static/dist/img/Kemenpora.png" class="img-circle" alt="User Image" style="width: 18px; height: 18px">
-                  <span class="hidden-xs">Admin</span>
+                  <span class="hidden-xs"><?php echo $_SESSION['username'];?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <li class="user-header">
