@@ -32,6 +32,43 @@
       echo json_encode($newresult);
     }
 
+    public function getChartIDRKAKL($id){
+      $result = $this->query("SELECT SUM(TRIWULAN1) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
+      while($res=$this->fetch_array($result)){
+          $results[] = $res;
+      }
+      $result = $this->query("SELECT SUM(TRIWULAN2) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
+      while($res=$this->fetch_array($result)){
+          $results[] = $res;
+      }
+      $result = $this->query("SELECT SUM(TRIWULAN3) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
+      while($res=$this->fetch_array($result)){
+          $results[] = $res;
+      }
+      $result = $this->query("SELECT SUM(TRIWULAN4) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
+      while($res=$this->fetch_array($result)){
+          $results[] = $res;
+      }
+      $prev_value = array('value' => null, 'amount' => null);
+      $i = 1;
+      foreach ($results as $data) {
+        unset($prev_value);
+        if ($data['SUM(TRIWULAN'.$i.')'] == 0) {
+          $prev_value = array('value' => 'Triwulan '.$i, 'amount' => '0');
+        }
+        else {
+          $prev_value = array('value' => 'Triwulan '.$i, 'amount' => $data['SUM(TRIWULAN'.$i.')']);
+        }
+        $newResults[] =& $prev_value;
+        $i++;
+      }
+      for ($i=0; $i < count($newResults) ; $i++) { 
+        $newresult[$i][] =& $newResults[$i]['value'];
+        $newresult[$i][] =& $newResults[$i]['amount'];
+      }
+      echo json_encode($newresult);
+    }
+
     public function get_kd_akun($id){
       $result = $this->query("SELECT kdakun from rabfull where id='$id' ");
       $array = $this->fetch_array($result);

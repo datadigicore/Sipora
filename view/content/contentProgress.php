@@ -149,56 +149,56 @@
       </div>`);
     }, 750)
   });
-  var h, m, l;
+  // var h, m, l;
   $(document).on("keyup", ".nomor", function(){
     $(this).mask('00');
   });
-  $(document).on("change", "#high", function(){
-    h = $(this).val();
-    if (h < 0) {
-      alert("Data input tidak boleh minus");
-      $(this).val(0);h=0;
-    }
-    else if (h <= m) {
-      alert("Data input tidak boleh kurang dari prosentase baik");
-      $(this).val(0);h=0;
-    }
-    else if (h <= l) {
-      alert("Data input tidak boleh kurang dari prosentase cukup");
-      $(this).val(0);h=0;
-    }
-  });
-  $(document).on("change", "#med", function(){
-    m = $(this).val();
-    if (m < 0) {
-      alert("Data input tidak boleh minus");
-      $(this).val(0);m=0;
-    }
-    else if (m <= l) {
-      alert("Data input tidak boleh kurang dari prosentase cukup");
-      $(this).val(0);m=0;
-    }
-    else if (m >= h) {
-      alert("Data input tidak boleh lebih dari prosentase baik");
-      $(this).val(0);m=0;
-      if (m <= l) {
-        $("#low").val(0);l=0;
-      }
-    }
-  });
-  $(document).on("change", "#low", function(){
-    l = $(this).val();
-    if (l < 0) {
-      alert("Data input tidak boleh minus");
-      $(this).val(0);l=0;
-    }
-    else if (l >= m) {
-      alert("Data input tidak boleh lebih dari prosentasi sedang");
-      $(this).val(0);l=0;
-    }
-    else if (l >= h) {
-      alert("Data input tidak boleh lebih dari prosentasi baik");
-      $(this).val(0);l=0;
-    }
-  });
+  // $(document).on("change", "#high", function(){
+  //   h = $(this).val();
+  //   if (h < 0) {
+  //     alert("Data input tidak boleh minus");
+  //     $(this).val(0);h=0;
+  //   }
+  //   else if (h <= m) {
+  //     alert("Data input tidak boleh kurang dari prosentase baik");
+  //     $(this).val(0);h=0;
+  //   }
+  //   else if (h <= l) {
+  //     alert("Data input tidak boleh kurang dari prosentase cukup");
+  //     $(this).val(0);h=0;
+  //   }
+  // });
+  // $(document).on("change", "#med", function(){
+  //   m = $(this).val();
+  //   if (m < 0) {
+  //     alert("Data input tidak boleh minus");
+  //     $(this).val(0);m=0;
+  //   }
+  //   else if (m <= l) {
+  //     alert("Data input tidak boleh kurang dari prosentase cukup");
+  //     $(this).val(0);m=0;
+  //   }
+  //   else if (m >= h) {
+  //     alert("Data input tidak boleh lebih dari prosentase baik");
+  //     $(this).val(0);m=0;
+  //     if (m <= l) {
+  //       $("#low").val(0);l=0;
+  //     }
+  //   }
+  // });
+  // $(document).on("change", "#low", function(){
+  //   l = $(this).val();
+  //   if (l < 0) {
+  //     alert("Data input tidak boleh minus");
+  //     $(this).val(0);l=0;
+  //   }
+  //   else if (l >= m) {
+  //     alert("Data input tidak boleh lebih dari prosentasi sedang");
+  //     $(this).val(0);l=0;
+  //   }
+  //   else if (l >= h) {
+  //     alert("Data input tidak boleh lebih dari prosentasi baik");
+  //     $(this).val(0);l=0;
+  //   }
+  // });
 </script>
