@@ -202,6 +202,8 @@
     }
 
     public function save($data){
+      $idtriwulan = $data['idtriwulan'];
+      $status     = $data['status'];
       $direktorat = $data['direktorat'];
       $tahun      = $data['tahun'];
       $prog       = $data['prog'];
@@ -222,23 +224,23 @@
       $satuan     = $data['satuan'];
 
       $query      = "INSERT INTO rabview SET
-        thang       = '$tahun',
-        kdprogram   = '$prog',
-        kdgiat      = '$direktorat',
-        kdoutput    = '$output',
-        kdsoutput   = '$soutput',
-        kdkmpnen    = '$komp',
-        kdskmpnen   = '$skomp',
-        deskripsi   = '$uraian',
-        tanggal     = '$tgl',
+        thang         = '$tahun',
+        kdprogram     = '$prog',
+        kdgiat        = '$direktorat',
+        kdoutput      = '$output',
+        kdsoutput     = '$soutput',
+        kdkmpnen      = '$komp',
+        kdskmpnen     = '$skomp',
+        deskripsi     = '$uraian',
+        tanggal       = '$tgl',
         tanggal_akhir = '$tgl_akhir',
-        lokasi      = '$lokasi',
-        tempat      = '$tempat',
-        status      = '0',
-
-        jumlah      = '$realisasi',
-        volume      = '$volume',
-        satuan      = '$satuan'
+        lokasi        = '$lokasi',
+        tempat        = '$tempat',
+        idtriwulan    = '$idtriwulan',
+        status        = '$status',
+        jumlah        = '$realisasi',
+        volume        = '$volume',
+        satuan        = '$satuan'
       ";
       $result = $this->query($query);
       return $result;
@@ -261,73 +263,53 @@
       $tgl_akhir  = $t2[2].'-'.$t2[1].'-'.$t2[0];
 
       $query      = "INSERT INTO rabfull SET
-        thang       = '$tahun',
-        kdprogram   = '$prog',
-        kdgiat      = '$direktorat',
-        kdoutput    = '$output',
-        kdsoutput   = '$soutput',
-        kdkmpnen    = '$komp',
-        kdskmpnen    = '$skomp',
-        kdakun    = '$akun',
-        deskripsi   = '$deskripsi',
-        tanggal     = '$tgl',
-        tanggal_akhir     = '$tgl_akhir',
-        value     = '$value',
-        status      = '0'
+        thang         = '$tahun',
+        kdprogram     = '$prog',
+        kdgiat        = '$direktorat',
+        kdoutput      = '$output',
+        kdsoutput     = '$soutput',
+        kdkmpnen      = '$komp',
+        kdskmpnen     = '$skomp',
+        kdakun        = '$akun',
+        deskripsi     = '$deskripsi',
+        tanggal       = '$tgl',
+        tanggal_akhir = '$tgl_akhir',
+        value         = '$value',
+        status        = '0'
       ";
       $result = $this->query($query);
       return $result;
     }
 
     public function edit($data){
+      // $idview = $data['idview'];
+      // if (isset($data['output'])) {
+      //   $tahun    = $data['tahun'];
+      //   $output   = $data['output'];
+      //   $soutput  = $data['soutput'];
+      //   $komp     = $data['komp'];
+      //   $skomp    = $data['skomp'];
+      //   $set      = "thang  = '$tahun', 
+      //             kdoutput  = '$output',
+      //             kdsoutput = '$soutput',
+      //             kdkmpnen  = '$komp',
+      //             kdskmpnen = '$skomp',";
+      // }else{
+      //   $set = '';
+      // }
       $idview = $data['idview'];
-      if (isset($data['output'])) {
-        $tahun = $data['tahun'];
-        $output = $data['output'];
-        $soutput = $data['soutput'];
-        $komp = $data['komp'];
-        $skomp = $data['skomp'];
-        $set = "thang = '$tahun', 
-                kdoutput    = '$output',
-                kdsoutput   = '$soutput',
-                kdkmpnen    = '$komp',
-                kdskmpnen   = '$skomp',";
-      }else{
-        $set = '';
-      }
-      $uraian = $data['uraian'];
+      unset($data['idview']);
+      unset($data['idrkakl']);
       $t = explode("/", $data['tanggal']);
-      $tgl=$t[2].'-'.$t[1].'-'.$t[0];
+      $data['tanggal'] = $t[2].'-'.$t[1].'-'.$t[0];
       $t2         = explode("/", $data['tanggal_akhir']);
-      $tgl_akhir  = $t2[2].'-'.$t2[1].'-'.$t2[0];
-      $lokasi = $data['lokasi'];
-      $tempat = $data['tempat'];
+      $data['tanggal_akhir']  = $t2[2].'-'.$t2[1].'-'.$t2[0];
+
+      $setdata = $this->setdata($data);
 
       $query      = "UPDATE rabview SET
-        ".$set."        
-        deskripsi   = '$uraian',
-        tanggal     = '$tgl',
-        tanggal_akhir = '$tgl_akhir',
-        lokasi      = '$lokasi',
-        tempat      = '$tempat'
-        WHERE id = '$idview'
-      ";
-
-      $query2      = "UPDATE rabfull SET
-        thang       = '$tahun',
-        kdoutput    = '$output',
-        kdsoutput   = '$soutput',
-        kdkmpnen    = '$komp',
-        kdskmpnen   = '$skomp',
-        deskripsi   = '$uraian',
-        tanggal     = '$tgl',
-        tanggal_akhir = '$tgl_akhir',
-        lokasi      = '$lokasi',
-        tempat      = '$tempat'
-        WHERE rabview_id = '$idview'
-      ";
+        ".$setdata." WHERE id = '".$idview."'";
       $result = $this->query($query);
-      $result2 = $this->query($query2);
       return $result;
     }
 

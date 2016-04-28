@@ -2712,7 +2712,7 @@ public function daftar_peng_riil($result,$det){
       $sql    = "SELECT nmgiat FROM rkakl_full where kdgiat = '$dir'";
       $result = $this->query($sql);
       $fetch  = $this->fetch_object($result);
-      $sql    = " SELECT kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun, NMAKUN,  sum(jumlah) as jumlah  FROM rkakl_full where kdgiat like '%$dir%' group by kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun order by kdgiat asc, kdoutput asc, kdsoutput asc, kdkmpnen asc, kdskmpnen asc, kdakun asc ";
+      $sql    = " SELECT kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun, NMAKUN,  sum(jumlah) as jumlah  FROM rkakl_full where kdgiat like '%$dir%' AND NMITEM not like '>%' group by kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun order by kdgiat asc, kdoutput asc, kdsoutput asc, kdkmpnen asc, kdskmpnen asc, kdakun asc ";
       $res = $this->query($sql);
       ob_start();
       $res_sql = $this->query("SELECT * from rkakl_view where status=1 ");
@@ -2995,7 +2995,6 @@ public function daftar_peng_riil($result,$det){
                   <td colspan="2">Nama Satker</td>
                   <td align="left" width="2%">:</td>
                   <td align="left" > Kementerian Pemuda dan Olahraga</td>
-                  
                 </tr>
                 <tr>
                   <td colspan="2">Kode Kegiatan</td>
@@ -3176,6 +3175,7 @@ public function daftar_peng_riil($result,$det){
       echo '</table>';
       $html = ob_get_contents();
       ob_clean();
+      // var_dump($html);
       $this->create_pdf("Pengajuan UMK","A4-L",$html);
     }
 
@@ -3192,10 +3192,7 @@ public function daftar_peng_riil($result,$det){
 
       echo '<table style="width: 100%;  text-align:left; border-collapse:collapse; font-size:0.7em;">
               <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Laporan Realisasi Daya Serap Pelaksanaan DIPA TA 2016</td>
-              </tr>
-              <tr>
-                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Bulan :  '.''.' 2016</td>
+                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Laporan Realisasi Daya Serap Pelaksanaan DIPA</td>
               </tr>
               <tr>
                 <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;"> Kementrian Pemuda dan Olahraga</td>
@@ -3203,6 +3200,10 @@ public function daftar_peng_riil($result,$det){
               <tr>
                 <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;"></td>
               </tr>
+              <tr>
+                <td colspan="20" style="font-size:1em; font-weight:bold; text-align:center;">Tahun Anggaran :  '.''.' 2016</td>
+              </tr>
+
               <tr>
                 <td colspan="20"><br></br></td>
               </tr>
@@ -3373,6 +3374,213 @@ public function daftar_peng_riil($result,$det){
       $this->create_pdf("Pengajuan UMK","A4-L",$html);
     }
 
+
+    public function realisasi_anggaran_dan_kinerja($data){
+      $nama="";
+      $sql = "SELECT IDRKAKL, KDDEPT,KDUNIT, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, NMGIAT, NMOUTPUT, NMSOUTPUT, NMKMPNEN, NMSKMPNEN, VOLKEG, SATKEG, JUMLAH from rkakl_full WHERE KDGIAT='$data' and KDOUTPUT like '%' ORDER BY IDRKAKL ASC ";
+      $sql_results = $this->query($sql);
+
+       $objPHPExcel = new PHPExcel();
+      // Set properties
+      $objPHPExcel->getProperties()->setCreator("Sistem Keuangan Dikti")
+              ->setLastModifiedBy("Sistem Keuangan Dikti")
+              ->setTitle("REKAPITULASI PAJAK PER ORANG")
+              ->setSubject("Office 2007 XLSX Document")
+              ->setDescription("")
+              ->setKeywords("office 2007 openxml php")
+              ->setCategory("REKAPITULASI PAJAK PER ORANG");
+      $border = array(
+          'borders' => array(
+              'allborders' => array(
+                  'style' => PHPExcel_Style_Border::BORDER_THIN
+              )
+          )
+      );
+$default_border = array(
+    'style' => PHPExcel_Style_Border::BORDER_THIN
+);
+     $two_side_border = array(
+    'borders' => array(
+        'left' => $default_border,
+
+        'right' => $default_border,
+    ));
+        $horizontal = array(
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            )
+        );
+        $vertical = array(
+            'alignment' => array(
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+            )
+        );
+        $left = array(
+            'alignment' => array(
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+            )
+        );
+        $right = array(
+            'alignment' => array(
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+            )
+        );
+        $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+        $objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+        $objPHPExcel->getDefaultStyle()->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getDefaultStyle()->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(52);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(16);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(19);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(19);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(4);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(7);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(14);
+        
+        // $objPHPExcel->getActiveSheet()->getStyle('A')->getAlignment()->setWrapText(true); 
+        $objPHPExcel->getActiveSheet()->getStyle('A:L')->getAlignment()->setWrapText(true); 
+
+        
+        $sheet = $objPHPExcel->getActiveSheet()->setTitle("LAP");
+        $sheet->mergeCells('A1:L1');
+        $sheet->mergeCells('A2:L2');
+        $sheet->mergeCells('A3:B3');
+        $sheet->mergeCells('A4:B4');
+        $sheet->mergeCells('A5:B5');
+        $sheet->mergeCells('A6:A7');
+        $sheet->mergeCells('B6:B7');
+        $sheet->mergeCells('C6:C7');
+        $sheet->mergeCells('F6:F7');
+        $sheet->mergeCells('G6:H7');
+        $sheet->mergeCells('I6:J7');
+        $sheet->mergeCells('K6:K7');
+        $sheet->mergeCells('L6:L7');
+        $sheet->getStyle('A6:L7')->applyFromArray($horizontal);    
+        $sheet->getStyle('A6:L7')->applyFromArray($vertical);
+        $sheet->getStyle('A6:L7')->applyFromArray($border);
+        $sheet->getStyle('A6:L7')->getFont()->setBold(true);
+        
+        // $sheet->getStyle('A5:F5')->getFont()->setBold(true);
+        // $sheet->getStyle('A1:A3')->getFont()->setBold(true);
+        // $sheet->getStyle('A1:A3')->applyFromArray($horizontal);    
+        // $sheet->getStyle('A1:A3')->applyFromArray($vertical);
+        // $sheet->getStyle("A5:F5")->applyFromArray($border);
+        // $objPHPExcel->getActiveSheet()->getStyle("A1:A3")->getFont()->setSize(14); 
+        // $objPHPExcel->getActiveSheet()->getStyle("A5:F5")->getFont()->setSize(12);
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1',"LAPORAN BULANAN REALISASI ANGGARAN DAN REALISASI KINERJA TA. 2016" )
+                ->setCellValue('A3',"Unit Kerja" )
+                ->setCellValue('A4',"Kode dan Nama Program" )
+                ->setCellValue('A5',"Sasaran Program" )
+                ->setCellValue('C3',":" )
+                ->setCellValue('C4',":" )
+                ->setCellValue('A6',"No" )
+                ->setCellValue('B6',"Kode Output/Kode Komponen" )
+                ->setCellValue('C6',"Output/Komponen/Sub Komponen" )
+                ->setCellValue('D6',"Pagu Anggaran" )
+                ->setCellValue('D7',"(Rp)" )
+                ->setCellValue('E6',"Realisasi Pagu Anggaran" )
+                ->setCellValue('E7',"(Rp)" )
+                ->setCellValue('F6',"%" )
+                ->setCellValue('G6',"Target Output/Target Komponen" )
+                ->setCellValue('I6',"Realisasi Output/Realisasi Komponen" )
+                ->setCellValue('K6',"%" )
+                ->setCellValue('L6',"Keterangan" );
+
+      $row=8;
+      $no=0;
+      $cell = $objPHPExcel->setActiveSheetIndex(0);
+      $jumlah_pagu = 0;
+      $jumlah_realisasi = 0;
+      $kode_output = "";
+      $kode_suboutput = "";
+      $kode_komponen = "";
+      $kode_subkomponen = "";
+      
+      foreach ($sql_results as $value) {
+        
+        $id_rkakl = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN];
+        if($value[KDGIAT].".".$value[KDOUTPUT]!=$kode_output){
+          $no++;
+          $cell->setCellValue('A'.$row, $no);
+          $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT]);
+          $cell->setCellValue('C'.$row, $value[NMOUTPUT]);
+          $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $cell->setCellValue('G'.$row, $value[VOLKEG]);
+          $cell->setCellValue('H'.$row, $value[SATKEG]);
+          $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(true);
+          $kode_output = $value[KDGIAT].".".$value[KDOUTPUT];
+          $sheet->getStyle('B'.$row)->applyFromArray($left);
+          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+          $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          $row++;
+
+          continue;
+        }
+        if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
+          $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
+          $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
+          $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $kode_suboutput = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT];
+          $sheet->getStyle('B'.$row)->applyFromArray($right);
+          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+
+          $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          $row++;
+           
+          continue;
+        }
+        if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN]!=$kode_komponen and $value[KDKMPNEN]!=""){
+          $cell->setCellValue('C'.$row, $value[KDKMPNEN]." ".$value[NMKMPNEN]);
+          $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          if($value[VOLKEG]>0){
+            $cell->setCellValue('G'.$row, $value[VOLKEG]);
+            $cell->setCellValue('H'.$row, $value[SATKEG]);
+          }
+          $kode_komponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN];
+          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+
+          $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          $row++;      
+          continue;
+        }
+        if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN]!=$kode_subkomponen and $value[KDSKMPNEN]!=""){
+            $cell->setCellValue('C'.$row, $value[KDSKMPNEN]." ".$value[NMSKMPNEN]);
+            $cell->setCellValue('D'.$row, $value[JUMLAH]);
+            $kode_subkomponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN];
+            $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+            $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $row++;
+            
+            continue;
+        }
+
+        
+        $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(-1);
+        
+      
+      }
+     
+
+        Header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Rekap_Pajak_nama.xlsx"');
+        header('Cache-Control: max-age=0');
+
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        // If you want to output e.g. a PDF file, simply do:
+        //$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
+        $objWriter->save('php://output');
+    }
     public function pajak_orang($data){
       $nama="";
       $sql = "SELECT thang, tanggal, penerima, no_kuitansi, kdgiat, kdoutput, kdsoutput, kdkmpnen, kdakun, value, pph from rabfull where concat(nip,'-',npwp)='$data' ";

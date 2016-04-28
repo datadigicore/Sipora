@@ -1,11 +1,11 @@
  <div class="content-wrapper">
   <section class="content-header">
-    <!-- <h1>
-      Data RAB
+    <h1>
+      Data Kegiatan
       <small>Menu</small>
-    </h1> -->
+    </h1>
     <ol class="breadcrumb">
-      <li><i class="fa fa-table"></i> <b>Data RAB</b></li>
+      <li><i class="fa fa-table"></i> <b>Data Kegiatan</b></li>
     </ol>
   </section>
   <section class="content">
@@ -258,7 +258,8 @@ var table;
         "ajax": {
           "url": "<?php echo $base_process;?>kegiatan/table-kegiatan",
           "type": "POST",
-          "data": {'tahun':$('#thang').val(),
+          "data": {'idrkakl':'<?php echo $idrkakl;?>',
+                    'tahun':$('#thang').val(),
                     'direktorat':$('#kdgiat').val(),
                     'kdoutput':$('#kdoutput').val(),
                     'kdsoutput':$('#kdsoutput').val(),

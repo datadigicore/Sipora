@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Data Kegiatan
+      Data Rencana Kegiatan
       <small>Menu</small>
     </h1>
     <ol class="breadcrumb">
@@ -88,16 +88,16 @@
         <div class="modal-body">
           <input type="hidden" id="id_rab_rev" name="id_rab_rev" value="" />
           <div class="form-group">
-            <label>Volume Kegiatan</label>
+            <label>Maximum Volume Kegiatan Seluruh Kegiatan</label>
           </div>
           <div class="form-group">
             <label>Volume</label>
             <input type="text" id="volume" class="form-control" name="input-volume" value="" />
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label>Satuan</label>
             <input type="text" id="satuan" class="form-control" name="input-satuan" value="" />
-          </div>
+          </div> -->
         </div>
         <div class="modal-footer">
           <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
@@ -176,7 +176,7 @@ var table;
             api.column(2, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
                     );
  
                     last = group;
@@ -217,7 +217,6 @@ var table;
       tabrow = table.row(tr);
       $("#id_rab_del").val(tabrow.data()[0]);
     });
-    chprog();
   });
   
   function search(){
@@ -254,7 +253,7 @@ var table;
             api.column(1, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
                     );
  
                     last = group;
@@ -282,7 +281,7 @@ var table;
             api.column(2, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="10">'+group+'</td></tr>'
+                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
                     );
  
                     last = group;

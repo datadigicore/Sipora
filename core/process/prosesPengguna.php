@@ -71,7 +71,11 @@ switch ($link[3]) {
   break;
   case 'add':
     $pengguna->insertPengguna($data_pengguna);
-    $utility->load("content/adduser","success","Data berhasil ditambahkan");
+    $flash  = array(
+      'category' => "success",
+      'messages' => "Data pengguna berhasil ditambahkan"
+    );
+    $utility->location("content/addpengguna", $flash);
   break;
   case 'edt':
     $pengguna->updatePengguna($data_pengguna);
@@ -83,30 +87,50 @@ switch ($link[3]) {
       
       if($current_pass==$password){
         $pengguna->updatePass($data_pengguna);
-        $utility->load("content/edit_pass","success","Password berhasil diubah");
+        $flash  = array(
+          'category' => "success",
+          'messages' => "Password berhasil diubah"
+        );
+        $utility->location("content/edit_pass", $flash);
       } else {
-        $utility->load("content/edit_pass","warning","Password Gagal Diubah, Password lama tidak sesuai");
+        $flash  = array(
+          'category' => "warning",
+          'messages' => "Password gagal diubah, password lama tidak sesuai"
+        );
+        $utility->location("content/edit_pass", $flash);
       }
       
     } else {
-      $utility->load("content/edit_pass","warning","Password Gagal Diubah, Password baru tidak sama");
+      $flash  = array(
+        'category' => "warning",
+        'messages' => "Password Gagal Diubah, Password baru tidak sama"
+      );
+      $utility->location("content/edit_pass", $flash);
     }
   break;
   case 'edt2':
     $pengguna->updatePengguna2($data_pengguna);
-    $utility->load("content/edit_profile","success","Data berhasil diubah");
+    $utility->location("content/edit_profile","success","Data berhasil diubah");
   break;
   case 'edit':
     if (!empty($_POST['password'])) {
       $_POST['password'] = $utility->sha512($_POST['password']);
     }
     $pengguna->editPengguna($purifier->purifyArray($_POST));
-    $utility->load("content/user","success","Data Pengguna berhasil diperbaharui");
+    $flash  = array(
+      'category' => "success",
+      'messages' => "Data Pengguna berhasil diperbaharui"
+    );
+    $utility->location("content/pengguna", $flash);
   break;
   case 'delete':
     $id = $_POST['id'];
     $pengguna->deletePengguna($id);
-    $utility->load("content/user","success","Data Pengguna berhasil dihapus");
+    $flash  = array(
+      'category' => "success",
+      'messages' => "Data Pengguna berhasil dihapus"
+    );
+    $utility->location("content/pengguna", $flash);
   break;
   case 'kuitansi':
     $report->kuitansi($data_pengguna);

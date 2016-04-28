@@ -1,5 +1,13 @@
 <?php
   class modelTriwulan extends mysql_db {
+    public function triwulanActive() {
+      $query = "SELECT id, nama, status FROM triwulan WHERE status = 1";
+      $result = $this->query($query);
+      $fetch = $this->fetch_object($result);
+      echo '<input type="text" class="form-control readonly" placeholder="Status Triwulan Saat Ini Belum Tersedia" value="'.$fetch->nama.'" required/>';
+      echo '<input type="hidden" class="form-control" name="idtriwulan" value="'.$fetch->id.'" />';
+      echo '<input type="hidden" class="form-control" name="status" value="'.$fetch->status.'" />';
+    }
     public function prosentase($data) {
       $query  = "UPDATE triwulan SET prog_high = '$data[high]', prog_med = '$data[med]', prog_low = '$data[low]' WHERE id = '$data[id]'";
       $result = $this->query($query);
@@ -11,6 +19,8 @@
       $extract = explode('-', $fetch->end_date);
       if ($extract[1] != '00' && $extract[2] != '00') {
         $query  = "UPDATE triwulan SET status = '4' WHERE id = '$data[id]'";
+        $result = $this->query($query);
+        $query  = "UPDATE rabview SET status = '4' WHERE idtriwulan = '$data[id]'";
         $result = $this->query($query);
       }
     }
@@ -33,6 +43,8 @@
       $fetch      = $this->fetch_object($result);
       if ($fetch->status == 4) {
         $query  = "UPDATE triwulan SET status = '0' WHERE id = '$data[id]'";
+        $result = $this->query($query);
+        $query  = "UPDATE rabview SET status = '0' WHERE idtriwulan = '$data[id]'";
         $result = $this->query($query);
       }
       else {

@@ -31,7 +31,7 @@
                       </select>
                     </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label class="col-sm-3 control-label">Bulan</label>
                       <div class="col-sm-8">
                         <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
@@ -49,7 +49,7 @@
                           <option value="12">Desember</option>
                         </select>
                     </div>               
-                    </div>               
+                    </div> -->               
                   </div>
                 </div>
                 <div class="box-footer">
@@ -72,7 +72,7 @@
                       </select>
                     </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label class="col-sm-3 control-label">Bulan</label>
                       <div class="col-sm-8">
                         <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
@@ -90,7 +90,7 @@
                           <option value="12">Desember</option>
                         </select>
                     </div>               
-                    </div>               
+                    </div> -->               
                   </div>
                 </div>
                 <div class="box-footer">
@@ -113,7 +113,7 @@
                       </select>
                     </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label class="col-sm-3 control-label">Bulan</label>
                       <div class="col-sm-8">
                         <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
@@ -131,7 +131,7 @@
                           <option value="12">Desember</option>
                         </select>
                     </div>               
-                    </div>               
+                    </div> -->               
                   </div>
                 </div>
                 <div class="box-footer">
