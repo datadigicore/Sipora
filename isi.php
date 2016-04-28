@@ -11,6 +11,9 @@
         case 'home':          
           include "./view/content/contentHome.php";
         break;
+        case 'diagram':          
+          include "./view/content/contentDiagram.php";
+        break;
         case 'anggaran':          
           include "./view/content/contentRkakl.php";
         break;

@@ -22,6 +22,9 @@ switch ($link[3]) {
   case 'chart_pie':
     $report->getChartRKAKL();
   break;
+  case 'chart_column':
+    $report->getChartIDRKAKL($_POST['id']);
+  break;
   case 'Rincian_Biaya_PD':
 
     $report->rincian_biaya_PD($data[3]);
@@ -85,7 +88,7 @@ switch ($link[3]) {
   case 'Daya_Serap':
     $direktorat = $purifier->purify($_POST['direktorat']);
     $bulan = $purifier->purify($_POST['bulan']);
-    $report->realisasi_daya_serap($direktorat, $bulan);
+    $report->realisasi_anggaran_dan_kinerja($direktorat, $bulan);
   break;
   case 'Rekap_Daya_Serap':
     $direktorat = $purifier->purify($_POST['direktorat']);
