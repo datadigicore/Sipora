@@ -9,8 +9,11 @@
   // $path              = "/var/www/html/sipora/";
   // $path_upload       = "/var/www/html/sipora/static/uploads/";
   //================== PATH UPLOAD LOCAL WINDOWS =================//
-  $path              = "C:/xampp/htdocs/sipora/";
-  $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
+  // $path              = "C:/xampp/htdocs/sipora/";
+  // $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
+  //================== PATH UPLOAD LOCAL OSX =================//
+  $path              = "/Applications/XAMPP/xamppfiles/htdocs/sipora/";
+  $path_upload       = "/Applications/XAMPP/xamppfiles/htdocs/sipora/static/uploads/";
   
   class config {
     public $db_host             = "localhost";

@@ -572,12 +572,20 @@ switch ($link[3]) {
     break;
   case 'save':
     $idrkakl = $_POST['idrkakl'];
-    $rab->save($_POST);
-    $flash  = array(
-          'category' => "success",
-          'messages' => "Data Kegiatan berhasil ditambahkan"
-        );
-        $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
+    $status = $rab->save($_POST);
+    if ($status == 0) {
+      $flash  = array(
+            'category' => "warning",
+            'messages' => "Data Kegiatan gagal dilanjutkan karena realisasi melebihi PAGU Anggaran"
+          );
+      $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
+    }else{
+      $flash  = array(
+            'category' => "success",
+            'messages' => "Data Kegiatan berhasil ditambahkan"
+          );
+      $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
+    }
     break;
   case 'edit':
     $rab->edit($_POST);
@@ -651,9 +659,12 @@ switch ($link[3]) {
     break;
   case 'delete':
     $id_rabview = $_POST['id_rab_del'];
-    $akun = $mdl_rab->getakun($id_rabview);
-    $mdl_rab->deleterab($id_rabview);
-    $utility->load("content/rab","success","Data RAB telah dihapus");
+    $rab->delete($_POST);
+    $flash  = array(
+          'category' => "success",
+          'messages' => "Data Kegiatan telah dihapus"
+        );
+    $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
     break;
   default:
     $utility->location_goto(".");
