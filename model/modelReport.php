@@ -3466,9 +3466,9 @@ $default_border = array(
         $sheet->getStyle('A6:L7')->getFont()->setBold(true);
         
         // $sheet->getStyle('A5:F5')->getFont()->setBold(true);
-        // $sheet->getStyle('A1:A3')->getFont()->setBold(true);
-        // $sheet->getStyle('A1:A3')->applyFromArray($horizontal);    
-        // $sheet->getStyle('A1:A3')->applyFromArray($vertical);
+        $sheet->getStyle('A1:A3')->getFont()->setBold(true);
+        $sheet->getStyle('A1')->applyFromArray($horizontal);    
+        $sheet->getStyle('A1')->applyFromArray($vertical);
         // $sheet->getStyle("A5:F5")->applyFromArray($border);
         // $objPHPExcel->getActiveSheet()->getStyle("A1:A3")->getFont()->setSize(14); 
         // $objPHPExcel->getActiveSheet()->getStyle("A5:F5")->getFont()->setSize(12);
@@ -3479,6 +3479,7 @@ $default_border = array(
                 ->setCellValue('A5',"Sasaran Program" )
                 ->setCellValue('C3',":" )
                 ->setCellValue('C4',":" )
+                ->setCellValue('C5',":" )
                 ->setCellValue('A6',"No" )
                 ->setCellValue('B6',"Kode Output/Kode Komponen" )
                 ->setCellValue('C6',"Output/Komponen/Sub Komponen" )
@@ -3503,7 +3504,7 @@ $default_border = array(
       $kode_subkomponen = "";
       
       foreach ($sql_results as $value) {
-        
+        $jumlah_pagu +=$value[JUMLAH];
         $id_rkakl = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN];
         if($value[KDGIAT].".".$value[KDOUTPUT]!=$kode_output){
           $no++;
@@ -3520,7 +3521,6 @@ $default_border = array(
           $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           $row++;
-
           continue;
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
@@ -3569,7 +3569,16 @@ $default_border = array(
         
       
       }
-     
+     $row++;
+
+     $row++;
+     $cell->setCellValue('H'.$row, "Jakarta, ");
+     $row++;
+     $cell->setCellValue('H'.$row, "Mengetahui / Menyetujui");
+     $cell->setCellValue('B'.$row, "Pembuat Laporan");
+     $row++;
+     $cell->setCellValue('H'.$row, "Kepala Bagian Evaluasi dan Penilaian Kinerja");
+
 
         Header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Rekap_Pajak_nama.xlsx"');
