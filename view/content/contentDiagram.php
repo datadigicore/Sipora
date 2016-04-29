@@ -68,17 +68,15 @@
         series: [{
             name: 'Rincian Anggaran',
             data: [
-                ['Triwulan 1', 23.7],
+                ['Triwulan 1', 0],
                 ['Triwulan 2', 0],
                 ['Triwulan 3', 0],
                 ['Triwulan 4', 0]
             ],
             dataLabels: {
                 enabled: true,
-                rotation: -90,
                 color: '#FFFFFF',
-                align: 'right',
-                format: '{point.y:.1f}', // one decimal
+                format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
                     fontSize: '13px',
