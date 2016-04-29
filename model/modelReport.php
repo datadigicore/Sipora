@@ -3554,7 +3554,12 @@ $default_border = array(
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT]);
           $cell->setCellValue('C'.$row, $value[NMOUTPUT]);
           $cell->setCellValue('D'.$row, $value[JUMLAH]);
-          $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+          if($realisasi["jumlah"]>0){            
+            $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+          }
+          else{
+            $cell->setCellValue('E'.$row, 0);
+          }
           $cell->setCellValue('F'.$row, $presentase_anggaran);
           $cell->setCellValue('G'.$row, $value[VOLKEG]);
           $cell->setCellValue('H'.$row, $value[SATKEG]);
@@ -3573,9 +3578,19 @@ $default_border = array(
           continue;
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
+          $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT];
+          $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
+          $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
           $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
           $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+          $cell->setCellValue('F'.$row, $presentase_anggaran);
+          $cell->setCellValue('G'.$row, $value[VOLKEG]);
+          $cell->setCellValue('H'.$row, $value[SATKEG]);
+
+
           $kode_suboutput = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT];
           $sheet->getStyle('B'.$row)->applyFromArray($right);
           $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
@@ -3589,8 +3604,14 @@ $default_border = array(
           continue;
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN]!=$kode_komponen and $value[KDKMPNEN]!=""){
+          $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN];
+          $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
+          $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+
           $cell->setCellValue('C'.$row, $value[KDKMPNEN]." ".$value[NMKMPNEN]);
           $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+          $cell->setCellValue('F'.$row, $presentase_anggaran);
           if($value[VOLKEG]>0){
             $cell->setCellValue('G'.$row, $value[VOLKEG]);
             $cell->setCellValue('H'.$row, $value[SATKEG]);
@@ -3606,8 +3627,15 @@ $default_border = array(
           continue;
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN]!=$kode_subkomponen and $value[KDSKMPNEN]!=""){
+            $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN].$value[KDSKMPNEN];
+            $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
+            $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+
             $cell->setCellValue('C'.$row, $value[KDSKMPNEN]." ".$value[NMSKMPNEN]);
             $cell->setCellValue('D'.$row, $value[JUMLAH]);
+            $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+            $cell->setCellValue('F'.$row, $presentase_anggaran);
+
             $kode_subkomponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN];
             $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
             $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
@@ -3627,11 +3655,15 @@ $default_border = array(
      $row++;
 
      $row++;
+     $sheet->mergeCells('H'.$row.':J'.$row);
      $cell->setCellValue('H'.$row, "Jakarta, ");
      $row++;
+     $sheet->mergeCells('H'.$row.':J'.$row);
+     $sheet->mergeCells('B'.$row.':D'.$row);
      $cell->setCellValue('H'.$row, "Mengetahui / Menyetujui");
      $cell->setCellValue('B'.$row, "Pembuat Laporan");
      $row++;
+     $sheet->mergeCells('H'.$row.':M'.$row);
      $cell->setCellValue('H'.$row, "Kepala Bagian Evaluasi dan Penilaian Kinerja");
 
 
