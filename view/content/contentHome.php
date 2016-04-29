@@ -16,12 +16,14 @@
     </div>
   </section>
 </div>
+<script src="<?php echo $base_url ?>static/plugins/highcharts/js/highcharts.js"></script>
+<script src="<?php echo $base_url ?>static/plugins/highcharts/js/modules/exporting.js"></script>
 <script type="text/javascript">
   $(function () {
     $(document).ready(function () {
       $.ajax({
         type: "post",
-        url : "<?php echo $base_url.'process/report/chart_pie'; ?>",
+        url : "<?php echo $base_process.'laporan/chart_pie'; ?>",
         dataType: "json",
         success: function(result)
         {
@@ -37,7 +39,7 @@
           type: 'pie'
         },
         title: {
-          text: 'Realisasi Dana Anggaran'
+          text: 'Prosentase Total Dana Anggaran'
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -50,7 +52,29 @@
             enabled: false
           },
             showInLegend: true
-          }
+          },
+          series: {
+                cursor: 'pointer',
+                point: {
+                    events: {
+                        click: function () {
+                            var label = this.name;
+                            var newlabel = label.replace('Kode Kegiatan ',''); 
+                            // alert('Category: ' + newlabel + ', value: ' + this.y);
+                            var f = document.createElement('form');
+                            f.setAttribute('method','post');
+                            f.setAttribute('action','diagram');
+                            var i = document.createElement('input');
+                            i.setAttribute('type','hidden');
+                            i.setAttribute('name','data');
+                            i.setAttribute('value',newlabel);
+                            f.appendChild(i);
+                            document.body.appendChild(f);
+                            f.submit();
+                        }
+                    }
+                }
+            }
         },
         series: [{
           name: 'Prosentase',
@@ -81,5 +105,3 @@
     });
   });
 </script>
-<script src="<?php echo $base_url ?>static/plugins/highcharts/js/highcharts.js"></script>
-<script src="<?php echo $base_url ?>static/plugins/highcharts/js/modules/exporting.js"></script>

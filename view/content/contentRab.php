@@ -53,7 +53,7 @@
     </div>
   </section>
 </div>
-<div class="modal fade" id="addrab">
+<!-- <div class="modal fade" id="addrab">
   <div class="modal-dialog">
     <div class="modal-content">
       <form action="<?php echo $url_rewrite;?>process/rab/save" method="POST" enctype="multipart/form-data">
@@ -220,11 +220,12 @@
         </div>
     </div>
   </div>
-</div>
+</div> -->
 <div class="modal fade" id="delete">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="<?php echo $url_rewrite;?>process/rab/delete" method="POST">
+      <form action="<?php echo $url_rewrite;?>process/kegiatan/delete" method="POST">
+        <input type="hidden" name="idrkakl" value="<?php echo $idrkakl;?>">
         <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
