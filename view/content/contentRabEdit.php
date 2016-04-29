@@ -103,7 +103,7 @@
                   </div>
                   <div class="form-group">
                     <label>Realisasi</label>
-                    <input type="text" class="form-control uang" id="jumlah" name="jumlah" placeholder="Jumlah" required value="<?php echo $getview['jumlah'];?>"/>
+                    <input type="text" class="form-control uang" id="jumlah" name="jumlah" placeholder="Jumlah" required value="<?php echo number_format($getview['jumlah']);?>"/>
                   </div> 
                 </div>
               </div>
