@@ -3421,11 +3421,11 @@ public function daftar_peng_riil($result,$det){
       // Set properties
       $objPHPExcel->getProperties()->setCreator("Sistem Keuangan Dikti")
               ->setLastModifiedBy("Sistem Keuangan Dikti")
-              ->setTitle("REKAPITULASI PAJAK PER ORANG")
+              ->setTitle("LAPORAN REALISASI ANGGARAN DAN KINERJA")
               ->setSubject("Office 2007 XLSX Document")
               ->setDescription("")
               ->setKeywords("office 2007 openxml php")
-              ->setCategory("REKAPITULASI PAJAK PER ORANG");
+              ->setCategory("");
       $border = array(
           'borders' => array(
               'allborders' => array(
@@ -3535,6 +3535,8 @@ public function daftar_peng_riil($result,$det){
       $cell = $objPHPExcel->setActiveSheetIndex(0);
       $jumlah_pagu = 0;
       $jumlah_realisasi = 0;
+      $jml_presentase_angg = 0;
+      $jml_presentase_vol = 0;
       $kode_output = "";
       $kode_suboutput = "";
       $kode_komponen = "";
@@ -3545,10 +3547,12 @@ public function daftar_peng_riil($result,$det){
         if($value[KDGIAT].".".$value[KDOUTPUT]!=$kode_output){
           $jumlah_pagu          +=$value[JUMLAH];
           $idrkakl              =$value[KDGIAT].$value[KDOUTPUT];
-          $realisasi            = $this->realisasi_by_id($bulan, $idrkakl);
+          $realisasi            = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], "", "", "", "");
           $jumlah_realisasi     +=$realisasi["jumlah"];
           $presentase_anggaran  = ($realisasi["jumlah"]/$value[JUMLAH])*100;
           $jumlah_pagu          +=$value[JUMLAH];
+          $jml_presentase_angg+=$presentase_anggaran;
+          $jml_presentase_vol+=$presentase_volume;
           $no++;
           $cell->setCellValue('A'.$row, $no);
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT]);
@@ -3587,7 +3591,7 @@ public function daftar_peng_riil($result,$det){
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
           $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT];
-          $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
+          $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], "", "");
           $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
 
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
@@ -3610,7 +3614,7 @@ public function daftar_peng_riil($result,$det){
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN]!=$kode_komponen and $value[KDKMPNEN]!=""){
           $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN];
-          $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
+          $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN], "");
           $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
 
           $cell->setCellValue('C'.$row, $value[KDKMPNEN]." ".$value[NMKMPNEN]);
@@ -3633,7 +3637,7 @@ public function daftar_peng_riil($result,$det){
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN]!=$kode_subkomponen and $value[KDSKMPNEN]!=""){
             $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN].$value[KDSKMPNEN];
-            $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
+            $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN],$value[KDSKMPNEN]);
             $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
 
             $cell->setCellValue('C'.$row, $value[KDSKMPNEN]." ".$value[NMSKMPNEN]);
@@ -3680,7 +3684,7 @@ public function daftar_peng_riil($result,$det){
 
 
         Header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Rekap_Pajak_nama.xlsx"');
+        header('Content-Disposition: attachment;filename="Laporan Realisasi Anggaran dan Kinerja.xlsx"');
         header('Cache-Control: max-age=0');
 
 
@@ -3898,11 +3902,29 @@ public function daftar_peng_riil($result,$det){
                     );
       return $hasil;
     }
-      function realisasi_by_id($tanggal, $idrkakl)
+      function realisasi_by_id($tanggal, $kdgiat, $kdout, $kdsout, $kdkmp, $kdskmp)
       {
+        $q_out = $q_sout = $q_kmp = $q_skmp = $kd_akun = " ";
+        if($kdout!=""){ 
+          $q_out = " and KDOUTPUT='$kdout' "; 
+          $k_out = " ,NMOUTPUT "; 
+        }
+        if($kdsout!=""){ 
+          $q_sout = " and KDSOUTPUT='$kdsout' "; 
+          $k_sout = " ,NMSOUTPUT "; 
+        }
+        if($kdkmp!=""){ 
+          $q_kmp = " and KDKMPNEN='$kdkmp' ";  
+          $k_kmp = " ,NMKMPNEN "; 
+        }
+        if($kdskmp!=""){ 
+          $q_skmp = " and KDSKMPNEN='$kdskmp' "; 
+          $k_skmp = " ,NMSKMPNEN "; 
+        }
+
 
         // echo "akuns : ".$kdakun;
-        $query = " SELECT SUM(case when month(tanggal)<'$tanggal' then jumlah else 0 end) as jml_lalu, SUM(case when month(tanggal)='$tanggal' then jumlah else 0 end) as jumlah FROM rabview, volume, satuan WHERE concat(kdgiat, kdoutput, kdsoutput, kdkmpnen,  kdskmpnen) LIKE '$idrkakl%' ";
+        $query = " SELECT SUM(case when month(tanggal)<'$tanggal' then jumlah else 0 end) as jml_lalu, SUM(case when month(tanggal)='$tanggal' then jumlah else 0 end) as jumlah FROM rabview WHERE kdgiat LIKE '%$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp;
         // print_r($query);
         
         $res = $this->query($query);
