@@ -327,56 +327,88 @@
       
     }
 
-    public function save51($data){
-      $direktorat = $data['direktorat'];
-      $tahun = $data['tahun'];
-      $prog = $data['prog'];
-      $output = $data['output'];
-      $soutput = $data['soutput'];
-      $komp = $data['komp'];
-      $skomp = $data['skomp'];
-      $akun = $data['akun'];
-      $deskripsi = $data['deskripsi'];
-      $value = $data['jumlah'];
-      $t = explode("/", $data['tanggal']);
-      $tgl=$t[2].'-'.$t[1].'-'.$t[0];
-      $t2         = explode("/", $data['tanggal_akhir']);
-      $tgl_akhir  = $t2[2].'-'.$t2[1].'-'.$t2[0];
-
-      $query      = "INSERT INTO rabfull SET
-        thang         = '$tahun',
-        kdprogram     = '$prog',
-        kdgiat        = '$direktorat',
-        kdoutput      = '$output',
-        kdsoutput     = '$soutput',
-        kdkmpnen      = '$komp',
-        kdskmpnen     = '$skomp',
-        kdakun        = '$akun',
-        deskripsi     = '$deskripsi',
-        tanggal       = '$tgl',
-        tanggal_akhir = '$tgl_akhir',
-        value         = '$value',
-        status        = '0'
-      ";
-      $result = $this->query($query);
-      return $result;
-    }
-
     public function edit($data){
       $idview = $data['idview'];
-      unset($data['idview']);
-      unset($data['idrkakl']);
-      $t = explode("/", $data['tanggal']);
-      $data['tanggal'] = $t[2].'-'.$t[1].'-'.$t[0];
-      $t2         = explode("/", $data['tanggal_akhir']);
-      $data['tanggal_akhir']  = $t2[2].'-'.$t2[1].'-'.$t2[0];
-
-      $setdata = $this->setdata($data);
-
-      $query      = "UPDATE rabview SET
-        ".$setdata." WHERE id = '".$idview."'";
+      $query = "SELECT jumlah, idtriwulan from rabview where id = '".$idview."'";
       $result = $this->query($query);
-      return $result;
+      $rabview = $this->fetch_array($result);
+      $totallama = $rabview['jumlah'];
+      $idtriwulan = $rabview['idtriwulan'];
+
+      $pecahid = explode(".", $data['idrkakl']);
+      $countarr = count($pecahid);
+      unset($pecahid[$countarr-1]);
+      unset($pecahid[$countarr-2]);
+      $idrkakl = implode(".", $pecahid);
+
+      $query = "SELECT COUNT(IDRKAKL) as banyak, GROUP_CONCAT(IDRKAKL) as grupid, SUM(JUMLAH) as `JUMLAH`, SUM(TRIWULAN1) as `TRIWULAN1`, SUM(TRIWULAN2) as `TRIWULAN2`, SUM(TRIWULAN3) as `TRIWULAN3`, SUM(TRIWULAN4) as `TRIWULAN4` FROM rkakl_full 
+                WHERE IDRKAKL LIKE '".$idrkakl."%' GROUP BY KDSKMPNEN ";
+      $result = $this->query($query);
+      while ($jumlah = $this->fetch_array($result)) {
+        $jumrkakl['banyak']    = $jumlah['banyak'];
+        $jumrkakl['grupid']    = $jumlah['grupid'];
+        $jumrkakl['jumlah']    = $jumlah['JUMLAH'];
+        $jumrkakl['triwulan1'] = $jumlah['TRIWULAN1'];
+        $jumrkakl['triwulan2'] = $jumlah['TRIWULAN2'];
+        $jumrkakl['triwulan3'] = $jumlah['TRIWULAN3'];
+        $jumrkakl['triwulan4'] = $jumlah['TRIWULAN4'];
+      }
+      $pagu = $jumrkakl['jumlah'] + $jumrkakl['triwulan1'] + $jumrkakl['triwulan2'] + $jumrkakl['triwulan3'] + $jumrkakl['triwulan4'] - $totallama;
+      $realisasi  = explode(".", $data['jumlah']);
+      $realisasi  = implode("", $realisasi);
+      if ($pagu < $realisasi) {
+        return 0;
+      }else{
+        unset($data['idview']);
+        unset($data['idrkakl']);
+        $t = explode("/", $data['tanggal']);
+        $data['tanggal'] = $t[2].'-'.$t[1].'-'.$t[0];
+        $t2         = explode("/", $data['tanggal_akhir']);
+        $data['tanggal_akhir']  = $t2[2].'-'.$t2[1].'-'.$t2[0];
+        $data['jumlah'] = $realisasi;
+        $setdata = $this->setdata($data);
+
+        $query      = "UPDATE rabview SET
+          ".$setdata." WHERE id = '".$idview."'";
+        $result = $this->query($query);
+
+        if ($idtriwulan == 1) {
+          $total = ($jumrkakl['triwulan1'] - $totallama) + $realisasi;
+          $triwulan = "TRIWULAN1 = '".$total."'";
+        }elseif ($idtriwulan == 2) {
+          $total = ($jumrkakl['triwulan2'] - $totallama) + $realisasi;
+          $triwulan = "TRIWULAN2 = '".$total."'";
+        }elseif ($idtriwulan == 3) {
+          $total = ($jumrkakl['triwulan3'] - $totallama) + $realisasi;
+          $triwulan = "TRIWULAN3 = '".$total."'";
+        }elseif ($idtriwulan == 4) {
+          $total = ($jumrkakl['triwulan4'] - $totallama) + $realisasi;
+          $triwulan = "TRIWULAN4 = '".$total."'";
+        }
+
+        $banyakitem = $jumrkakl['banyak'];
+        $totalperitem = floor($total/$banyakitem);
+        $sisaitem = $total % $banyakitem;
+        $idrkaklgrup = explode(",", $jumrkakl['grupid']);
+
+        for ($x=0; $x < $banyakitem; $x++) { 
+          $id = $idrkaklgrup[$x];
+          if ($sisaitem == 0) {
+              $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+              $result = $this->query($query);
+          }else{
+            if ($x == ($banyakitem-1)) {
+                $totalperitem = $totalperitem + $sisaitem;
+                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+                $result = $this->query($query);
+            }else{
+                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+                $result = $this->query($query);
+            }
+          }
+        }
+        return $result;
+      }
     }
 
     public function edit51($data){
