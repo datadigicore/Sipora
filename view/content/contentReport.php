@@ -13,7 +13,7 @@
       <div class="col-sm-10 col-sm-offset-1">
         <div class="nav-tabs-custom">
           <ul class="nav nav-pills nav-justified" style="border-bottom: 1px solid #f4f4f4">
-            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><b>Realisasi Daya Serap Per kegiatan</b></a></li>
+            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><b>Realisasi Anggaran dan Kinerja</b></a></li>
             <li ><a href="#tab_2" data-toggle="tab" aria-expanded="true"><b>Rekap Realisasi Daya Serap Per kegiatan</b></a></li>
             <li ><a href="#tab_3" data-toggle="tab" aria-expanded="true"><b>Rekap Total Realisasi Daya Serap</b></a></li>
           </ul>
@@ -31,7 +31,7 @@
                       </select>
                     </div>
                     </div>
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                       <label class="col-sm-3 control-label">Bulan</label>
                       <div class="col-sm-8">
                         <select style="margin:5px auto" class="form-control" id="bulan" name="bulan" onchange="" >
@@ -49,7 +49,7 @@
                           <option value="12">Desember</option>
                         </select>
                     </div>               
-                    </div> -->               
+                    </div>               
                   </div>
                 </div>
                 <div class="box-footer">
