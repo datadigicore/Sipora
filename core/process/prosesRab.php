@@ -588,12 +588,22 @@ switch ($link[3]) {
     }
     break;
   case 'edit':
-    $rab->edit($_POST);
-    $flash  = array(
-          'category' => "success",
-          'messages' => "Data Kegiatan berhasil diubah"
-        );
-    $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
+    $status = $rab->edit($_POST);
+    if ($status == 0) {
+      $flash  = array(
+            'category' => "warning",
+            'messages' => "Data Kegiatan gagal dilanjutkan karena realisasi melebihi PAGU Anggaran"
+          );
+      $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
+    }else{
+      $flash  = array(
+            'category' => "success",
+            'messages' => "Data Kegiatan berhasil diubah"
+          );
+      $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
+    }
+
+    
     break;
   case 'ajukan':
     $id_rabview = $_POST['id_rab_aju'];
