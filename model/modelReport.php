@@ -3375,9 +3375,9 @@ public function daftar_peng_riil($result,$det){
     }
 
 
-    public function realisasi_anggaran_dan_kinerja($data){
+    public function realisasi_anggaran_dan_kinerja($direktorat, $bulan){
       $nama="";
-      $sql = "SELECT IDRKAKL, KDDEPT,KDUNIT, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, NMGIAT, NMOUTPUT, NMSOUTPUT, NMKMPNEN, NMSKMPNEN, VOLKEG, SATKEG, JUMLAH from rkakl_full WHERE KDGIAT='$data' and KDOUTPUT like '%' ORDER BY IDRKAKL ASC ";
+      $sql = "SELECT IDRKAKL, KDDEPT,KDUNIT, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, NMGIAT, NMOUTPUT, NMSOUTPUT, NMKMPNEN, NMSKMPNEN, VOLKEG, SATKEG, JUMLAH from rkakl_full WHERE KDGIAT='$direktorat' and KDOUTPUT like '%' ORDER BY IDRKAKL ASC ";
       $sql_results = $this->query($sql);
 
        $objPHPExcel = new PHPExcel();
@@ -3431,8 +3431,8 @@ $default_border = array(
         $objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
         $objPHPExcel->getDefaultStyle()->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objPHPExcel->getDefaultStyle()->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(10);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
         $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(52);
         $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(16);
         $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(19);
@@ -3505,13 +3505,20 @@ $default_border = array(
       
       foreach ($sql_results as $value) {
         $jumlah_pagu +=$value[JUMLAH];
-        $id_rkakl = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN];
+        
+
         if($value[KDGIAT].".".$value[KDOUTPUT]!=$kode_output){
+          $idrkakl =$value[KDGIAT].$value[KDOUTPUT];
+          $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
+          $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+          $jumlah_pagu +=$value[JUMLAH];
           $no++;
           $cell->setCellValue('A'.$row, $no);
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT]);
           $cell->setCellValue('C'.$row, $value[NMOUTPUT]);
           $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+          $cell->setCellValue('F'.$row, $presentase_anggaran);
           $cell->setCellValue('G'.$row, $value[VOLKEG]);
           $cell->setCellValue('H'.$row, $value[SATKEG]);
           $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(true);
@@ -3520,7 +3527,12 @@ $default_border = array(
           $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
           $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
+          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
           $row++;
+
+          
           continue;
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
@@ -3533,6 +3545,8 @@ $default_border = array(
 
           $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
+          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
           $row++;
            
           continue;
@@ -3549,6 +3563,8 @@ $default_border = array(
 
           $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
+          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
           $row++;      
           continue;
         }
@@ -3559,6 +3575,8 @@ $default_border = array(
             $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
             $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
             $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
+            $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
             $row++;
             
             continue;
@@ -3798,6 +3816,31 @@ $default_border = array(
                     "jumlah" => $data['jumlah']
                     );
       return $hasil;
+    }
+      function realisasi_by_id($tanggal, $idrkakl)
+      {
+
+        // echo "akuns : ".$kdakun;
+        $query = " SELECT SUM(case when month(tanggal)<'$tanggal' then jumlah else 0 end) as jml_lalu, SUM(case when month(tanggal)='$tanggal' then jumlah else 0 end) as jumlah FROM rabview WHERE concat(kdgiat, kdoutput, kdsoutput, kdkmpnen,  kdskmpnen) LIKE '$idrkakl%' ";
+        // print_r($query);
+        
+        $res = $this->query($query);
+        if($this->num_rows($res)>0) {
+          $data = $this->fetch_array($res);
+          $data = array(
+                "jml_lalu" => $data['jml_lalu'],
+                "jumlah" => $data['jumlah']
+                ); 
+        }
+        else{
+          $data = array(
+                "jml_lalu" => 0,
+                "jumlah" => 0
+                );
+        }
+
+        
+        return $data;
     }
 
     function get_realisasi($tanggal, $kdgiat, $kdout, $kdsout, $kdkmp, $kdskmp, $kdakun)
