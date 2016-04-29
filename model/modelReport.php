@@ -3433,37 +3433,37 @@ public function daftar_peng_riil($result,$det){
               )
           )
       );
-$default_border = array(
-    'style' => PHPExcel_Style_Border::BORDER_THIN
-);
-     $two_side_border = array(
-    'borders' => array(
-        'left' => $default_border,
+          $default_border = array(
+              'style' => PHPExcel_Style_Border::BORDER_THIN
+          );
+           $two_side_border = array(
+          'borders' => array(
+              'left' => $default_border,
 
-        'right' => $default_border,
-    ));
-        $horizontal = array(
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-            )
-        );
-        $vertical = array(
-            'alignment' => array(
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-            )
-        );
-        $left = array(
-            'alignment' => array(
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-            )
-        );
-        $right = array(
-            'alignment' => array(
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-            )
-        );
+              'right' => $default_border,
+          ));
+              $horizontal = array(
+                  'alignment' => array(
+                      'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                  )
+              );
+              $vertical = array(
+                  'alignment' => array(
+                      'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                  )
+              );
+              $left = array(
+                  'alignment' => array(
+                      'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                      'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                  )
+              );
+              $right = array(
+                  'alignment' => array(
+                      'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                      'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+                  )
+              );
         $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
         $objPHPExcel->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
         $objPHPExcel->getDefaultStyle()->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
@@ -3503,7 +3503,7 @@ $default_border = array(
         $sheet->getStyle('A6:L7')->getFont()->setBold(true);
         
         // $sheet->getStyle('A5:F5')->getFont()->setBold(true);
-        $sheet->getStyle('A1:A3')->getFont()->setBold(true);
+        $sheet->getStyle('A1:A5')->getFont()->setBold(true);
         $sheet->getStyle('A1')->applyFromArray($horizontal);    
         $sheet->getStyle('A1')->applyFromArray($vertical);
         // $sheet->getStyle("A5:F5")->applyFromArray($border);
@@ -3542,27 +3542,35 @@ $default_border = array(
       
       foreach ($sql_results as $value) {
         $jumlah_pagu +=$value[JUMLAH];
-        
-
         if($value[KDGIAT].".".$value[KDOUTPUT]!=$kode_output){
-          $idrkakl =$value[KDGIAT].$value[KDOUTPUT];
-          $realisasi = $this->realisasi_by_id($bulan, $idrkakl);
-          $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
-          $jumlah_pagu +=$value[JUMLAH];
+          $jumlah_pagu          +=$value[JUMLAH];
+          $idrkakl              =$value[KDGIAT].$value[KDOUTPUT];
+          $realisasi            = $this->realisasi_by_id($bulan, $idrkakl);
+          $jumlah_realisasi     +=$realisasi["jumlah"];
+          $presentase_anggaran  = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+          $jumlah_pagu          +=$value[JUMLAH];
           $no++;
           $cell->setCellValue('A'.$row, $no);
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT]);
           $cell->setCellValue('C'.$row, $value[NMOUTPUT]);
           $cell->setCellValue('D'.$row, $value[JUMLAH]);
+
           if($realisasi["jumlah"]>0){            
             $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
           }
           else{
             $cell->setCellValue('E'.$row, 0);
           }
+
           $cell->setCellValue('F'.$row, $presentase_anggaran);
           $cell->setCellValue('G'.$row, $value[VOLKEG]);
           $cell->setCellValue('H'.$row, $value[SATKEG]);
+          if($presentase_anggaran>99){
+            $cell->setCellValue('L'.$row, "Target Output Tercapai");
+          }
+          else{
+            $cell->setCellValue('L'.$row, "Target Output Tidak Tercapai");
+          }
           $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(true);
           $kode_output = $value[KDGIAT].".".$value[KDOUTPUT];
           $sheet->getStyle('B'.$row)->applyFromArray($left);
@@ -3572,9 +3580,9 @@ $default_border = array(
           $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
           $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
+          $sheet->getStyle('A'.$row.':L'.$row)->getFont()->setBold(true);
+          $sheet->getStyle('C'.$row)->getFont()->setItalic(true);
           $row++;
-
-          
           continue;
         }
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
@@ -3587,9 +3595,6 @@ $default_border = array(
           $cell->setCellValue('D'.$row, $value[JUMLAH]);
           $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
           $cell->setCellValue('F'.$row, $presentase_anggaran);
-          $cell->setCellValue('G'.$row, $value[VOLKEG]);
-          $cell->setCellValue('H'.$row, $value[SATKEG]);
-
 
           $kode_suboutput = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT];
           $sheet->getStyle('B'.$row)->applyFromArray($right);
@@ -3613,8 +3618,8 @@ $default_border = array(
           $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
           $cell->setCellValue('F'.$row, $presentase_anggaran);
           if($value[VOLKEG]>0){
-            $cell->setCellValue('G'.$row, $value[VOLKEG]);
-            $cell->setCellValue('H'.$row, $value[SATKEG]);
+            // $cell->setCellValue('G'.$row, $value[VOLKEG]);
+            // $cell->setCellValue('H'.$row, $value[SATKEG]);
           }
           $kode_komponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN];
           $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
@@ -3635,7 +3640,10 @@ $default_border = array(
             $cell->setCellValue('D'.$row, $value[JUMLAH]);
             $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
             $cell->setCellValue('F'.$row, $presentase_anggaran);
-
+            if($value[VOLKEG]>0){
+              $cell->setCellValue('G'.$row, $value[VOLKEG]);
+              $cell->setCellValue('H'.$row, $value[SATKEG]);
+            }
             $kode_subkomponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN];
             $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
             $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
@@ -3652,8 +3660,12 @@ $default_border = array(
         
       
       }
-     $row++;
-
+      $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+     $cell->setCellValue('C'.$row, "TOTAL");
+     $cell->setCellValue('D'.$row, $jumlah_pagu);
+     $cell->setCellValue('E'.$row, $jumlah_realisasi);
+     $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+     $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
      $row++;
      $sheet->mergeCells('H'.$row.':J'.$row);
      $cell->setCellValue('H'.$row, "Jakarta, ");
@@ -3890,7 +3902,7 @@ $default_border = array(
       {
 
         // echo "akuns : ".$kdakun;
-        $query = " SELECT SUM(case when month(tanggal)<'$tanggal' then jumlah else 0 end) as jml_lalu, SUM(case when month(tanggal)='$tanggal' then jumlah else 0 end) as jumlah FROM rabview WHERE concat(kdgiat, kdoutput, kdsoutput, kdkmpnen,  kdskmpnen) LIKE '$idrkakl%' ";
+        $query = " SELECT SUM(case when month(tanggal)<'$tanggal' then jumlah else 0 end) as jml_lalu, SUM(case when month(tanggal)='$tanggal' then jumlah else 0 end) as jumlah FROM rabview, volume, satuan WHERE concat(kdgiat, kdoutput, kdsoutput, kdkmpnen,  kdskmpnen) LIKE '$idrkakl%' ";
         // print_r($query);
         
         $res = $this->query($query);
@@ -3898,13 +3910,17 @@ $default_border = array(
           $data = $this->fetch_array($res);
           $data = array(
                 "jml_lalu" => $data['jml_lalu'],
-                "jumlah" => $data['jumlah']
+                "jumlah" => $data['jumlah'],
+                "volume" =>$data['volume'],
+                "satuan" =>$data['satuan']
                 ); 
         }
         else{
           $data = array(
                 "jml_lalu" => 0,
-                "jumlah" => 0
+                "jumlah" => 0,
+                "volume" => 0,
+                "satuan" => 0
                 );
         }
 
