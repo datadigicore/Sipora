@@ -140,7 +140,14 @@ var table;
             {"targets" : 3},
             {"targets" : 4},
             {"targets" : 5},
-            {"targets" : 6},
+            {"targets" : 6,
+             "searchable" :false},
+            {"targets" : 7,
+             "searchable" :false},
+            {"targets" : 8,
+             "searchable" :false},
+            {"targets" : 9,
+             "searchable" :false},
           ],
           "drawCallback": function ( settings ) {
             var api  = this.api();
@@ -166,7 +173,14 @@ var table;
             {"targets" : 3},
             {"targets" : 4},
             {"targets" : 5},
-            {"targets" : 6},
+            {"targets" : 6,
+             "searchable" :false},
+            {"targets" : 7,
+             "searchable" :false},
+            {"targets" : 8,
+             "searchable" :false},
+            {"targets" : 9,
+             "searchable" :false},
           ],
           "drawCallback": function ( settings ) {
             var api = this.api();
@@ -243,7 +257,14 @@ var table;
             {"targets" : 3},
             {"targets" : 4},
             {"targets" : 5},
-            {"targets" : 6},
+            {"targets" : 6,
+             "searchable" :false},
+            {"targets" : 7,
+             "searchable" :false},
+            {"targets" : 8,
+             "searchable" :false},
+            {"targets" : 9,
+             "searchable" :false},
           ],
           "drawCallback": function ( settings ) {
             var api = this.api();
@@ -271,7 +292,14 @@ var table;
             {"targets" : 3},
             {"targets" : 4},
             {"targets" : 5},
-            {"targets" : 6},
+            {"targets" : 6,
+             "searchable" :false},
+            {"targets" : 7,
+             "searchable" :false},
+            {"targets" : 8,
+             "searchable" :false},
+            {"targets" : 9,
+             "searchable" :false},
           ],
           "drawCallback": function ( settings ) {
             var api = this.api();
