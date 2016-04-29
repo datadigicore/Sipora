@@ -197,6 +197,9 @@ switch ($link[3]) {
       $dataArray['url_rewrite'] = $base_url; 
       $tahun                    = $_POST['tahun'];
       $direktorat               = $_POST['direktorat'];
+      if (!empty($_SESSION['direktorat'])) {
+        $direktorat = $_SESSION['direktorat'];
+      }
       $column                   = array(
         array( 'db' => 'KDGIAT',      'dt' => 0 ),
         array( 'db' => 'NMGIAT',      'dt' => 1, 'formatter' => function($d,$row){
@@ -292,7 +295,7 @@ switch ($link[3]) {
               return 0;
             }
             else {
-              return number_format($row[19]);  
+              return number_format($row[9]);  
             }
           } else {
             return number_format($row[9]);
@@ -408,15 +411,15 @@ switch ($link[3]) {
           }
         }),
       );
-      $where=" KDAKUN is not null AND (KDITEM is not null and NMITEM not like '>%') ";
+      $where=" KDAKUN is not null AND (KDITEM is not null and NMITEM not like '>%')";//  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
       // if ($tahun != "") {
       //   $where = 'thang = "'.$tahun.'"';
       // }
       if ($direktorat != "") {
         if ($where == "") {
-          $where .= 'KDGIAT = "'.$direktorat.'"';
+          $where .= ' KDGIAT = "'.$direktorat.'"';
         }else{
-          $where .= 'AND KDGIAT = "'.$direktorat.'"';
+          $where .= ' AND KDGIAT = "'.$direktorat.'"';
         }
       }
       $group='KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN';
@@ -573,7 +576,7 @@ switch ($link[3]) {
   case 'save':
     $idrkakl = $_POST['idrkakl'];
     $status = $rab->save($_POST);
-    if ($status == 0) {
+    if ($status == 'error') {
       $flash  = array(
             'category' => "warning",
             'messages' => "Data Kegiatan gagal dilanjutkan karena realisasi melebihi PAGU Anggaran"

@@ -3,28 +3,28 @@
 
   class modelRab extends mysql_db {
     public function kdkegiatan(){
-      $query  = "SELECT KDGIAT, NMGIAT FROM rkakl_full WHERE KDGIAT IS NOT NULL GROUP BY KDGIAT";
+      $query  = "SELECT KDGIAT, NMGIAT FROM rkakl_full WHERE KDGIAT IS NOT NULL and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) GROUP BY KDGIAT";
       $result = $this->query($query);
       while ($fetch = $this->fetch_array($result)) {
         echo "<option value='$fetch[KDGIAT]'>$fetch[KDGIAT] -- $fetch[NMGIAT]</option>";
       }
     }
     public function kdkegiatanbyID($id){
-      $query  = "SELECT KDGIAT, NMGIAT FROM rkakl_full WHERE KDGIAT = '".$id."' GROUP BY KDGIAT";
+      $query  = "SELECT KDGIAT, NMGIAT FROM rkakl_full WHERE KDGIAT = '".$id."' and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1)  GROUP BY KDGIAT";
       $result = $this->query($query);
       while ($fetch = $this->fetch_array($result)) {
         echo "<input type='hidden' value='$fetch[KDGIAT]' /><label>($fetch[KDGIAT]) $fetch[NMGIAT]</label>";
       }
     }
     public function getYear(){
-      $query  = "SELECT thang FROM rkakl_full as r where thang != '' group by r.thang";
+      $query  = "SELECT thang FROM rkakl_full as r where thang != ''  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1)  group by r.thang";
       $result = $this->query($query);
       while ($fetch = $this->fetch_array($result)) {
         echo "<option value='$fetch[thang]'>$fetch[thang]</option>";
       }
     }
     public function getvolkeg($id){
-      $query  = "SELECT volkeg FROM rkakl_full as r where IDRKAKL = '$id'";
+      $query  = "SELECT volkeg FROM rkakl_full as r where IDRKAKL = '$id'  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
       print_r($query);
       $result = $this->query($query);
       while ($fetch = $this->fetch_array($result)) {
@@ -32,7 +32,7 @@
       }
     }
     public function getsatkeg($id){
-      $query  = "SELECT satkeg FROM rkakl_full as r where IDRKAKL = '$id'";
+      $query  = "SELECT satkeg FROM rkakl_full as r where IDRKAKL = '$id'  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
       $result = $this->query($query);
       while ($fetch = $this->fetch_array($result)) {
         echo "<input id='input-vol' value='$fetch[satkeg]' type='text' name='input-vol' />";
@@ -40,7 +40,7 @@
     }
 
     public function getinfo($id){
-      $query  = "SELECT * FROM rkakl_full as r where IDRKAKL = '$id' ";
+      $query  = "SELECT * FROM rkakl_full as r where IDRKAKL = '$id'  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
       $result = $this->query($query);
       while ($fetch = $this->fetch_array($result)) {
         echo "<tr><td valign='top'>Tahun</td> <td valign='top'>:&nbsp;</td> <td valign='top'>$fetch[THANG]</td></tr>
@@ -66,6 +66,59 @@
       while ($fetch = $this->fetch_array($result)) {
         $array = $fetch;
       }
+
+      $pecahid = explode(".", $data['idrkakl']);
+      $countarr = count($pecahid);
+      unset($pecahid[$countarr-1]);
+      unset($pecahid[$countarr-2]);
+      $idrkakl = implode(".", $pecahid);
+
+      $query = "SELECT COUNT(IDRKAKL) as banyak, GROUP_CONCAT(IDRKAKL) as grupid, SUM(JUMLAH) as `JUMLAH`, SUM(TRIWULAN1) as `TRIWULAN1`, SUM(TRIWULAN2) as `TRIWULAN2`, SUM(TRIWULAN3) as `TRIWULAN3`, SUM(TRIWULAN4) as `TRIWULAN4` FROM rkakl_full 
+                WHERE IDRKAKL LIKE '".$idrkakl."%'  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) GROUP BY KDSKMPNEN ";
+      $result = $this->query($query);
+      while ($jumlah = $this->fetch_array($result)) {
+        $jumrkakl['banyak']    = $jumlah['banyak'];
+        $jumrkakl['grupid']    = $jumlah['grupid'];
+        $jumrkakl['jumlah']    = $jumlah['JUMLAH'];
+        $jumrkakl['triwulan1'] = $jumlah['TRIWULAN1'];
+        $jumrkakl['triwulan2'] = $jumlah['TRIWULAN2'];
+        $jumrkakl['triwulan3'] = $jumlah['TRIWULAN3'];
+        $jumrkakl['triwulan4'] = $jumlah['TRIWULAN4'];
+      }
+      $realisasi  = $array['jumlah'];
+      $idtriwulan = $array['idtriwulan'];
+      if ($idtriwulan == 1) {
+        $total = $jumrkakl['triwulan1'] - $realisasi;
+      }elseif ($idtriwulan == 2) {
+        $total = $jumrkakl['triwulan2'] - $realisasi;
+      }elseif ($idtriwulan == 3) {
+        $total = $jumrkakl['triwulan3'] - $realisasi;
+      }elseif ($idtriwulan == 4) {
+        $total = $jumrkakl['triwulan4'] - $realisasi;
+      }
+
+      $banyakitem = $jumrkakl['banyak'];
+      $totalperitem = floor($total/$banyakitem);
+      $sisaitem = $total % $banyakitem;
+      $idrkaklgrup = explode(",", $jumrkakl['grupid']);
+
+      for ($x=0; $x < $banyakitem; $x++) { 
+        $id = $idrkaklgrup[$x];
+        if ($sisaitem == 0) {
+            $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
+            $result = $this->query($query);
+        }else{
+          if ($x == ($banyakitem-1)) {
+              $totalperitem = $totalperitem + $sisaitem;
+              $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
+              $result = $this->query($query);
+          }else{
+              $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."' and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
+              $result = $this->query($query);
+          }
+        }
+      }
+
       for ($i=0; $i < count($array); $i++) { 
         unset($array[$i]);
       }
@@ -228,7 +281,8 @@
       unset($pecahid[$countarr-2]);
       $idrkakl = implode(".", $pecahid);
 
-      $query = "SELECT COUNT(IDRKAKL) as banyak, GROUP_CONCAT(IDRKAKL) as grupid, SUM(JUMLAH) as `JUMLAH`, SUM(TRIWULAN1) as `TRIWULAN1`, SUM(TRIWULAN2) as `TRIWULAN2`, SUM(TRIWULAN3) as `TRIWULAN3`, SUM(TRIWULAN4) as `TRIWULAN4` FROM rkakl_full WHERE IDRKAKL LIKE '".$idrkakl."%' GROUP BY KDSKMPNEN ";
+      $query = "SELECT COUNT(IDRKAKL) as banyak, GROUP_CONCAT(IDRKAKL) as grupid, SUM(JUMLAH) as `JUMLAH`, SUM(TRIWULAN1) as `TRIWULAN1`, SUM(TRIWULAN2) as `TRIWULAN2`, SUM(TRIWULAN3) as `TRIWULAN3`, SUM(TRIWULAN4) as `TRIWULAN4` 
+            FROM rkakl_full WHERE IDRKAKL LIKE '".$idrkakl."%'  GROUP BY KDSKMPNEN ";
       $result = $this->query($query);
       while ($jumlah = $this->fetch_array($result)) {
         $jumrkakl['banyak']    = $jumlah['banyak'];
@@ -242,8 +296,9 @@
       $pagu = $jumrkakl['jumlah'] + $jumrkakl['triwulan1'] + $jumrkakl['triwulan2'] + $jumrkakl['triwulan3'] + $jumrkakl['triwulan4'];
       $realisasi  = explode(".", $data['realisasi']);
       $realisasi  = implode("", $realisasi);
+      // print_r($pagu);echo "<br>";print_r($realisasi); die;
       if ($pagu < $realisasi) {
-        return 0;
+        return 'error';
       }else{
         $idtriwulan = $data['idtriwulan'];
         $status     = $data['status'];
@@ -305,24 +360,23 @@
         $totalperitem = floor($total/$banyakitem);
         $sisaitem = $total % $banyakitem;
         $idrkaklgrup = explode(",", $jumrkakl['grupid']);
-
         for ($x=0; $x < $banyakitem; $x++) { 
           $id = $idrkaklgrup[$x];
           if ($sisaitem == 0) {
-              $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+              $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."' ";
               $result = $this->query($query);
           }else{
             if ($x == ($banyakitem-1)) {
                 $totalperitem = $totalperitem + $sisaitem;
-                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."' ";
                 $result = $this->query($query);
             }else{
-                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."' ";
                 $result = $this->query($query);
             }
           }
         }
-        return $result;
+        return 'berhasil';
       }
       
     }
@@ -341,8 +395,8 @@
       unset($pecahid[$countarr-2]);
       $idrkakl = implode(".", $pecahid);
 
-      $query = "SELECT COUNT(IDRKAKL) as banyak, GROUP_CONCAT(IDRKAKL) as grupid, SUM(JUMLAH) as `JUMLAH`, SUM(TRIWULAN1) as `TRIWULAN1`, SUM(TRIWULAN2) as `TRIWULAN2`, SUM(TRIWULAN3) as `TRIWULAN3`, SUM(TRIWULAN4) as `TRIWULAN4` FROM rkakl_full 
-                WHERE IDRKAKL LIKE '".$idrkakl."%' GROUP BY KDSKMPNEN ";
+      $query = "SELECT COUNT(IDRKAKL) as banyak, GROUP≤≤_CONCAT(IDRKAKL) as grupid, SUM(JUMLAH) as `JUMLAH`, SUM(TRIWULAN1) as `TRIWULAN1`, SUM(TRIWULAN2) as `TRIWULAN2`, SUM(TRIWULAN3) as `TRIWULAN3`, SUM(TRIWULAN4) as `TRIWULAN4` FROM rkakl_full 
+                WHERE IDRKAKL LIKE '".$idrkakl."%'   GROUP BY KDSKMPNEN ";
       $result = $this->query($query);
       while ($jumlah = $this->fetch_array($result)) {
         $jumrkakl['banyak']    = $jumlah['banyak'];
@@ -394,15 +448,15 @@
         for ($x=0; $x < $banyakitem; $x++) { 
           $id = $idrkaklgrup[$x];
           if ($sisaitem == 0) {
-              $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+              $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'  ";
               $result = $this->query($query);
           }else{
             if ($x == ($banyakitem-1)) {
                 $totalperitem = $totalperitem + $sisaitem;
-                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'  ";
                 $result = $this->query($query);
             }else{
-                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'";
+                $query = "UPDATE rkakl_full set TRIWULAN".$idtriwulan." = '".$totalperitem."' WHERE IDRKAKL = '".$id."'  ";
                 $result = $this->query($query);
             }
           }
