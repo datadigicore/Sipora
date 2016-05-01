@@ -3417,7 +3417,7 @@ public function daftar_peng_riil($result,$det){
 
     public function realisasi_anggaran_dan_kinerja($direktorat, $bulan){
       $nama="";
-      $sql = "SELECT IDRKAKL, KDDEPT,KDUNIT, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, NMGIAT, NMOUTPUT, NMSOUTPUT, NMKMPNEN, NMSKMPNEN, VOLKEG, SATKEG, JUMLAH from rkakl_full WHERE KDGIAT='$direktorat' and KDOUTPUT like '%' ORDER BY IDRKAKL ASC ";
+      $sql = "SELECT IDRKAKL, KDDEPT,KDUNIT, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, NMGIAT, NMOUTPUT, NMSOUTPUT, NMKMPNEN, NMSKMPNEN, VOLKEG, SATKEG from rkakl_full WHERE KDGIAT='$direktorat' and KDOUTPUT like '%' ORDER BY IDRKAKL ASC ";
       $sql_results = $this->query($sql);
 
        $objPHPExcel = new PHPExcel();
@@ -3552,15 +3552,15 @@ public function daftar_peng_riil($result,$det){
           $idrkakl              =$value[KDGIAT].$value[KDOUTPUT];
           $realisasi            = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], "", "", "", "");
           $jumlah_realisasi     +=$realisasi["jumlah"];
-          $presentase_anggaran  = ($realisasi["jumlah"]/$value[JUMLAH])*100;
-          $jumlah_pagu          +=$value[JUMLAH];
-          $jml_presentase_angg+=$presentase_anggaran;
-          $jml_presentase_vol+=$presentase_volume;
+          $presentase_anggaran  = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+          $jumlah_pagu          +=$realisasi["pagu"];
+          $jml_presentase_angg  +=$presentase_anggaran;
+          $jml_presentase_vol   +=$presentase_volume;
           $no++;
           $cell->setCellValue('A'.$row, $no);
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT]);
           $cell->setCellValue('C'.$row, $value[NMOUTPUT]);
-          $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $cell->setCellValue('D'.$row, $realisasi["pagu"]);
 
           if($realisasi["jumlah"]>0){            
             $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
@@ -3595,11 +3595,11 @@ public function daftar_peng_riil($result,$det){
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
           $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT];
           $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], "", "");
-          $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+          $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
 
           $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
           $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
-          $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $cell->setCellValue('D'.$row, $realisasi["pagu"]);
           $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
           $cell->setCellValue('F'.$row, $presentase_anggaran);
 
@@ -3618,10 +3618,10 @@ public function daftar_peng_riil($result,$det){
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN]!=$kode_komponen and $value[KDKMPNEN]!=""){
           $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN];
           $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN], "");
-          $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+          $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
 
           $cell->setCellValue('C'.$row, $value[KDKMPNEN]." ".$value[NMKMPNEN]);
-          $cell->setCellValue('D'.$row, $value[JUMLAH]);
+          $cell->setCellValue('D'.$row, $realisasi["pagu"]);
           $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
           $cell->setCellValue('F'.$row, $presentase_anggaran);
           if($value[VOLKEG]>0){
@@ -3641,10 +3641,10 @@ public function daftar_peng_riil($result,$det){
         if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN]!=$kode_subkomponen and $value[KDSKMPNEN]!=""){
             $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN].$value[KDSKMPNEN];
             $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN],$value[KDSKMPNEN]);
-            $presentase_anggaran = ($realisasi["jumlah"]/$value[JUMLAH])*100;
+            $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
 
             $cell->setCellValue('C'.$row, $value[KDSKMPNEN]." ".$value[NMSKMPNEN]);
-            $cell->setCellValue('D'.$row, $value[JUMLAH]);
+            $cell->setCellValue('D'.$row, $realisasi["pagu"]);
             $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
             $cell->setCellValue('F'.$row, $presentase_anggaran);
             if($value[VOLKEG]>0){
@@ -3927,14 +3927,17 @@ public function daftar_peng_riil($result,$det){
 
 
         // echo "akuns : ".$kdakun;
-        $query = " SELECT SUM(case when month(tanggal)<'$tanggal' then jumlah else 0 end) as jml_lalu, SUM(case when month(tanggal)='$tanggal' then jumlah else 0 end) as jumlah FROM rabview WHERE kdgiat LIKE '%$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp;
+        $query = " SELECT SUM(case when month(tanggal)<='$tanggal' then jumlah else 0 end) as jumlah FROM rabview WHERE kdgiat LIKE '%$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp;
+        $query_pagu = " SELECT SUM(JUMLAH) as jumlah FROM rkakl_full WHERE kdgiat like '%$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp;
         // print_r($query);
         
         $res = $this->query($query);
+        $res_pagu = $this->query($query_pagu);
+        $data_pagu = $this->fetch_array($res_pagu);
         if($this->num_rows($res)>0) {
           $data = $this->fetch_array($res);
           $data = array(
-                "jml_lalu" => $data['jml_lalu'],
+                "pagu" => $data_pagu['jumlah'],
                 "jumlah" => $data['jumlah'],
                 "volume" =>$data['volume'],
                 "satuan" =>$data['satuan']
@@ -3942,7 +3945,7 @@ public function daftar_peng_riil($result,$det){
         }
         else{
           $data = array(
-                "jml_lalu" => 0,
+                "pagu" => 0,
                 "jumlah" => 0,
                 "volume" => 0,
                 "satuan" => 0
