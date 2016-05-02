@@ -109,97 +109,143 @@
 </div>
 <script>
 var table;
-
-  $(function () {
-     $( "#datepicker" ).datepicker({
-        changeMonth: true,
-        changeYear: true,
-        format: 'dd/mm/yyyy'
-      });
-
-    var tahun = $('#tahun2').val();
-    var direktorat = $('#direktorat2').val();
-            
+  $(document).ready(function() {
     table = $("#table").DataTable({
+      "info":true,
+        "oLanguage": {
+          "sInfoFiltered": ""
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
         "ajax": {
-          "url": "<?php echo $base_process;?>kegiatan/table-rkakl",
+          "url": "<?php echo $url_rewrite;?>process/kegiatan/table-rkakl",
           "type": "POST",
-          "data": {'tahun':tahun,
-                    'direktorat':direktorat }
+          "data": { }
         },
         <?php if ($_SESSION['direktorat'] == "") { ?>
           "columnDefs" : [
             {"targets" : 0,
-              "visible" : false},
+             "visible" : false},
+            {"targets" : 1},
+            {"targets" : 2},
+            {"targets" : 3},
+            {"targets" : 4},
+            {"targets" : 5},
+            {"targets" : 6},
+          ],
+        <?php }else{?>
+          "columnDefs" : [
+            {"targets" : 0,
+             "visible" : false},
             {"targets" : 1,
               "visible" : false},
             {"targets" : 2},
             {"targets" : 3},
             {"targets" : 4},
             {"targets" : 5},
-            {"targets" : 6,
-             "searchable" :false},
-            {"targets" : 7,
-             "searchable" :false},
-            {"targets" : 8,
-             "searchable" :false},
-            {"targets" : 9,
-             "searchable" :false},
+            {"targets" : 6},
           ],
-          "drawCallback": function ( settings ) {
-            var api  = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last = null;
-            api.column(1, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-                    );
-                    last = group;
-                }
-            } );
-        },
-        <?php }else{?>
-          "columnDefs" : [
-            {"targets" : 0,
-              "visible" : false},
-            {"targets" : 1,
-              "visible" : false},
-            {"targets" : 2,
-              "visible" : false},
-            {"targets" : 3},
-            {"targets" : 4},
-            {"targets" : 5},
-            {"targets" : 6,
-             "searchable" :false},
-            {"targets" : 7,
-             "searchable" :false},
-            {"targets" : 8,
-             "searchable" :false},
-            {"targets" : 9,
-             "searchable" :false},
-          ],
-          "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
- 
-            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-                    );
- 
-                    last = group;
-                }
-            } );
-        },
         <?php } ?>
-        "order": [[ 0, "desc" ]]        
+        "order": [[ 0, "desc" ]]
     });
+  });
+  $(function () {
+     // $( "#datepicker" ).datepicker({
+     //    changeMonth: true,
+     //    changeYear: true,
+     //    format: 'dd/mm/yyyy'
+     //  });
+
+    // var tahun = $('#tahun2').val();
+    // var direktorat = $('#direktorat2').val();
+
+  /*.rowGrouping({
+                iGroupingColumnIndex: 0,
+                sGroupingColumnSortDirection: "asc",
+                iGroupingOrderByColumnIndex: 0,
+                                            bExpandableGrouping: true,
+      });*/
+    // table = $("#table").DataTable({
+    //     "processing": true,
+    //     "serverSide": true,
+    //     "scrollX": true,
+    //     "ajax": {
+    //       "url": "<?php echo $base_process;?>kegiatan/table-rkakl",
+    //       "type": "POST",
+    //       "data": {'tahun':tahun,
+    //                 'direktorat':direktorat }
+    //     },
+    //     <?php if ($_SESSION['direktorat'] == "") { ?>
+    //       "columnDefs" : [
+    //         {"targets" : 0,
+    //           "visible" : false},
+    //         {"targets" : 1,
+    //           "visible" : false},
+    //         {"targets" : 2},
+    //         {"targets" : 3},
+    //         {"targets" : 4},
+    //         {"targets" : 5},
+    //         {"targets" : 6,
+    //          "searchable" :false},
+    //         {"targets" : 7,
+    //          "searchable" :false},
+    //         {"targets" : 8,
+    //          "searchable" :false},
+    //         {"targets" : 9,
+    //          "searchable" :false},
+    //       ],
+    //       "drawCallback": function ( settings ) {
+    //         var api  = this.api();
+    //         var rows = api.rows( {page:'current'} ).nodes();
+    //         var last = null;
+    //         api.column(1, {page:'current'} ).data().each( function ( group, i ) {
+    //             if ( last !== group ) {
+    //                 $(rows).eq( i ).before(
+    //                     '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
+    //                 );
+    //                 last = group;
+    //             }
+    //         } );
+    //     },
+    //     <?php }else{?>
+    //       "columnDefs" : [
+    //         {"targets" : 0,
+    //           "visible" : false},
+    //         {"targets" : 1,
+    //           "visible" : false},
+    //         {"targets" : 2,
+    //           "visible" : false},
+    //         {"targets" : 3},
+    //         {"targets" : 4},
+    //         {"targets" : 5},
+    //         {"targets" : 6,
+    //          "searchable" :false},
+    //         {"targets" : 7,
+    //          "searchable" :false},
+    //         {"targets" : 8,
+    //          "searchable" :false},
+    //         {"targets" : 9,
+    //          "searchable" :false},
+    //       ],
+    //       "drawCallback": function ( settings ) {
+    //         var api = this.api();
+    //         var rows = api.rows( {page:'current'} ).nodes();
+    //         var last=null;
+ 
+    //         api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+    //             if ( last !== group ) {
+    //                 $(rows).eq( i ).before(
+    //                     '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
+    //                 );
+ 
+    //                 last = group;
+    //             }
+    //         } );
+    //     },
+    //     <?php } ?>
+    //     "order": [[ 0, "desc" ]]        
+    // });
     
     $(document).on("click", "#btn-vol", function (){
       var tr = $(this).closest('tr');
@@ -211,113 +257,93 @@ var table;
       $("#satuan").val(satuan);
 
     });
-    $(document).on("click", "#btn-sah", function (){
-      var tr = $(this).closest('tr');
-      tabrow = table.row(tr);
-      $("#id_rab_sah").val(tabrow.data()[0]);
-    });
-    $(document).on("click", "#btn-rev", function (){
-      var tr = $(this).closest('tr');
-      tabrow = table.row(tr);
-      $("#id_rab_rev").val(tabrow.data()[0]);
-    });
-    $(document).on("click", "#btn-pesan", function (){
-      var tr = $(this).closest('tr');
-      tabrow = table.row(tr);
-      $("#vpesan").val(tabrow.data()[12]);
-    });
-    $(document).on("click", "#btn-del", function (){
-      var tr = $(this).closest('tr');
-      tabrow = table.row(tr);
-      $("#id_rab_del").val(tabrow.data()[0]);
-    });
   });
   
-  function search(){
-    var tahun = $('#tahun2').val();
-    var direktorat = $('#direktorat2').val();
-    table.destroy();
-    table = $("#table").DataTable({
-        "processing": true,
-        "serverSide": true,
-        "scrollX": true,
-        "ajax": {
-          "url": "<?php echo $base_process;?>kegiatan/table-rkakl",
-          "type": "POST",
-          "data": {'tahun':tahun,
-                    'direktorat':direktorat }
-        },
-        <?php if ($_SESSION['direktorat'] == "") { ?>
-          "columnDefs" : [
-            {"targets" : 0,
-              "visible" : false},
-            {"targets" : 1,
-              "visible" : false},
-            {"targets" : 2},
-            {"targets" : 3},
-            {"targets" : 4},
-            {"targets" : 5},
-            {"targets" : 6,
-             "searchable" :false},
-            {"targets" : 7,
-             "searchable" :false},
-            {"targets" : 8,
-             "searchable" :false},
-            {"targets" : 9,
-             "searchable" :false},
-          ],
-          "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
+  // function search(){
+  //   var tahun = $('#tahun2').val();
+  //   var direktorat = $('#direktorat2').val();
+  //   table.destroy();
+  //   table = $("#table").DataTable({
+  //       "processing": true,
+  //       "serverSide": true,
+  //       "scrollX": true,
+  //       "ajax": {
+  //         "url": "<?php echo $url_rewrite;?>api/api_rabrkakl.php",
+  //         "type": "POST",
+  //         "data": {'tahun':tahun,
+  //                   'direktorat':direktorat }
+  //       },
+  //       <?php if ($_SESSION['direktorat'] == "") { ?>
+  //         "columnDefs" : [
+  //           {"targets" : 0,
+  //             "visible" : false},
+  //           {"targets" : 1,
+  //             "visible" : false},
+  //           {"targets" : 2},
+  //           {"targets" : 3},
+  //           {"targets" : 4},
+  //           {"targets" : 5},
+  //           {"targets" : 6,
+  //            "searchable" :false},
+  //           {"targets" : 7,
+  //            "searchable" :false},
+  //           {"targets" : 8,
+  //            "searchable" :false},
+  //           {"targets" : 9,
+  //            "searchable" :false},
+  //         ],
+  //         "drawCallback": function ( settings ) {
+  //           var api = this.api();
+  //           var rows = api.rows( {page:'current'} ).nodes();
+  //           var last=null;
  
-            api.column(1, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-                    );
+  //           api.column(1, {page:'current'} ).data().each( function ( group, i ) {
+  //               if ( last !== group ) {
+  //                   $(rows).eq( i ).before(
+  //                       '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
+  //                   );
  
-                    last = group;
-                }
-            } );
-        },
-        <?php }else{?>
-          "columnDefs" : [
-            {"targets" : 0,
-              "visible" : false},
-            {"targets" : 1,
-              "visible" : false},
-            {"targets" : 2,
-              "visible" : false},
-            {"targets" : 3},
-            {"targets" : 4},
-            {"targets" : 5},
-            {"targets" : 6,
-             "searchable" :false},
-            {"targets" : 7,
-             "searchable" :false},
-            {"targets" : 8,
-             "searchable" :false},
-            {"targets" : 9,
-             "searchable" :false},
-          ],
-          "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
+  //                   last = group;
+  //               }
+  //           } );
+  //       },
+  //       <?php }else{?>
+  //         "columnDefs" : [
+  //           {"targets" : 0,
+  //             "visible" : false},
+  //           {"targets" : 1,
+  //             "visible" : false},
+  //           {"targets" : 2,
+  //             "visible" : false},
+  //           {"targets" : 3},
+  //           {"targets" : 4},
+  //           {"targets" : 5},
+  //           {"targets" : 6,
+  //            "searchable" :false},
+  //           {"targets" : 7,
+  //            "searchable" :false},
+  //           {"targets" : 8,
+  //            "searchable" :false},
+  //           {"targets" : 9,
+  //            "searchable" :false},
+  //         ],
+  //         "drawCallback": function ( settings ) {
+  //           var api = this.api();
+  //           var rows = api.rows( {page:'current'} ).nodes();
+  //           var last=null;
  
-            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-                    );
+  //           api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+  //               if ( last !== group ) {
+  //                   $(rows).eq( i ).before(
+  //                       '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
+  //                   );
  
-                    last = group;
-                }
-            } );
-        },
-        <?php } ?>
-        "order": [[ 0, "desc" ]]        
-    });
-  }
+  //                   last = group;
+  //               }
+  //           } );
+  //       },
+  //       <?php } ?>
+  //       "order": [[ 0, "desc" ]]        
+  //   });
+  // }
 </script>
