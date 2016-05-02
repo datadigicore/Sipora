@@ -146,7 +146,6 @@
   </div>
 </div>
 <script>
-
   $(function () {
     $('#selectbtn').click(function () {
       $("#fileimport").trigger('click');
@@ -166,31 +165,25 @@
       },
       "processing": true,
       "serverSide": true,
-      "scrollX": true,
-      "ajax": {
-        "url": "<?php echo $base_process;?>anggaran/table",
+      "scrollX"   : true,
+      "ajax"      : {
+        "url" : "<?php echo $base_process;?>anggaran/table",
         "type": "POST"
       },
       "columnDefs" : [
         {"targets" : 0,
          "visible" : false},
-        {"targets" : 1},
-        {"targets" : 2},
-        {"targets" : 3},
-        {"targets" : 4},
-        {"targets" : 5},
         {"targets" : 6,
          "visible" : false},
       ],
-      "order": [[ 0, "desc" ]]
+      "order" : [[0, "desc"]]
     });
     $('#tanggal, #tanggald').mask('00/00/0000');
     $("#tanggal, #tanggald").datepicker({ 
       changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd/mm/yy' 
+      changeYear : true,
+      dateFormat : 'dd/mm/yy' 
     });
-
     $(document).on("click", "#btn-edt", function (){
       var tr = $(this).closest('tr');
       tabrow = table.row(tr);
@@ -201,7 +194,6 @@
       var tr = $(this).closest('tr');
       tabrow = table.row(tr);
       $("#vtglimport").val('Tahun Anggaran : '+tabrow.data()[1]);
-      // alert('no 2 : '+tabrow.data()[2])
       $("#vtanggal").val(tabrow.data()[2]);
       $("#vno_dipa").val(tabrow.data()[3]);
       $("#vpesan").val(tabrow.data()[8]);
@@ -209,11 +201,11 @@
     $(document).on("click", "#btn-viw", function (){
       var tr = $(this).closest('tr');
       tabrow = table.row(tr);
-      var f = document.createElement('form');
+      var f  = document.createElement('form');
       f.setAttribute('method','post');
       f.setAttribute('target','_blank');
       f.setAttribute('action','<?php echo $url_rewrite;?>process/anggaran/view');
-      var i = document.createElement('input');
+      var i  = document.createElement('input');
       i.setAttribute('type','hidden');
       i.setAttribute('name','filename');
       i.setAttribute('value', tabrow.data()[6]);

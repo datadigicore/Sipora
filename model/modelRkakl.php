@@ -293,13 +293,13 @@
         }
         $string .= "('".$RKAKL[IDRKAKL]."','".$RKAKL[THANG]."','".$RKAKL[KDDEPT]."','".$RKAKL[KDUNIT]."','".$RKAKL[KDPROG]."','".$RKAKL[KDGIAT]."','".$RKAKL[NMGIAT]."','".$RKAKL[KDOUTP]."','".$RKAKL[NMOUTP]."','".$RKAKL[KDSOUT]."','".$RKAKL[NMSOUT]."','".$RKAKL[KDKMPN]."','".$RKAKL[NMKMPN]."','".$RKAKL[KDSKMP]."','".$RKAKL[NMSKMP]."','".$RKAKL[KDAKUN]."','".$RKAKL[NMAKUN]."','".$RKAKL[KDITEM]."','".$RKAKL[NMITEM]."','".$RKAKL[VOLUME]."','".$RKAKL[SATUAN]."','".$RKAKL[HRGSAT]."','".$RKAKL[JUMLAH]."','".$RKAKL[REALISASI]."','".$RKAKL[USULAN]."','".$RKAKL[STDANA]."','".$RKAKL[STATUS]."','".$RKAKL[VERSI]."'),";
       }
-      $string = str_replace("''", "NULL", $string);
+      $string = str_replace("''", "'-'", $string);
       $query  = substr($string,0,-1);
       $result = $this->query($query);
       if ($tahun == date("Y") && $RKAKL[VERSI] != 0) {
         $this->cekRevisiStatus($tahun, $RKAKL[VERSI]);
       }
-      $query = "DELETE FROM rkakl_full WHERE KDITEM IS NULL";
+      $query = "DELETE FROM rkakl_full WHERE KDITEM IS '-'";
       $result= $this->query($query);
       $query = "DELETE FROM rkakl_full WHERE NMITEM LIKE '>%'";
       $result= $this->query($query);

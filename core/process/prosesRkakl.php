@@ -1,5 +1,6 @@
 <?php
 switch ($link[3]) {
+
   case 'import':
     ini_set('memory_limit', '-1');
     $thang    = $purifier->purify($_POST['thang']);
@@ -86,67 +87,23 @@ switch ($link[3]) {
       $utility->location("content/anggaran", $flash);
     }
   break;
+
   case 'table':
-    $table      = "rkakl_view";
+    $tableKey   = "rkakl_view";
     $primaryKey = "id";
-    $columns    = array(
-      array( 'db' => 'id',      'dt' => 0 ),
-      array( 'db' => 'tahun',   'dt' => 1 ),
-      array( 'db' => 'tanggal',  'dt' => 2, 'formatter' => function( $d, $row ) {
-          $arrbulan = array(
-              '01'=>"Januari", '02'=>"Februari", '03'=>"Maret", '04'=>"April", '05'=>"Mei", '06'=>"Juni",
-              '07'=>"Juli", '08'=>"Agustus", '09'=>"September", '10'=>"Oktober", '11'=>"November", '12'=>"Desember",
-          );
-          $pecahtgl1 = explode("-", $d);
-          $tanggal = $pecahtgl1[2].' - '.$arrbulan[$pecahtgl1[1]].' - '.$pecahtgl1[0];
-            return $tanggal;
-          }
-      ),
-      array( 'db' => 'no_dipa',  'dt' => 3),
-      array( 'db' => 'status', 'dt' => 4, 'formatter' => function($d,$row){ 
-        if($d==1){
-          return '<i>Digunakan</i> - Revisi '.$row[7];
-        }
-        if($d==2){
-          return '<i>Disusun</i> - Revisi '.$row[7];
-        }
-        else {
-          return '<i>Direvisi</i> - Revisi '.$row[7];
-        }
-      }),
-      array( 'db' => 'status',  'dt' => 5, 'formatter' => function($d,$row,$data){ 
-        if($d==1){
-          return  '<div class="col-md-12">'.
-                    '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
-                    '<a id="btn-edt" href="#editModal" class="btn btn-flat btn-success btn-sm col-md-6" data-toggle="modal"><i class="fa fa-edit"></i> Revisi</a>'.
-                  '</div>';
-        }
-        else if($d==2 && $row[4]==1){
-          return  '<div class="col-md-12">'.
-                    '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
-                    '<a id="btn-edt" href="#editModal" class="btn btn-flat btn-success btn-sm col-md-6" data-toggle="modal"><i class="fa fa-edit"></i> Revisi</a>'.
-                  '</div>';
-        }
-        else if($d==2 && $data==$row[1]){
-          return  '<div class="col-md-12">'.
-                    '<a id="btn-act" class="btn btn-flat btn-info btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> Aktifkan</a>'.
-                    '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
-                    '<a id="btn-edt" href="#editModal" class="btn btn-flat btn-success btn-sm col-md-6" data-toggle="modal"><i class="fa fa-edit"></i> Revisi</a>'.
-                  '</div>';
+    $columns    = array('id','tahun','tanggal','no_dipa','status','status','filesave');
+    $formatter  = array('5' => 'status', 'formatter' => function($d,$row){ 
+        if($d==0){
+          return '<i>Belum Diajukan</i>';
         }
         else{
-          return  '<div class="col-md-12">'.
-                    '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
-                    '<a id="btn-pesan" href="#lihatpesan" class="btn btn-flat btn-warning btn-sm col-md-6" data-toggle="modal"><i class="fa fa-envelope"></i> Pesan</a>'.
-                  '</div>';
-        }
-      }),
-      array( 'db' => 'filesave',  'dt' => 6),
-      array( 'db' => 'versi',  'dt' => 7),
-      array( 'db' => 'pesan',  'dt' => 8),
-    );
-    $datatable->get_rkakl_view($table, $primaryKey, $columns);
+          return '<i>Telah Diajukan</i>';
+        }});
+    $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+        FROM rkakl_view";
+    $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter);
   break;
+
   case 'view':
     ini_set('memory_limit', '-1');
     $filesave = $purifier->purify($_POST['filename']);
@@ -174,8 +131,10 @@ switch ($link[3]) {
       </html>';
     }
   break;
+
   default:
     $utility->location(".");
   break;
+
 }
 ?>
