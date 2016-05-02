@@ -299,7 +299,7 @@
       if ($tahun == date("Y") && $RKAKL[VERSI] != 0) {
         $this->cekRevisiStatus($tahun, $RKAKL[VERSI]);
       }
-      $query = "DELETE FROM rkakl_full WHERE KDITEM IS '-'";
+      $query = "DELETE FROM rkakl_full WHERE KDITEM = '-'";
       $result= $this->query($query);
       $query = "DELETE FROM rkakl_full WHERE NMITEM LIKE '>%'";
       $result= $this->query($query);

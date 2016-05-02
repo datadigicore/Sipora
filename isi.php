@@ -25,7 +25,7 @@
           include "./view/content/contentRab.php";
         break;
         case 'kegiatan-tambah':   
-          $idrkakl = $link[3];   
+          $idrkakl = $link[3];
           include "./view/content/contentRabTambah.php";
         break;
         case 'kegiatan-edit':   

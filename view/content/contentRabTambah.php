@@ -19,58 +19,61 @@
             <h3 class="box-title" style="margin-top:6px;">Tambah RAB</h3>
           </div>
           <form action="<?php echo $base_process;?>kegiatan/save" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="idrkakl" value="<?php echo $idrkakl;?>">
+            <input type="hidden" id="idrkakl" name="idrkakl" value="<?php echo $idrkakl;?>">
             <div class="row">
               <div class="col-md-10 col-md-offset-1">    
                 <div class="box-body well">
                   <div class="form-group">
                     <label>Tahun Anggaran</label>
-                    <select class="form-control" name="tahun" id="tahun" required>
-                        <?php $rab->getYear(); ?>
+                    <select class="form-control" name="thang" id="tahun" required>
                     </select>
                   </div>
-                  <div class="form-group">
+                  <div id="tri" class="form-group">
                     <label>Status Triwulan</label>
-                    <?php $triwulan->triwulanActive(); ?>
-                  </div>
-                  <input type="hidden" id="prog" name="prog" value="01" />
-                  <?php if ($_SESSION['direktorat'] == "") { ?>
-                  <div class="form-group">
-                    <label>Kode Kegiatan</label>
-                    <select class="form-control" id="direktorat" name="direktorat" onchange="chout()">
-                          <?php $rab->kdkegiatan(); ?>
+                    <select class="form-control" name="idtriwulan" id="idtriwulan" required>
                     </select>
                   </div>
+
+                  <!-- STATIC KDPROGRAM -->
+                  <div class="form-group">
+                    <label>Program</label>
+                    <select class="form-control" id="program" name="kdprogram" required>
+                    </select>
+                  </div>
+
+                  <?php if ($_SESSION['direktorat'] == "") { ?>
+                  <!-- <div class="form-group">
+                    <label>Kode Kegiatan</label>
+                    <select class="form-control" id="kdgiat" name="kdgiat" onchange="chout()">
+                      <option value="">-- Pilih Kode Kegiatan --</option>
+                    </select>
+                  </div> -->
                   <?php } else{ ?>
-                  <input type="hidden" id="direktorat" name="direktorat" value="<?php echo $_SESSION['direktorat']; ?>" />
+                  <input type="hidden" id="kdgiat" name="kdgiat" value="<?php echo $_SESSION['direktorat']; ?>" />
                   <?php } ?>
                   <div class="form-group">
                     <label>Output</label>
-                    <select class="form-control" id="output" name="output" onchange="chout()" required>
-                      <?php $rab->getout($idrkakl);?>
+                    <select class="form-control" id="output" name="kdoutput" required>
                     </select>
                   </div>
                   <div class="form-group">
                     <label>Suboutput</label>
-                    <select class="form-control" id="soutput" name="soutput" onchange="chsout()" >
-                      <?php $rab->getsout($idrkakl);?>
+                    <select class="form-control" id="soutput" name="kdsoutput"  >
                     </select>
                   </div>
                   <div class="form-group">
                     <label>Komponen</label>
-                    <select class="form-control" id="komp" name="komp" onchange="chkomp()">
-                      <?php $rab->getkomp($idrkakl);?>
+                    <select class="form-control" id="kmpnen" name="kdkmpnen" >
                     </select>
                   </div>
                   <div class="form-group">
                     <label>Sub Komponen</label>
-                    <select class="form-control" id="skomp" name="skomp" onchange="chskomp()" >
-                      <?php $rab->getskomp($idrkakl);?>
+                    <select class="form-control" id="skmpnen" name="kdskmpnen" >
                     </select>
                   </div>
                   <div class="form-group">
                     <label>Uraian Acara</label>
-                    <textarea rows="5" type="text" class="form-control" id="uraian" name="uraian" placeholder="Uraian Acara" style="resize:none;" required></textarea>
+                    <textarea rows="5" type="text" class="form-control" id="deskripsi" name="deskripsi" placeholder="Uraian Acara" style="resize:none;" required></textarea>
                   </div>
                   <div class="form-group">
                     <label>Tanggal Awal</label>
@@ -102,7 +105,7 @@
                   </div>
                   <div class="form-group">
                     <label>Realisasi</label>
-                    <input type="text" class="form-control uang" id="realisasi" name="realisasi" placeholder="Realisasi" required />
+                    <input type="text" class="form-control uang" id="jumlah" name="jumlah" placeholder="Realisasi" required />
                   </div> 
                 </div>
               </div>
@@ -124,6 +127,10 @@
 </div>
 
 <script>
+$( document ).ready(function() {
+    getyear();
+});
+
 $(function() {
   $('.readonly').bind('paste', function (e) {
       e.preventDefault();
@@ -173,4 +180,57 @@ function cektanggal(){
   };
 }
 
+function getkode(){
+    $("#output option").remove();   
+    $("#soutput option").remove();   
+    $("#kmpnen option").remove();   
+    $("#skmpnen option").remove();   
+    var idrkakl = $('#idrkakl').val();
+    var tahun = $('#tahun').val();
+    var kdgiat = $('#kdgiat').val();
+    $.ajax({
+      type: "POST",
+      url: "<?php echo $url_rewrite;?>process/kegiatan/getkode",
+      data: { 'idrkakl' : idrkakl,
+              'tahun' : tahun,
+              'kdgiat' : kdgiat
+            },
+      success: function(data){
+        var obj = jQuery.parseJSON(data);
+        $('#program').append('<option value="'+obj[0].KDPROGRAM+'" selected>'+obj[0].KDPROGRAM+' - '+obj[0].NMPROGRAM+'</option>');
+        $('#output').append('<option value="'+obj[0].KDOUTPUT+'" selected>'+obj[0].KDOUTPUT+' - '+obj[0].NMOUTPUT+'</option>');
+        $('#soutput').append('<option value="'+obj[0].KDSOUTPUT+'" selected>'+obj[0].KDSOUTPUT+' - '+obj[0].NMSOUTPUT+'</option>');
+        $('#kmpnen').append('<option value="'+obj[0].KDKMPNEN+'" selected>'+obj[0].KDKMPNEN+' - '+obj[0].NMKMPNEN+'</option>');
+        $('#skmpnen').append('<option value="'+obj[0].KDSKMPNEN+'" selected>'+obj[0].KDSKMPNEN+' - '+obj[0].NMSKMPNEN+'</option>');
+      },
+    });
+  }
+
+function getyear(){   
+  var idrkakl = $('#idrkakl').val();
+  $.ajax({
+    type: "POST",
+    url: "<?php echo $url_rewrite;?>process/kegiatan/getyear",
+    data: { 'idrkakl' : idrkakl },
+    success: function(data){
+      var obj = jQuery.parseJSON(data);
+      $('#tahun').append('<option value="'+obj[0].THANG+'" selected>'+obj[0].THANG+'</option>');
+      getkode();
+      gettriwulan();
+    },
+  });
+}
+function gettriwulan(){
+  $.ajax({
+    type: "POST",
+    url: "<?php echo $url_rewrite;?>process/kegiatan/gettriwulan",
+    data: { },
+    success: function(data){
+      var obj = jQuery.parseJSON(data);
+      $('#idtriwulan').append('<option value="'+obj[0].id+'" selected>'+obj[0].nama+'</option>');
+      $('#tri').append('<input type="hidden" class="form-control" id="statustri" name="status" />');
+      $('#statustri').val(obj[0].status);
+    },
+  });
+}
   </script>
