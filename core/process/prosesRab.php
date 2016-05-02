@@ -232,21 +232,20 @@ switch ($link[3]) {
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END 
                         and CASE when rabview.kdskmpnen is not null then rabview.kdskmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END 
                       limit 1)', 'dt' => 7, 'formatter' => function($d,$row){
-          // if(is_null($row[20])){
-          //   if (is_null($row[18])) {
-          //     return 0;
-          //   }
-          //   else {
-          //     return number_format($row[18],0,".",".");
-          //   }
-          // } else {
-          //   return number_format($row[20],0,".",".");
-          // }
-          return number_format($row[7],0,".",".");
+          if($row[7] == 0){
+            if ($row[18] == 0) {
+              return 0;
+            }
+            else {
+              return number_format($row[18],0,".",".");
+            }
+          } else {
+            return number_format($row[7],0,".",".");
+          }
         }),
         array( 'db' => 'SUM(JUMLAH)','dt' => 8, 'formatter' => function($d,$row){
-          if(is_null($row[7])){
-            if (is_null($row[18])) {
+          if($row[7] == 0){
+            if ($row[18] == 0) {
               return '<div class="pull-right">&nbsp;<span class="label label-danger"> 0 %</span></div>';
             }
             else {
@@ -290,8 +289,8 @@ switch ($link[3]) {
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END 
                         and CASE when rabview.kdskmpnen is not null then rabview.kdskmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END 
                       limit 1)', 'dt' => 9, 'formatter' => function($d,$row){
-          if(is_null($row[9])){
-            if(is_null($row[19])){
+          if($row[9] == 0){
+            if($row[19] == 0){
               return 0;
             }
             else {
@@ -391,7 +390,7 @@ switch ($link[3]) {
                         and CASE when rabview.kdsoutput is not null then rabview.kdsoutput = rkakl_full.KDSOUTPUT ELSE TRUE END
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END
                       limit 1)', 'dt' => 18, 'formatter' => function($d,$row){
-          if(is_null($row[18])){
+          if($row[18] == 0){
             return 0;
           } else {
             return number_format($row[18],0,".",".");
@@ -405,7 +404,7 @@ switch ($link[3]) {
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END
                         and CASE when rabview.kdskmpnen is not null then rabview.kdkmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END
                       limit 1)', 'dt' => 19, 'formatter' => function($d,$row){
-          if(is_null($row[19])){
+          if($row[19] == 0){
             return 0;
           } else {
             return number_format($row[19]);
@@ -426,7 +425,7 @@ switch ($link[3]) {
           }
         }),
       );
-      $where=" KDAKUN is not null AND (KDITEM is not null and NMITEM not like '>%')";//  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
+      $where="";//  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
       // if ($tahun != "") {
       //   $where = 'thang = "'.$tahun.'"';
       // }
