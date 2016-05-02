@@ -232,8 +232,8 @@ switch ($link[3]) {
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END 
                         and CASE when rabview.kdskmpnen is not null then rabview.kdskmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END 
                       limit 1)', 'dt' => 7, 'formatter' => function($d,$row){
-          if(is_null($row[7])){
-            if (is_null($row[18])) {
+          if($row[7] == 0){
+            if ($row[18] == 0) {
               return 0;
             }
             else {
@@ -242,11 +242,10 @@ switch ($link[3]) {
           } else {
             return number_format($row[7],0,".",".");
           }
-          
         }),
         array( 'db' => 'SUM(JUMLAH)','dt' => 8, 'formatter' => function($d,$row){
-          if(is_null($row[7])){
-            if (is_null($row[18])) {
+          if($row[7] == 0){
+            if ($row[18] == 0) {
               return '<div class="pull-right">&nbsp;<span class="label label-danger"> 0 %</span></div>';
             }
             else {
@@ -290,8 +289,8 @@ switch ($link[3]) {
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END 
                         and CASE when rabview.kdskmpnen is not null then rabview.kdskmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END 
                       limit 1)', 'dt' => 9, 'formatter' => function($d,$row){
-          if(is_null($row[9])){
-            if(is_null($row[19])){
+          if($row[9] == 0){
+            if($row[19] == 0){
               return 0;
             }
             else {
@@ -391,7 +390,7 @@ switch ($link[3]) {
                         and CASE when rabview.kdsoutput is not null then rabview.kdsoutput = rkakl_full.KDSOUTPUT ELSE TRUE END
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END
                       limit 1)', 'dt' => 18, 'formatter' => function($d,$row){
-          if(is_null($row[18])){
+          if($row[18] == 0){
             return 0;
           } else {
             return number_format($row[18],0,".",".");
@@ -403,15 +402,30 @@ switch ($link[3]) {
                         and rabview.kdoutput = rkakl_full.KDOUTPUT 
                         and CASE when rabview.kdsoutput is not null then rabview.kdsoutput = rkakl_full.KDSOUTPUT ELSE TRUE END
                         and CASE when rabview.kdkmpnen is not null then rabview.kdkmpnen = rkakl_full.KDKMPNEN ELSE TRUE END
+                        and CASE when rabview.kdskmpnen is not null then rabview.kdkmpnen = rkakl_full.KDSKMPNEN ELSE TRUE END
                       limit 1)', 'dt' => 19, 'formatter' => function($d,$row){
-          if(is_null($row[19])){
+          if($row[19] == 0){
             return 0;
           } else {
             return number_format($row[19]);
           }
         }),
+        array( 'db' => '(SELECT SUM(rabview.jumlah) from rabview 
+                        where rabview.kdprogram = rkakl_full.KDPROGRAM 
+                        and rabview.kdgiat = rkakl_full.KDGIAT 
+                        and rabview.kdoutput = rkakl_full.KDOUTPUT 
+                        and rabview.kdsoutput = rkakl_full.KDSOUTPUT
+                        and rabview.kdkmpnen = rkakl_full.KDKMPNEN
+                        and rabview.kdskmpnen = rkakl_full.KDSKMPNEN
+                      limit 1)', 'dt' => 20, 'formatter' => function($d,$row){
+          if(is_null($row[20])){
+            return 0;
+          } else {
+            return number_format($row[20],0,".",".");
+          }
+        }),
       );
-      $where=" KDAKUN is not null AND (KDITEM is not null and NMITEM not like '>%')";//  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
+      $where="";//  and status = '1' and versi = (select MAX(versi) from rkakl_full limit 1) ";
       // if ($tahun != "") {
       //   $where = 'thang = "'.$tahun.'"';
       // }
@@ -557,9 +571,26 @@ switch ($link[3]) {
     $npwp = $mdl_rab->getnpwp($jenis);
     echo json_encode($npwp);
     break;
-  case 'getout':
-    $output = $rab->getout($_POST['prog'],$_POST['tahun'],$_POST['direktorat']);
-    echo json_encode($output);
+  case 'getyear':
+    $query  = "SELECT THANG FROM rkakl_full where (THANG != '' OR THANG != '-') and STATUS = 1 group by THANG";
+    $result=$db->_fetch_array($query,1);
+    echo json_encode($result);
+    break;
+  case 'getkode':
+    $getrkakl = "SELECT THANG,KDPROGRAM,NMPROGRAM,KDGIAT,NMGIAT,KDOUTPUT,NMOUTPUT,KDSOUTPUT,NMSOUTPUT,KDKMPNEN,NMKMPNEN,KDSKMPNEN,NMSKMPNEN
+                        FROM rkakl_full 
+                            WHERE idrkakl = '".$_POST['idrkakl']."'
+                            AND THANG = '".$_POST['tahun']."'
+                            AND KDGIAT = '".$_POST['kdgiat']."'
+                            LIMIT 1
+                ";  
+    $result=$db->_fetch_array($getrkakl,1);
+    echo json_encode($result);
+    break;
+  case 'gettriwulan':
+    $query = "SELECT id, nama, status FROM triwulan WHERE status = 1";
+    $result=$db->_fetch_array($query,1);
+    echo json_encode($result);
     break;
   case 'getsout':
     $soutput = $mdl_rab->getsout($_POST['prog'],$_POST['output'],$_POST['tahun'],$_POST['direktorat']);
@@ -575,17 +606,25 @@ switch ($link[3]) {
     break;
   case 'save':
     $idrkakl = $_POST['idrkakl'];
-    $status = $rab->save($_POST);
-    if ($status == 'error') {
+    $cek = $rabview->cekpagu($idrkakl,$_POST['jumlah']);
+      
+    if ($cek == 'error') {
       $flash  = array(
             'category' => "warning",
-            'messages' => "Data Kegiatan gagal dilanjutkan karena realisasi melebihi PAGU Anggaran"
+            'messages' => "Data Kegiatan gagal dilanjutkan karena realisasi melebihi PAGU Anggaran."
+          );
+      $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
+    }elseif ($cek == 'berhasil') {
+      $rabview->insertRabview($_POST);
+      $flash  = array(
+            'category' => "success",
+            'messages' => "Data Kegiatan berhasil ditambahkan !"
           );
       $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
     }else{
       $flash  = array(
-            'category' => "success",
-            'messages' => "Data Kegiatan berhasil ditambahkan"
+            'category' => "warning",
+            'messages' => "Data Kegiatan gagal dilanjutkan. Silahkan dicoba kembali."
           );
       $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
     }
@@ -682,5 +721,9 @@ switch ($link[3]) {
   default:
     $utility->location_goto(".");
   break;
+
+  function cekpagu(){
+    return 'tes';
+  }
 }
 ?>
