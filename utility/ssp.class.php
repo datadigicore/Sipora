@@ -2,7 +2,7 @@
 
 class SSP {
 
-    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $query, $formatter )
+    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $query, $formatter, $dataArray )
     {
         $bindings = array();
         $db    = SSP::sql_connect( $sql_details );
@@ -26,19 +26,19 @@ class SSP {
             "draw"            => intval( $request['draw'] ),
             "recordsTotal"    => intval( $recordsTotal ),
             "recordsFiltered" => intval( $recordsFiltered ),
-            "data"            => SSP::data_output( $columns, $data, $formatter )
+            "data"            => SSP::data_output( $columns, $data, $formatter, $dataArray )
         );
     }
 
-    static function data_output ( $columns, $data, $formatter )
+    static function data_output ( $columns, $data, $formatter, $dataArray )
     {
         $out = array();
         for ( $i=0, $ien=count($data) ; $i<$ien ; $i++ ) {
             $row = array();
             for ( $j=0, $jen=count($columns) ; $j<$jen ; $j++ ) {
                 $column = $columns[$j];
-                if ( isset( $formatter ) && $formatter[$j] == $column ) {
-                    $row[$j] = $formatter['formatter']( $data[$i][ $column ], $data[$i] );
+                if ( !empty( $formatter[$j] ) ) {
+                    $row[$j] = $formatter[$j]['formatter']( $data[$i][ $column ], $data[$i], $dataArray );
                 }
                 else {
                     $row[$j] = $data[$i][ $column ];
