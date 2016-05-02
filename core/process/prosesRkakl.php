@@ -91,14 +91,22 @@ switch ($link[3]) {
   case 'table':
     $tableKey   = "rkakl_view";
     $primaryKey = "id";
-    $columns    = array('id','tahun','tanggal','no_dipa','status','status','filesave');
-    $formatter  = array('5' => 'status', 'formatter' => function($d,$row){ 
+    $columns    = array('status','tahun','tanggal','no_dipa','status','status','filesave');
+    $formatter  = array(
+      '4' => array('formatter' => function($d,$row){ 
         if($d==0){
           return '<i>Belum Diajukan</i>';
         }
-        else{
+        if($d==1){
           return '<i>Telah Diajukan</i>';
-        }});
+        }}),
+      '5' => array('formatter' => function($d,$row){ 
+        if($d==0){
+          return '<i>Belum Diajukan</i>';
+        }
+        if($d==1){
+          return '<i>Telah Diajukan</i>';
+        }}));
     $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
         FROM rkakl_view";
     $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter);
