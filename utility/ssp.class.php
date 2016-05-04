@@ -11,6 +11,7 @@ class SSP {
         $where = SSP::filter( $request, $columns, $bindings );
         
         $query .=  " $where $order $limit";
+        // echo $query;exit;
         
         $data = SSP::sql_exec( $db, $bindings,$query);
         $resFilterLength = SSP::sql_exec( $db,

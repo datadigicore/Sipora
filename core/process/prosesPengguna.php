@@ -27,13 +27,23 @@ $data_pengguna = array(
 );
 
 switch ($link[3]) {
+
   case 'table':
-    $table = "pengguna";
-    $key   = "id";
-    $column = array(
-      array( 'db' => 'id',      'dt' => 0 ),
-      array( 'db' => 'nama',  'dt' => 1 ),
-      array( 'db' => 'status',  'dt' => 2, 'formatter' => function($d,$row){ 
+    $tableKey = "pengguna";
+    $Key   = "id";
+    $columns=array(
+      'id',
+      'nama',
+      'status',
+      'username',
+      'email',
+      'level',
+      'direktorat',
+      'level',
+      'status'
+      );
+    $formatter=array(
+      '2' => array('formatter' => function($d,$row,$data){ 
         if($d==1){
           return '<button id="aktif" class="btn btn-flat btn-success btn-xs"><i class="fa fa-check-circle"></i> Aktif</button>';
         }
@@ -41,9 +51,7 @@ switch ($link[3]) {
           return '<button id="nonaktif" class="btn btn-flat btn-danger btn-xs"><i class="fa fa-warning"></i> Belum Aktif</button>';
         }
       }),
-      array( 'db' => 'username',  'dt' => 3 ),
-      array( 'db' => 'email',   'dt' => 4 ),
-      array( 'db' => 'level', 'dt' => 5, 'formatter' => function($d,$row){ 
+      '5' => array('formatter' => function($d,$row,$data){ 
         if($d==1){
           return 'Operator Bendahara Pengeluaran';
         }
@@ -53,13 +61,43 @@ switch ($link[3]) {
         else if ($d==3){
           return 'Operator BPP';
         }
-      }),
-      array( 'db' => 'direktorat',   'dt' => 6 ),
-      array( 'db' => 'level',   'dt' => 7 ),
-      array( 'db' => 'status',  'dt' => 8 )
-    );
-    $where = "level != 0";
-    $datatable->get_table($table, $key, $column, $where);
+      })
+
+      );
+    // $column = array(
+    //   array( 'db' => 'id',      'dt' => 0 ),
+    //   array( 'db' => 'nama',  'dt' => 1 ),
+    //   array( 'db' => 'status',  'dt' => 2, 'formatter' => function($d,$row){ 
+    //     if($d==1){
+    //       return '<button id="aktif" class="btn btn-flat btn-success btn-xs"><i class="fa fa-check-circle"></i> Aktif</button>';
+    //     }
+    //     else{
+    //       return '<button id="nonaktif" class="btn btn-flat btn-danger btn-xs"><i class="fa fa-warning"></i> Belum Aktif</button>';
+    //     }
+    //   }),
+    //   array( 'db' => 'username',  'dt' => 3 ),
+    //   array( 'db' => 'email',   'dt' => 4 ),
+    //   array( 'db' => 'level', 'dt' => 5, 'formatter' => function($d,$row){ 
+    //     if($d==1){
+    //       return 'Operator Bendahara Pengeluaran';
+    //     }
+    //     else if ($d==2){
+    //       return 'Bendahara Pengeluaran Pembantu';
+    //     }
+    //     else if ($d==3){
+    //       return 'Operator BPP';
+    //     }
+    //   }),
+    //   array( 'db' => 'direktorat',   'dt' => 6 ),
+    //   array( 'db' => 'level',   'dt' => 7 ),
+    //   array( 'db' => 'status',  'dt' => 8 )
+    // );
+    $swhere = "WHERE level != 0";
+    $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+                    FROM pengguna
+                    ".$swhere;
+    // $datatable->get_table($table, $key, $column, $where);
+    $datatable->get_table($tableKey, $Key, $columns, $query, $formatter);
   break;
   case 'activate':
     $id = $_POST['key'];
