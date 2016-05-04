@@ -192,31 +192,51 @@ switch ($link[3]) {
     $datatable->get_table_group($table, $key, $column,$where,$group,$dataArray);
     break;
   case 'table-rkakl':
+    $dataArray['url_rewrite'] = $url_rewrite;
     $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` FROM `rabview` " ;
-
     $result=$db->_fetch_array($query,1);
     $rabview =array();
     $key_stack=array();
 
-    foreach ($result as $key => $value) {
-      $id=$value['id'];
-      $thang=$value['thang'];
-      $kdprogram=$value['kdprogram'];
-      $kdgiat=$value['kdgiat'];
-      $kdoutput=$value['kdoutput'];
-      $kdsoutput=$value['kdsoutput'];
-      $kdkmpnen=$value['kdkmpnen'];
-      $kdskmpnen=$value['kdskmpnen'];
-      $jumlah=$value['jumlah'];
-      $key="$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen";
-      $key_stack[]=$key;
-      $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['key']=$key;
-      $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['jumlah'] += $jumlah;
+    if (!is_null($result)) {
+      foreach ($result as $key => $value) {
+        $id=$value['id'];
+        $thang=$value['thang'];
+        $kdprogram=$value['kdprogram'];
+        $kdgiat=$value['kdgiat'];
+        $kdoutput=$value['kdoutput'];
+        $kdsoutput=$value['kdsoutput'];
+        $kdkmpnen=$value['kdkmpnen'];
+        $kdskmpnen=$value['kdskmpnen'];
+        $jumlah=$value['jumlah'];
+        $volume=$value['volume'];
+        $key="$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen";
+        $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['key']=$key;
+        $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['jumlah'] += $jumlah;
+        $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['volume'] += $volume;
+      }
+      $dataArray = $realisasi;
     }
-    $dataArray = $realisasi;
+    
+    $query = "SELECT * from triwulan where status = '1' ORDER BY id DESC LIMIT 1";
+    $result=$db->_fetch_array($query,1);
+    if (!is_null($result)) {
+      foreach ($result as $key => $value) {
+        $dataArray['prog_low'] = $value['prog_low'];
+        $dataArray['prog_med'] = $value['prog_med'];
+        $dataArray['prog_high'] = $value['prog_high'];
+      }
+    }else{
+      $dataArray['prog_low'] = -1;
+      $dataArray['prog_med'] = -1;
+      $dataArray['prog_high'] = -1;
+    }
 
-    $query = "SELECT * from triwulan where status = '1'";
-    // print_r($dataArray);die;
+    $swhere = "";
+    if ($_SESSION['direktorat'] != "") {
+      $swhere="WHERE KDGIAT = '".$_SESSION['direktorat']."' ";
+    }
+
     $tableKey   = "rkakl_full";
     $primaryKey = "idrkakl";
     $columns    = array('IDRKAKL',
@@ -227,20 +247,100 @@ switch ($link[3]) {
                         'CONCAT(KDSKMPNEN," - ",NMSKMPNEN)',
                         'SUM(JUMLAH)',
                         'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
+                        'SUM(JUMLAH)',
+                        'SUM(VOLREAL)',
+                        'SUM(VOLKEG)',
+                        'SUM(JUMLAH)',
+                        'IDRKAKL',
                         );
     $formatter  = array(
+      '6' => array('formatter' => function($d,$row,$data){ 
+        return number_format($d,2,",",".");
+      }),
       '7' => array('formatter' => function($d,$row,$data){ 
         if (isset($data[$d]['jumlah'])) {
-          return $data[$d]['jumlah'];
+          return number_format($data[$d]['jumlah'],2,",",".");
         }else{
           return 0;
         }
       }),
+      '8' => array('formatter' => function($d,$row,$data){ 
+        if (isset($data[$row[7]]['jumlah'])) {
+          $persen = ($data[$row[7]]['jumlah'] / $d) *100;
+
+          if ($data['prog_low'] != "-1") {
+            if ($persen <= $data['prog_low']) {
+              $status = 'danger';
+            }elseif ($persen <= $data['prog_med']) {
+              $status = 'warning';
+            }else{
+              $status = 'success';
+            }
+          }else{
+            $status = 'default';
+          }
+          return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persen,2).'%</span></div>
+                  <div class="progress progress-sm active">
+                    <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persen,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persen,2).'%">
+                      <span class="sr-only">'.number_format($persen,2).'% Complete</span>
+                    </div>
+                  </div>';
+        }else{
+          return '<div class="pull-right">&nbsp;<span class="label label-danger">'.number_format(0,2).'%</span></div>
+                  <div class="progress progress-sm active">
+                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="'.number_format(0,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format(0,2).'%">
+                      <span class="sr-only">'.number_format(0,2).'% Complete</span>
+                    </div>
+                  </div>';
+        }
+      }),
+      '9' => array('formatter' => function($d,$row,$data){ 
+        return number_format($d).' / '.number_format($row[10],0,",",".");
+      }),
+      '10' => array('formatter' => function($d,$row,$data){ 
+        if (isset($d) || $d != 0 || $d != "") {
+          $persenvol = ($row[9] / $d) * 100;
+          if ($data['prog_low'] != "-1") {
+            if ($persenvol <= $data['prog_low']) {
+              $status = 'danger';
+            }elseif ($persenvol <= $data['prog_med']) {
+              $status = 'warning';
+            }else{
+              $status = 'success';
+            }
+          }else{
+            $status = 'default';
+          }
+          return '<div class="pull-right">&nbsp;<span class="label label-'.$status.'">'.number_format($persenvol,2).'%</span></div>
+                  <div class="progress progress-sm active">
+                    <div class="progress-bar progress-bar-'.$status.' progress-bar-striped" role="progressbar" aria-valuenow="'.number_format($persenvol,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format($persenvol,2).'%">
+                      <span class="sr-only">'.number_format($persenvol,2).'% Complete</span>
+                    </div>
+                  </div>';
+        }else{
+          return "0 %";
+        }
+      }),
+      '11' => array('formatter' => function($d,$row,$data){ 
+        if (isset($data[$row[7]]['jumlah'])) {
+          $sisa = ($d - $data[$row[7]]['jumlah']);
+          return number_format($sisa,2,",",".");
+        }else{
+          return 0;
+        }
+      }),
+      '12' => array('formatter' => function($d,$row,$data){ 
+        $button = '<div class="col-md-12">';
+        $button .= '<a href="'.$data['url_rewrite'].'kegiatan-rinci/'.$d.'" class="btn btn-flat btn-primary btn-sm col-md-12" ><i class="fa fa-plus"></i>&nbsp; Tambah Kegiatan</a>';
+        $button .= '<a id="btn-vol" href="#mdl-vol" class="btn btn-flat btn-warning btn-sm col-md-12" data-toggle="modal"><i class="fa fa-pencil"></i>&nbsp; Edit Volume</a>';
+        $button .='</div>';
+        return $button; 
+      }),
       );
     $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
                     FROM rkakl_full
+                    ".$swhere."
                     GROUP BY KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN";
-
     $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter, $dataArray);
 
     break;

@@ -147,7 +147,7 @@ var table;
             {"targets" : 6},
           ],
         <?php } ?>
-        "order": [[ 0, "desc" ]]
+        "order": [[ 0, "asc" ], [ 1, "asc" ], [ 2, "asc" ], [ 3, "asc" ], [ 4, "asc" ], [ 5, "asc" ]]
     });
   });
   $(function () {
