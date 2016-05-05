@@ -318,7 +318,12 @@ switch ($link[3]) {
                     </div>
                   </div>';
         }else{
-          return "0 %";
+          return '<div class="pull-right">&nbsp;<span class="label label-danger">'.number_format(0,2).'%</span></div>
+                  <div class="progress progress-sm active">
+                    <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="'.number_format(0,2).'" aria-valuemin="0" aria-valuemax="100" style="width: '.number_format(0,2).'%">
+                      <span class="sr-only">'.number_format(0,2).'% Complete</span>
+                    </div>
+                  </div>';
         }
       }),
       '11' => array('formatter' => function($d,$row,$data){ 
@@ -345,130 +350,108 @@ switch ($link[3]) {
 
     break;
   case 'table-kegiatan':
-    $table = "rabview";
-    $key   = "id";
-    $dataArray['url_rewrite'] = $url_rewrite; 
-    $dataArray['idrkakl'] = $_POST['idrkakl']; 
+    $dataArray['url_rewrite'] = $url_rewrite;
+    $dataArray['idrkakl'] = $_POST['idrkakl'];
+    $tableKey   = "rabview";
+    $primaryKey = "id";
+    $columns    = array('id',
+                        'deskripsi',
+                        'tanggal',
+                        'lokasi',
+                        'jumlah',
+                        'status',
+                        'status',
+                        'tanggal_akhir',
+                        'tempat',
+                        );
+    $formatter  = array(
+        '2' => array('formatter' => function($d,$row,$data){ 
+          return date("d M Y", strtotime($d)) . ' - ' . date("d M Y", strtotime($row[7]));
+        }),
+        '3' => array('formatter' => function($d,$row,$data){ 
+          return $row[8] . ', ' . $d;
+        }),
+        '4' => array('formatter' => function($d,$row,$data){ 
+          return number_format($d,2,",",".");
+        }),
+        '5' => array('formatter' => function($d,$row,$data){ 
+          if ($d == "1") {
+            return "<i>Aktif</i>";
+          }elseif ($d == "0") {
+            return "<i>Close</i>";
+          }elseif ($d == "4") {
+            return "<i>Revisi</i>";
+          }
+        }),
+        '6' => array('formatter' => function($d,$row,$data){ 
+          $button = '<div class="col-md-12">';
+          if($_SESSION['level'] != 0 && ($d == 1 || $d == 4)){
+            $button .= '<a id="btn-trans" href="'.$data['url_rewrite'].'content/kegiatan-edit/'.$row[0].'/'.$data['idrkakl'].'" class="btn btn-flat btn-warning btn-sm col-md-6" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
+            $button .= '<a id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
+          }
+          elseif($_SESSION['level'] != 0 && $d == 0){
+            $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"><i class="fa fa-warning"></i> No available</a>';
+          }
+          elseif($_SESSION['level'] == 0 && $d == 0){
+            $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-check"></i>&nbsp; UNLOCK</a>';
+          }
+          elseif($_SESSION['level'] == 0 && $d == 4){
+            $button .= '<a id="btn-lock" href="#lock" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; LOCK</a>';
+          }
+          $button .= '</div>';
+          return $button;
+        }),
+      );
     $tahun = $_POST['tahun'];
-    if ($_SESSION['direktorat'] == "") {
-      $direktorat = $_POST['direktorat'];
-    }else{
-      $direktorat = $_SESSION['direktorat'];
-    }
+    $direktorat = $_POST['direktorat'];
     $kdoutput = $_POST['kdoutput'];
     $kdsoutput = $_POST['kdsoutput'];
     $kdkmpnen = $_POST['kdkmpnen'];
     $kdskmpnen = $_POST['kdskmpnen'];
-
-    $column = array(
-      array( 'db' => 'id',      'dt' => 0 ),
-      array( 'db' => 'deskripsi',  'dt' => 1),
-      array( 'db' => 'tanggal',  'dt' => 2, 'formatter' => function( $d, $row ) {
-        $arrbulan = array(
-                '01'=>"Januari",
-                '02'=>"Februari",
-                '03'=>"Maret",
-                '04'=>"April",
-                '05'=>"Mei",
-                '06'=>"Juni",
-                '07'=>"Juli",
-                '08'=>"Agustus",
-                '09'=>"September",
-                '10'=>"Oktober",
-                '11'=>"November",
-                '12'=>"Desember",
-        );
-        $pecahtgl1 = explode("-", $d);
-        $tglawal = $pecahtgl1[2].' '.$arrbulan[$pecahtgl1[1]].' '.$pecahtgl1[0];
-        $pecahtgl2 = explode("-", $row[15]);
-        $tglakhir = $pecahtgl2[2].' '.$arrbulan[$pecahtgl2[1]].' '.$pecahtgl2[0];
-        return $tglawal.' - '.$tglakhir;
-      }),
-      array( 'db' => 'lokasi',  'dt' => 3, 'formatter' => function($d,$row){
-        return $row[14].', '.$d;
-      }),
-      array( 'db' => 'jumlah','dt' => 4, 'formatter' => function($d,$row){
-        return 'Rp '.number_format($d,2,',','.');
-      }),
-      array( 'db' => 'status', 'dt' => 5, 'formatter' => function($d,$row){ 
-        if ($d == 1) {
-          return '<div class="label label-success col-md-12"><i class="fa fa-check-circle"></i> Sedang Aktif</div>';
-        }
-        if ($d == 4) {
-          return '<div class="label label-warning col-md-12"><i class="fa fa-warning"></i> Sedang Revisi</div>';
-        }
-        else {
-          return '<div class="label label-danger col-md-12"><i class="fa fa-warning"></i> Tidak Aktif</div>';
-        }
-      }),
-      array( 'db' => 'status',  'dt' => 6, 'formatter' => function($d,$row, $dataArray){ 
-        $button = '<div class="col-md-12">';
-        if($_SESSION['level'] != 0 && ($d == 1 || $d == 4)){
-          $button .= '<a id="btn-trans" href="'.$dataArray['url_rewrite'].'content/kegiatan-edit/'.$row[0].'/'.$dataArray['idrkakl'].'" class="btn btn-flat btn-warning btn-sm col-md-6" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
-          $button .= '<a id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
-        }
-        elseif($_SESSION['level'] != 0 && $d == 0){
-          $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"><i class="fa fa-warning"></i> No available</a>';
-        }
-        elseif($_SESSION['level'] == 0){
-          $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"><i class="fa fa-warning"></i> No available</a>';
-        }
-        $button .= '</div>';
-        return $button;
-      }),
-      array( 'db' => 'volume',  'dt' => 7, 'formatter' => function($d, $row, $dataArray){
-        return $d.' '.$row[8];
-      }),
-      array( 'db' => 'satuan',  'dt' => 8),
-      array( 'db' => 'kdoutput',  'dt' => 9),
-      array( 'db' => 'kdsoutput',  'dt' => 10),
-      array( 'db' => 'kdkmpnen',  'dt' => 11),
-      array( 'db' => 'kdskmpnen',  'dt' => 12),
-      array( 'db' => 'pesan',  'dt' => 13),
-      array( 'db' => 'tempat',  'dt' => 14),
-      array( 'db' => 'tanggal_akhir',  'dt' => 15),
-    );
     $where="";
     if ($tahun != "") {
-      $where = 'thang = "'.$tahun.'"';
+      $where = 'thang = "'.$tahun.'" ';
     }
     if ($direktorat != "") {
       if ($where == "") {
-        $where .= 'kdgiat = "'.$direktorat.'"';
+        $where .= 'kdgiat = "'.$direktorat.'" ';
       }else{
-        $where .= 'AND kdgiat = "'.$direktorat.'"';
+        $where .= 'AND kdgiat = "'.$direktorat.'" ';
       }
     }
     if ($kdoutput != "") {
       if ($where == "") {
-        $where .= 'kdoutput = "'.$kdoutput.'"';
+        $where .= 'kdoutput = "'.$kdoutput.'" ';
       }else{
-        $where .= 'AND kdoutput = "'.$kdoutput.'"';
+        $where .= 'AND kdoutput = "'.$kdoutput.'" ';
       }
     }
     if ($kdsoutput != "") {
       if ($where == "") {
-        $where .= 'kdsoutput = "'.$kdsoutput.'"';
+        $where .= 'kdsoutput = "'.$kdsoutput.'" ';
       }else{
-        $where .= 'AND kdsoutput = "'.$kdsoutput.'"';
+        $where .= 'AND kdsoutput = "'.$kdsoutput.'" ';
       }
     }
     if ($kdkmpnen != "") {
       if ($where == "") {
-        $where .= 'kdkmpnen = "'.$kdkmpnen.'"';
+        $where .= 'kdkmpnen = "'.$kdkmpnen.'" ';
       }else{
-        $where .= 'AND kdkmpnen = "'.$kdkmpnen.'"';
+        $where .= 'AND kdkmpnen = "'.$kdkmpnen.'" ';
       }
     }
     if ($kdskmpnen != "") {
       if ($where == "") {
-        $where .= 'kdskmpnen = "'.$kdskmpnen.'"';
+        $where .= 'kdskmpnen = "'.$kdskmpnen.'" ';
       }else{
-        $where .= 'AND kdskmpnen = "'.$kdskmpnen.'"';
+        $where .= 'AND kdskmpnen = "'.$kdskmpnen.'" ';
       }
     }
-    $group='';
-    $datatable->get_table_group($table, $key, $column,$where,$group,$dataArray);
+    $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+                    FROM rabview
+                    WHERE ".$where."";
+    $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter, $dataArray);
+
     break;
   case 'getnpwp':
     $jenis = $data[3];
@@ -510,7 +493,7 @@ switch ($link[3]) {
     break;
   case 'save':
     $idrkakl = $_POST['idrkakl'];
-    $cek = $rabview->cekpagu($idrkakl,$_POST['jumlah']);
+    $cek = $rabview->cekpagu($idrkakl,$_POST['jumlah'],$_POST['idtriwulan']);
       
     if ($cek == 'error') {
       $flash  = array(
@@ -534,22 +517,28 @@ switch ($link[3]) {
     }
     break;
   case 'edit':
-    $status = $rab->edit($_POST);
-    if ($status == 0) {
+    $idrkakl = $_POST['idrkakl'];
+    $cek = $rabview->cekpagu($idrkakl,$_POST['jumlah'],$_POST['idtriwulan'], $_POST['id']);
+    if ($cek == 'error') {
       $flash  = array(
             'category' => "warning",
-            'messages' => "Data Kegiatan gagal dilanjutkan karena realisasi melebihi PAGU Anggaran"
+            'messages' => "Data Kegiatan gagal dilanjutkan karena realisasi melebihi PAGU Anggaran."
           );
-      $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
-    }else{
+      $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
+    }elseif ($cek == 'berhasil') {
+      $rabview->updateRabview($_POST);
       $flash  = array(
             'category' => "success",
-            'messages' => "Data Kegiatan berhasil diubah"
+            'messages' => "Data Kegiatan berhasil diubah !"
           );
-      $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
+      $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
+    }else{
+      $flash  = array(
+            'category' => "warning",
+            'messages' => "Data Kegiatan gagal dilanjutkan. Silahkan dicoba kembali."
+          );
+      $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
     }
-
-    
     break;
   case 'ajukan':
     $id_rabview = $_POST['id_rab_aju'];
@@ -614,13 +603,24 @@ switch ($link[3]) {
     $utility->load("content/rab","success","Data RAB direvisi");
     break;
   case 'delete':
-    $id_rabview = $_POST['id_rab_del'];
-    $rab->delete($_POST);
+    $idrkakl = $_POST['idrkakl'];
+    $jumlah = 0;
+    $id = $_POST['id'];
+    $query = "SELECT idtriwulan FROM rabview WHERE id = '$id'";
+    $result = $db->_fetch_array($query,1);
+    $idtriwulan = $result[0]['idtriwulan'];
+    $cek = $rabview->cekpagu($idrkakl,$jumlah,$idtriwulan,$id);
+    $rabview->deleteRabview($_POST);
     $flash  = array(
           'category' => "success",
           'messages' => "Data Kegiatan telah dihapus"
         );
     $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
+    break;
+  case 'lock':
+    print_r($_POST);die;
+    $query = "SELECT idtriwulan FROM rabview WHERE id = '$id'";
+    $result = $db->_fetch_array($query,1);
     break;
   default:
     $utility->location_goto(".");
