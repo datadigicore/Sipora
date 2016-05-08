@@ -10,6 +10,20 @@
       }                
     }
 
+    public function selectTriwulan(){
+      $date = date('Y-m-d');
+      $query = "SELECT * from triwulan where status in(1,0) order by nama asc";
+      $result= $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        if($fetch[status]==0){
+          echo "<option value='$fetch[end_date]'>$fetch[nama]</option>";
+        }
+        else{
+          echo "<option value='$date'>$fetch[nama]</option>";
+        }
+      }  
+    }
+
     public function getChartRKAKL(){
       $result = $this->query("SELECT KDGIAT, sum(jumlah), sum(realisasi) from rkakl_full group by KDGIAT");
       while($res=$this->fetch_array($result)){
