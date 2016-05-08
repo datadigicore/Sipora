@@ -3425,7 +3425,7 @@ public function daftar_peng_riil($result,$det){
       echo '</table>';
       $html = ob_get_contents();
       // ob_clean();
-      $this->create_pdf("Rekap Total Realisasi Daya Serap",array(290,310),$html);
+      $this->create_pdf("Rekap Total Realisasi Daya Serap",array(330,215),$html);
     }
 
 
@@ -4013,17 +4013,29 @@ public function daftar_peng_riil($result,$det){
         
       }
       // echo "akuns : ".$kdakun;
-      $query = " SELECT SUM(case when month(tanggal)<'$tanggal' then value else 0 end) as jml_lalu, SUM(case when month(tanggal)='$tanggal' then value else 0 end) as jumlah FROM rabfull WHERE kdgiat LIKE '%$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp.$q_akun.' and status in (2,4,6,7)';
+      $query = " SELECT SUM(jumlah) as jumlah, volume, satuan FROM rabview WHERE kdgiat LIKE '%$kdgiat%' and tanggal<='$tanggal' ".$q_out.$q_sout.$q_kmp.$q_skmp.$q_akun.' ';
       // print_r($query);
       
       $res = $this->query($query);
       $data = $this->fetch_array($res);
 
-     $data = array(
-              "jml_lalu" => $data['jml_lalu'],
-              "jumlah" => $data['jumlah']
-              );
-      return $data;
+     if($this->num_rows($res)>0){ 
+       $data = array(
+                "jml_lalu" => 0,
+                "jumlah" => $data['jumlah'],
+                "volume" => $data['volume'],
+                "satuan" => $data['satuan']
+                );
+        return $data;
+      }
+      else{
+        $data = array(
+                "jml_lalu" => 0,
+                "jumlah" => 0,
+                "volume" => 0,
+                "satuan" => 0
+                );
+      }
     }
 
     function hitung_pagu($kdgiat, $kdakun){
