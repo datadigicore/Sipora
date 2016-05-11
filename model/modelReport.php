@@ -3554,6 +3554,7 @@ public function daftar_peng_riil($result,$det){
       $jumlah_realisasi = 0;
       $jml_presentase_angg = 0;
       $jml_presentase_vol = 0;
+      $kode_giat ="";
       $kode_output = "";
       $kode_suboutput = "";
       $kode_komponen = "";
@@ -3561,8 +3562,9 @@ public function daftar_peng_riil($result,$det){
       
       foreach ($sql_results as $value) {
         $jumlah_pagu +=$value[JUMLAH];
-        if($value[KDGIAT].".".$value[KDOUTPUT]!=$kode_output){
-          $jumlah_pagu          +=$value[JUMLAH];
+        if($kode_output!=$value[KDOUTPUT]){
+          // Mencetak Detil Pagu dan Anggaran per output
+
           $idrkakl              =$value[KDGIAT].$value[KDOUTPUT];
           $realisasi            = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], "", "", "", "");
           $jumlah_realisasi     +=$realisasi["jumlah"];
@@ -3588,12 +3590,7 @@ public function daftar_peng_riil($result,$det){
           $cell->setCellValue('H'.$row, $value[SATKEG]);
           $cell->setCellValue('I'.$row, $realisasi["volume"]);
           $cell->setCellValue('J'.$row, $realisasi["satuan"]);
-          // if($presentase_anggaran>99){
-          //   $cell->setCellValue('L'.$row, "Target Output Tercapai");
-          // }
-          // else{
-          //   $cell->setCellValue('L'.$row, "Target Output Tidak Tercapai");
-          // }
+
           $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(true);
           $kode_output = $value[KDGIAT].".".$value[KDOUTPUT];
           $sheet->getStyle('B'.$row)->applyFromArray($left);
@@ -3601,38 +3598,63 @@ public function daftar_peng_riil($result,$det){
           $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
           $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
-          // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
+  
           $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
           $sheet->getStyle('A'.$row.':L'.$row)->getFont()->setBold(true);
           $sheet->getStyle('C'.$row)->getFont()->setItalic(true);
           $row++;
-          continue;
+          // ------------------------------------------------------------------ 
+
+          // Mencetak Detil Pagu dan Anggaran per Sub-output
+          if($value[KDSOUTPUT]!=""){
+            $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT];
+            $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], "", "");
+            $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+
+            $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
+            $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
+            $cell->setCellValue('D'.$row, $realisasi["pagu"]);
+            $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+            $cell->setCellValue('F'.$row, $presentase_anggaran);
+            $jml_presentase_vol   +=$presentase_volume;
+            // $no++;
+            // $cell->setCellValue('A'.$row, $no);
+            $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
+            $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
+            $cell->setCellValue('D'.$row, $realisasi["pagu"]);
+
+            if($realisasi["jumlah"]>0){            
+              $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+            }
+            else{
+              $cell->setCellValue('E'.$row, 0);
+            }
+
+            $cell->setCellValue('F'.$row, $presentase_anggaran);
+            $cell->setCellValue('G'.$row, $value[VOLKEG]);
+            $cell->setCellValue('H'.$row, $value[SATKEG]);
+            $cell->setCellValue('I'.$row, $realisasi["volume"]);
+            $cell->setCellValue('J'.$row, $realisasi["satuan"]);
+
+            // $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(false);
+            $kode_output = $value[KDGIAT].".".$value[KDOUTPUT];
+            $sheet->getStyle('B'.$row)->applyFromArray($left);
+            $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+            $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+    
+            $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
+            // $sheet->getStyle('A'.$row.':L'.$row)->getFont()->setBold(true);
+            $sheet->getStyle('C'.$row)->getFont()->setItalic(true);
+            $row++;
+          }
+          // ------------------------------------------------------------------
+
+        $kode_output = $value[KDOUTPUT];
         }
-        if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
-          $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT];
-          $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], "", "");
-          $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
-
-          $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
-          $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
-          $cell->setCellValue('D'.$row, $realisasi["pagu"]);
-          $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
-          $cell->setCellValue('F'.$row, $presentase_anggaran);
-
-          $kode_suboutput = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT];
-          $sheet->getStyle('B'.$row)->applyFromArray($right);
-          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
-
-          $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
-          $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
-          $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
-          // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
-          $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
-          $row++;
-           
-          continue;
-        }
-        if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN]!=$kode_komponen and $value[KDKMPNEN]!=""){
+        elseif($kode_komponen!=$value[KDKMPNEN]){
+          // Mencetak Detil Pagu dan Anggaran per komponen
           $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN];
           $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN], "");
           $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
@@ -3642,8 +3664,7 @@ public function daftar_peng_riil($result,$det){
           $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
           $cell->setCellValue('F'.$row, $presentase_anggaran);
           if($value[VOLKEG]>0){
-            // $cell->setCellValue('G'.$row, $value[VOLKEG]);
-            // $cell->setCellValue('H'.$row, $value[SATKEG]);
+            
           }
           $kode_komponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN];
           $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
@@ -3655,12 +3676,12 @@ public function daftar_peng_riil($result,$det){
           $cell->setCellValue('H'.$row, $value[SATKEG]);
           $cell->setCellValue('I'.$row, $realisasi["volume"]);
           $cell->setCellValue('J'.$row, $realisasi["satuan"]);
-          // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
+          
           $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
-          $row++;      
-          continue;
+          $row++;
+          $kode_komponen = $value[KDKMPNEN];
         }
-        if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN]!=$kode_subkomponen and $value[KDSKMPNEN]!=""){
+        elseif($kode_subkomponen!=$value[KDSKMPNEN]){
             $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN].$value[KDSKMPNEN];
             $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN],$value[KDSKMPNEN]);
             $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
@@ -3684,9 +3705,131 @@ public function daftar_peng_riil($result,$det){
             // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
             $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
             $row++;
-            
-            continue;
+            $kode_subkomponen = $value[KDSKMPNEN]; 
         }
+        else{
+          continue;
+        }
+        // if($value[KDGIAT].".".$value[KDOUTPUT]!=$kode_output){
+        //   $jumlah_pagu          +=$value[JUMLAH];
+        //   $idrkakl              =$value[KDGIAT].$value[KDOUTPUT];
+        //   $realisasi            = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], "", "", "", "");
+        //   $jumlah_realisasi     +=$realisasi["jumlah"];
+        //   $presentase_anggaran  = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+        //   $jumlah_pagu          +=$realisasi["pagu"];
+        //   $jml_presentase_angg  +=$presentase_anggaran;
+        //   $jml_presentase_vol   +=$presentase_volume;
+        //   $no++;
+        //   $cell->setCellValue('A'.$row, $no);
+        //   $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT]);
+        //   $cell->setCellValue('C'.$row, $value[NMOUTPUT]);
+        //   $cell->setCellValue('D'.$row, $realisasi["pagu"]);
+
+        //   if($realisasi["jumlah"]>0){            
+        //     $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+        //   }
+        //   else{
+        //     $cell->setCellValue('E'.$row, 0);
+        //   }
+
+        //   $cell->setCellValue('F'.$row, $presentase_anggaran);
+        //   $cell->setCellValue('G'.$row, $value[VOLKEG]);
+        //   $cell->setCellValue('H'.$row, $value[SATKEG]);
+        //   $cell->setCellValue('I'.$row, $realisasi["volume"]);
+        //   $cell->setCellValue('J'.$row, $realisasi["satuan"]);
+
+        //   $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(true);
+        //   $kode_output = $value[KDGIAT].".".$value[KDOUTPUT];
+        //   $sheet->getStyle('B'.$row)->applyFromArray($left);
+        //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+        //   $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //   $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //   $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+  
+        //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
+        //   $sheet->getStyle('A'.$row.':L'.$row)->getFont()->setBold(true);
+        //   $sheet->getStyle('C'.$row)->getFont()->setItalic(true);
+        //   $row++;
+        //   continue;
+        // }
+        // if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]!=$kode_suboutput and $value[KDSOUTPUT]!=""){
+        //   $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT];
+        //   $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], "", "");
+        //   $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+
+        //   $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
+        //   $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
+        //   $cell->setCellValue('D'.$row, $realisasi["pagu"]);
+        //   $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+        //   $cell->setCellValue('F'.$row, $presentase_anggaran);
+
+        //   $kode_suboutput = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT];
+        //   $sheet->getStyle('B'.$row)->applyFromArray($right);
+        //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+
+        //   $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //   $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //   $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+          
+        //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
+        //   $row++;
+           
+        //   continue;
+        // }
+        // if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN]!=$kode_komponen and $value[KDKMPNEN]!=""){
+        //   $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN];
+        //   $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN], "");
+        //   $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+
+        //   $cell->setCellValue('C'.$row, $value[KDKMPNEN]." ".$value[NMKMPNEN]);
+        //   $cell->setCellValue('D'.$row, $realisasi["pagu"]);
+        //   $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+        //   $cell->setCellValue('F'.$row, $presentase_anggaran);
+        //   if($value[VOLKEG]>0){
+            
+        //   }
+        //   $kode_komponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN];
+        //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+
+        //   $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //   $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //   $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //   $cell->setCellValue('G'.$row, $value[VOLKEG]);
+        //   $cell->setCellValue('H'.$row, $value[SATKEG]);
+        //   $cell->setCellValue('I'.$row, $realisasi["volume"]);
+        //   $cell->setCellValue('J'.$row, $realisasi["satuan"]);
+          
+        //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
+        //   $row++;      
+        //   continue;
+        // }
+        // if($value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN]!=$kode_subkomponen and $value[KDSKMPNEN]!=""){
+        //     $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN].$value[KDSKMPNEN];
+        //     $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN],$value[KDSKMPNEN]);
+        //     $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+
+        //     $cell->setCellValue('C'.$row, $value[KDSKMPNEN]." ".$value[NMSKMPNEN]);
+        //     $cell->setCellValue('D'.$row, $realisasi["pagu"]);
+        //     $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+        //     $cell->setCellValue('F'.$row, $presentase_anggaran);
+        //     // if($value[VOLKEG]>0){
+        //     $cell->setCellValue('G'.$row, $value[VOLKEG]);
+        //     $cell->setCellValue('H'.$row, $value[SATKEG]);
+        //     $cell->setCellValue('I'.$row, $realisasi["volume"]);
+        //     $cell->setCellValue('J'.$row, $realisasi["satuan"]);
+        //     // }
+        //     $kode_subkomponen= $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT].".".$value[KDKMPNEN].".".$value[KDSKMPNEN];
+        //     $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+        //     $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //     $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+        //     $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+
+        //     // $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($horizontal);    
+        //     $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
+        //     $row++;
+            
+        //     continue;
+        // }
 
         
         $objPHPExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(-1);
