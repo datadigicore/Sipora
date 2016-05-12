@@ -119,7 +119,6 @@
 
     public function deleteRabview($data){
       $id = $data['id'];
-      // $this->insertlograbview($id);
 
       $query = "DELETE FROM rabview where id = '$id'";
       $result = $this->query($query);
@@ -164,11 +163,11 @@
                 WHERE IDRKAKL LIKE '".$idrkakl."%'  GROUP BY THANG,KDPROGRAM,KDGIAT,KDOUTPUT,KDSOUTPUT,KDKMPNEN,KDSKMPNEN";
       $result=$this->_fetch_array($query,1);
 
-      $pagu = ( $result[0]['JUMLAH'] + $result[0]['TRIWULAN1'] + $result[0]['TRIWULAN2'] + $result[0]['TRIWULAN3'] + $result[0]['TRIWULAN4'] ) - $valuelama;
+      $sisapagu = ( $result[0]['JUMLAH'] - ( $result[0]['TRIWULAN1'] + $result[0]['TRIWULAN2'] + $result[0]['TRIWULAN3'] + $result[0]['TRIWULAN4'] ) ) - $valuelama;
       $jumlah  = explode(".", $jumlah);
       $jumlah  = implode("", $jumlah);
-      // print_r($pagu);echo "<br>";print_r($jumlah); die;
-      if ($pagu < $jumlah) {
+      // print_r($sisapagu);echo "<br>";print_r($jumlah); die;
+      if ($sisapagu < $jumlah) {
         return 'error';
       }else{
 
