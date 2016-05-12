@@ -1,5 +1,5 @@
 <?php
-  error_reporting(E_ALL ^ E_WARNING);
+  error_reporting(E_ALL ^ (E_WARNING | E_STRICT));
   session_start();
   $TITLE             = "Sistem Evaluasi Kemenpora";
   $base_url          = "http://localhost/sipora/";
