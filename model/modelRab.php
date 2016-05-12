@@ -38,7 +38,26 @@
         echo "<input id='input-vol' value='$fetch[satkeg]' type='text' name='input-vol' />";
       }
     }
-
+    public function getDirektorat($kdProg){
+      $where = "";
+      foreach ($kdProg as $value) {
+        if($where == ""){
+          $where = "WHERE KDPROGRAM = '$value' ";
+        } else {
+          $where = $where."OR KDPROGRAM = '$value' ";
+        }
+      }
+      $query  = "SELECT KDPROGRAM, KDGIAT, NMGIAT FROM rkakl_full $where GROUP BY KDGIAT";
+      $result = $this->query($query);
+      $i=0;
+      while($fetch  = $this->fetch_object($result)) {
+        $data['KDPROGRAM'][$i] = $fetch->KDPROGRAM;
+        $data['KDGIAT'][$i] = $fetch->KDGIAT;
+        $data['NMGIAT'][$i] = $fetch->NMGIAT;
+        $i++;
+      }
+      return $data;
+    }
     public function getinfo($id){
       $query  = "SELECT * FROM rkakl_full as r where IDRKAKL = '$id'   ";
       $result = $this->query($query);
@@ -178,7 +197,65 @@
         }
       }
     }
+    public function getout2($prog, $kdgiat) {
+      $where = "";
+      $arrItem  = array();
+      // foreach ($prog as $value) {
+      //   if($where == ""){
+      //     $where = "WHERE KDPROGRAM = '$value' ";
+      //   } else {
+      //     $where = $where."AND KDPROGRAM = '$value' ";
+      //   }
+      // }
+      // print_r($kdgiat);exit;
+      foreach ($kdgiat as $value) {
+        $item = explode("-",$value);
+        $key = $item[0];
+        $val = $item[1];
+        $arrItem[$key][]=$val;
+        // array_push($arrItem[$key][$val], "set");
+      }
+      // print_r($arrItem);exit;
+      $str="";
+      foreach ($arrItem as $key => $arrValue) {
+        $where = "WHERE KDPROGRAM = '$key' ";
+        $nestedWhere="";
+        $where.="AND ( ";
 
+        foreach ($arrValue as $key => $value) {
+          if($nestedWhere==""){
+
+            $nestedWhere .="KDGIAT = '$value' ";
+          } else {
+            $nestedWhere .="OR KDGIAT = '$value' ";
+          }
+          
+        }
+        $where.="$nestedWhere )";
+        
+        if($str==""){
+          $str= "SELECT KDPROGRAM, KDGIAT ,KDOUTPUT, NMOUTPUT FROM rkakl_full as r 
+                $where ";
+        } else {
+          $str.= "UNION SELECT KDPROGRAM, KDGIAT ,KDOUTPUT, NMOUTPUT FROM rkakl_full as r 
+                $where ";
+        }
+        
+      }
+      
+      $query  = "$str group by KDGIAT, KDOUTPUT";
+      // echo $query ;exit;
+      $result = $this->query($query);
+      $i=0;
+      while($fetch  = $this->fetch_object($result)) {
+        $data['KDPROGRAM'][$i] = $fetch->KDPROGRAM;
+        $data['KDGIAT'][$i] = $fetch->KDGIAT;
+        $data['KDOUTPUT'][$i] = $fetch->KDOUTPUT;
+        $data['NMOUTPUT'][$i] = $fetch->NMOUTPUT;
+        $i++;
+      }
+      return $data;
+    }
     public function getsout($idrkakl) {
       $getrkakl = "SELECT * from rkakl_full where idrkakl = '$idrkakl'";
       $resrkakl = $this->query($getrkakl);

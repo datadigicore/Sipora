@@ -32,7 +32,24 @@
       $result = $this->query($query);
       return $result;
     }
+    public function insertGroup($data) {
+      $kode       = $data['kode'];
+      $nama       = $data['name'];
+      $kdprogram  = $data['kdprogram'];
+      $direktorat = $data['direktorat'];
+      $kdoutput   = $data['kdoutput'];
 
+      $query      = "INSERT INTO grup SET
+        kode      = '$kode',
+        nama      = '$nama',
+        kdprogram = '$kdprogram',
+        direktorat= '$direktorat',
+        kdoutput  = '$kdoutput'
+      ";
+
+      $result = $this->query($query);
+      return $result;
+    }
     public function updatePengguna($data) {
       $id         = $data['id'];
       $nama       = $data['name'];
@@ -92,7 +109,16 @@
       $fetch  = $this->fetch_object($result);
       return $fetch->password;
     }
-
+    public function getGroup() {
+      $query  = "SELECT kode, nama FROM  grup as r";
+      $result = $this->query($query);
+      $i=0;
+      while($fetch  = $this->fetch_object($result)) {
+        $data[$fetch->kode] = $fetch->nama;
+        $i++;
+      }
+      return $data;
+    }
     public function editPengguna($data) {
       foreach ($data as $key => $value) {
         $setdata .= "$key = '$value', ";
@@ -102,8 +128,40 @@
       $result = $this->query($query);
       return $result;
     }
+    public function editGrup($data) {
+      $id         = $data['id_data'];
+      $kode       = $data['kode'];
+      $nama       = $data['name'];
+      $kdprogram  = $data['kdprogram'];
+      $direktorat = $data['direktorat'];
+      $kdoutput   = $data['kdoutput'];
+      // foreach ($data as $key => $value) {
+        // if($key == "kdprogram" || $key == "direktorat" || $key == "kdoutput"){
+        //   $strKode='';
+        //   foreach ($value as $nilai) {
+        //     if($strKode==""){
+        //       $strKode = $nilai;
+        //     } else {
+        //       $strKode = $strKode.",".$nilai;
+        //     }
+        //   }
+        //   $value = $strKode;
+        // }
+
+      //   $setdata .= "$key = '$value', ";
+      // }
+      $setdata = rtrim($setdata,', ');
+      $query = "update grup set kode = '$kode', nama = '$nama', kdprogram = '$kdprogram', direktorat = '$direktorat', kdoutput = '$kdoutput' where id='$id'";
+      $result = $this->query($query);
+      return $result;
+    }
     public function deletePengguna($id) {
       $query = "delete from pengguna where id='$id'";
+      $result = $this->query($query);
+      return $result;
+    }
+    public function deleteGroup($id) {
+      $query = "update grup set status=0 where kode='$id'";
       $result = $this->query($query);
       return $result;
     }

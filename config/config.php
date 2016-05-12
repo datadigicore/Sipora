@@ -1,4 +1,5 @@
 <?php
+  error_reporting(E_ALL ^ E_WARNING);
   session_start();
   $TITLE             = "Sistem Evaluasi Kemenpora";
   $base_url          = "http://localhost/sipora/";
@@ -12,8 +13,8 @@
   // $path              = "C:/xampp/htdocs/sipora/";
   // $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
   //================== PATH UPLOAD LOCAL OSX =================//
-  $path              = "/Applications/XAMPP/xamppfiles/htdocs/sipora/";
-  $path_upload       = "/Applications/XAMPP/xamppfiles/htdocs/sipora/static/uploads/";
+  $path              = "/opt/lampp/htdocs/sipora/";
+  $path_upload       = "/opt/lampp/htdocs/sipora/static/uploads/";
   
   class config {
     public $db_host             = "localhost";

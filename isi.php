@@ -38,6 +38,8 @@
           include "./view/content/contentReport.php";
         break;
         case 'pengguna':          
+          $kdprog = $rab->getProg();
+          $group = $pengguna->getGroup();
           include "./view/content/contentPengguna.php";
         break;
         case 'edtpengguna':          
@@ -45,6 +47,10 @@
         break;
         case 'addpengguna':          
           include "./view/content/contentPenggunaAdd.php";
+        break;
+        case 'addgroup':
+          $kdprog = $rab->getProg();
+          include ('view/content/contentGrupAdd.php');
         break;
         case 'triwulan':          
           include "./view/content/contentTriwulan.php";

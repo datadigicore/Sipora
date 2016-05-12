@@ -475,6 +475,11 @@ switch ($link[3]) {
     $npwp = $mdl_rab->getnpwp($jenis);
     echo json_encode($npwp);
     break;
+    case 'getDirektorat':
+    $kdprog = $_POST['prog'];
+    $rs = $rab->getDirektorat($kdprog);
+    echo json_encode($rs);
+    break;
   case 'getyear':
     $query  = "SELECT THANG FROM rkakl_full where (THANG != '' OR THANG != '-') and STATUS = 1 group by THANG";
     $result=$db->_fetch_array($query,1);
@@ -495,6 +500,10 @@ switch ($link[3]) {
     $query = "SELECT id, nama, status FROM triwulan WHERE status = 1";
     $result=$db->_fetch_array($query,1);
     echo json_encode($result);
+    break;
+    case 'getout2':
+    $output = $rab->getout2($_POST['prog'],$_POST['direktorat']);
+    echo json_encode($output);
     break;
   case 'getsout':
     $soutput = $mdl_rab->getsout($_POST['prog'],$_POST['output'],$_POST['tahun'],$_POST['direktorat']);

@@ -3,6 +3,8 @@ include 'config/application.php';
 
 $sess_id      = $_SESSION['user_id'];
 $id           = $_SESSION['id'];
+$id_data      = $purifier->purify($_POST[id]);
+$kode         = $purifier->purify($_POST[kode]);
 $name         = $purifier->purify($_POST[name]);
 $username     = $purifier->purify($_POST[username]);
 $password     = $utility->sha512($_POST[password]);
@@ -10,11 +12,41 @@ $newpassword  = $utility->sha512($_POST[newpass]);
 $newpassword2 = $utility->sha512($_POST[newpass2]);
 $email        = $purifier->purify($_POST[email]);
 $level        = $purifier->purify($_POST[level]);
-$direktorat   = $purifier->purify($_POST[direktorat]);
+$kdprogram    = $purifier->purifyArray($_POST[kdprogram]);
+$direktorat   = $purifier->purifyArray($_POST[direktorat]);
+$kdoutput     = $purifier->purifyArray($_POST[kdoutput]);
 $status       = $purifier->purify($_POST[status]);
+
+$strKdoutput = "";
+$strKdprogram = "";
+$strDirektorat = "";
+// print_r($kdprogram);exit;
+foreach ($kdoutput as $value) {
+  if($strKdoutput==""){
+    $strKdoutput = $value;
+  } else {
+    $strKdoutput = $strKdoutput.",".$value;
+  }
+}
+foreach ($kdprogram as $value) {
+  if($strKdprogram==""){
+    $strKdprogram = $value;
+  } else {
+    $strKdprogram = $strKdprogram.",".$value;
+  }
+}
+foreach ($direktorat as $value) {
+  if($strDirektorat==""){
+    $strDirektorat = $value;
+  } else {
+    $strDirektorat = $strDirektorat.",".$value;
+  }
+}
 
 $data_pengguna = array(
   "id"           => $id,
+  "id_data"      => $id_data,
+  "kode"         => $kode,
   "name"         => $name,
   "username"     => $username,
   "password"     => $password,
@@ -22,7 +54,9 @@ $data_pengguna = array(
   "newpassword2" => $newpassword2,
   "email"        => $email,
   "level"        => $level,
-  "direktorat"   => $direktorat,
+  "kdprogram"    => $strKdprogram,
+  "direktorat"   => $strDirektorat,
+  "kdoutput"     => $strKdoutput,
   "status"       => $status
 );
 
@@ -99,6 +133,28 @@ switch ($link[3]) {
     // $datatable->get_table($table, $key, $column, $where);
     $datatable->get_table($tableKey, $Key, $columns, $query, $formatter);
   break;
+  case 'table-group':
+    $table = "grup";
+    $key   = "id";
+    // $column = array(
+    //   array( 'db' => 'id',      'dt' => 0 ),
+    //   array( 'db' => 'kode',  'dt' => 1 ),
+    //   array( 'db' => 'nama',  'dt' => 2),
+    //   array( 'db' => 'kdoutput',  'dt' => 3 )
+    // );
+    $columns=array(
+      'id',
+      'kode',
+      'nama',
+      'kdoutput',
+      );
+    $where = "WHERE status = 1";
+    $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+                    FROM grup
+                    ".$where;
+    // echo $query;exit;
+    $datatable->get_table($table, $key, $columns, $query);
+  break;
   case 'activate':
     $id = $_POST['key'];
     $pengguna->activatePengguna($id);
@@ -115,6 +171,23 @@ switch ($link[3]) {
     );
     $utility->location("content/addpengguna", $flash);
   break;
+  case 'add-group':
+    
+    // $strKdoutput = "";
+    // foreach ($kdoutput as $value) {
+    //   if($strKdoutput==""){
+    //     $strKdoutput = $value;
+    //   } else {
+    //     $strKdoutput = $strKdoutput.",".$value;
+    //   }
+    // }
+    // echo $strKdoutput;
+    $flash  = array(
+      'category' => "success",
+      'messages' => "Data pengguna berhasil ditambahkan"
+    );
+    $pengguna->insertGroup($data_pengguna);
+    $utility->location("content/addgroup",$flash);
   case 'edt':
     $pengguna->updatePengguna($data_pengguna);
     $utility->location_goto("content/setting");
@@ -161,12 +234,30 @@ switch ($link[3]) {
     );
     $utility->location("content/pengguna", $flash);
   break;
+  case 'edit-group':
+    $pengguna->editGrup($data_pengguna);
+    $flash  = array(
+      'category' => "success",
+      'messages' => "Data Pengguna berhasil diperbaharui"
+    );
+    // $utility->load("content/user",$flash);
+    $utility->location("content/pengguna", $flash);
+  break;
   case 'delete':
     $id = $_POST['id'];
     $pengguna->deletePengguna($id);
     $flash  = array(
       'category' => "success",
       'messages' => "Data Pengguna berhasil dihapus"
+    );
+    $utility->location("content/pengguna", $flash);
+  break;
+  case 'deletegroup':
+    $id = $_POST['id'];
+    $pengguna->deleteGroup($id);
+    $flash  = array(
+      'category' => "success",
+      'messages' => "Data Group berhasil dihapus"
     );
     $utility->location("content/pengguna", $flash);
   break;
