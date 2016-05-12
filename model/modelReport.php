@@ -3053,12 +3053,12 @@ public function daftar_peng_riil($result,$det){
                 <tr>
                   <td colspan="2">Kode Kegiatan</td>
                   <td>:</td>
-                  <td align="left">401196</td>
+                  <td align="left">'.$dir.'</td>
                 </tr>
                 <tr>
                   <td colspan="2">Nomor Tanggal DIPA</td>
                   <td>:</td>
-                  <td  align="left">DIPA-'.$rkl_view[no_dipa].'.401196/'.$rkl_view[tahun].', tgl. '.$this->konversi_tanggal($rkl_view[tanggal]).'</td>
+                  <td  align="left">DIPA-'.$rkl_view[no_dipa].$rkl_view[tahun].', tgl. '.$this->konversi_tanggal($rkl_view[tanggal]).'</td>
                 </tr>
                 <tr>
                   <td colspan="2">Propinsi DKI</td>
@@ -3122,7 +3122,7 @@ public function daftar_peng_riil($result,$det){
       foreach ($res as $value) {
         if($kd_dir!=$value['kdgiat']){
           $nmdir = $this->get_nama($value['kdgiat'],"","","","","");
-          $nilai = $this->get_realisasi($tanggal, $value['kdgiat'], 0, 0, 0, 0, 0);
+          $nilai = $this->realisasi_by_id($tanggal, $value['kdgiat'], "", "", "", "", "");
           $jml = $nilai['jml_lalu']+$nilai['jumlah'];
           $sisa = $nmdir['jumlah']-$jml;
           $acc_alokasi += $nmdir['jumlah'];
@@ -3133,6 +3133,8 @@ public function daftar_peng_riil($result,$det){
           $acc_sp2d_gu_ini += $nilai['jumlah'];
           $acc_sp2d_ini += $nilai['jumlah'];
           $acc_sisa_ang += $sisa;
+          $fisik = ($jml/$nmdir['jumlah'])*100;
+
           echo '<tr>
                   <td colspan="15" style="border-bottom:1px solid"></td>
                 </tr>';
@@ -3149,31 +3151,33 @@ public function daftar_peng_riil($result,$det){
                   <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($nilai['jumlah'],2,",",".").'</td>
                   <td style="border-left:1px solid; text-align:right; font-weight:bold;">'.number_format($jml,2,",",".").'</td>
                   <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($sisa,2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; border-right:1px solid;">'.'-'.'</td>
+                  <td style="border-left:1px solid;text-align:center;">'.number_format($fisik,1,",",".").'</td>
+                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
                 </tr>';
         }
 
         if(($kd_dir!=$value['kdgiat'] and $kdout!=$value['kdoutput']) or ($kd_dir!=$value['kdgiat']) or ($kd_dir==$value['kdgiat'] and $kdout!=$value['kdoutput'])){
           $nmdir = $this->get_nama($value['kdgiat'], $value['kdoutput'], "", "", "", "" );
-          $nilai = $this->get_realisasi($tanggal, $value['kdgiat'], $value['kdoutput'],  0, 0, 0, 0);
+          
+          $nilai = $this->realisasi_by_id($tanggal, $value['kdgiat'], $value['kdoutput'], "", "", "", "");
           $jml = $nilai['jml_lalu']+$nilai['jumlah'];
           $sisa = $nmdir['jumlah']-$jml;
+          $fisik = ($jml/$nmdir['jumlah'])*100;
           echo '<tr>
-                  <td style="border-left:1px solid; font-weight:bold;" align="center">'.$value['kdoutput'].'</td>
-                  <td style="border-left:1px solid; font-weight:bold;" colspan="2">'.$nmdir['kdout'].'</td>
+                  <td style="border-left:1px solid; " align="center">'.$value['kdoutput'].'</td>
+                  <td style="border-left:1px solid; " colspan="2">'.$nmdir['kdout'].'</td>
                   <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; text-align:right; font-weight:bold;">'.number_format($nmdir['jumlah'],2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($nilai['jml_lalu'],2,",",".").'</td>
+                  <td style="border-left:1px solid; text-align:right; ">'.number_format($nmdir['jumlah'],2,",",".").'</td>
                   <td style="border-left:1px solid;">'.'-'.'</td>
                   <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($nilai['jumlah'],2,",",".").'</td>
-                  <td style="border-left:1px solid; text-align:right; font-weight:bold;">'.number_format($jml,2,",",".").'</td>
-                  <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($sisa,2,",",".").'</td>
+                  <td style="border-left:1px solid; text-align:right;  ">'.number_format($nilai['jml_lalu'],2,",",".").'</td>
                   <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; border-right:1px solid;">'.'-'.'</td>
+                  <td style="border-left:1px solid;">'.'-'.'</td>
+                  <td style="border-left:1px solid; text-align:right;  ">'.number_format($nilai['jumlah'],2,",",".").'</td>
+                  <td style="border-left:1px solid; text-align:right; ">'.number_format($jml,2,",",".").'</td>
+                  <td style="border-left:1px solid; text-align:right;  ">'.number_format($sisa,2,",",".").'</td>
+                  <td style="border-left:1px solid;text-align:center;">'.number_format($fisik,1,",",".").'</td>
+                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
                 </tr>';
         }
 
@@ -3189,30 +3193,30 @@ public function daftar_peng_riil($result,$det){
           $nilai = $this->get_realisasi($tanggal, $value['kdgiat'], $value['kdoutput'], 0, 0, 0, $value['kdakun']);
           $jml = $nilai['jml_lalu']+$nilai['jumlah'];
           $sisa = $value['jumlah']-$jml;
-          echo '<tr>
-                  <td style="border-left:1px solid" align="center">'.''.'</td>
-                  <td style="border-left:1px solid"  colspan="2">'.$value['kdakun']." ".$value['NMAKUN'].'</td>
-                  <td style="border-left:1px solid;">'.''.'</td>
-                  <td style="border-left:1px solid; text-align:right;">'.number_format($value['jumlah'],2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; text-align:right; ">'.number_format($nilai['jml_lalu'],2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; text-align:right;  ">'.number_format($nilai['jumlah'],2,",",".").'</td>
-                  <td style="border-left:1px solid; text-align:right; ">'.number_format($jml,2,",",".").'</td>
-                  <td style="border-left:1px solid; text-align:right; ">'.number_format($sisa,2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; border-right:1px solid;">'.'-'.'</td>
-                </tr>';
+          // echo '<tr>
+          //         <td style="border-left:1px solid" align="center">'.''.'</td>
+          //         <td style="border-left:1px solid"  colspan="2">'.$value['kdakun']." ".$value['NMAKUN'].'</td>
+          //         <td style="border-left:1px solid;">'.''.'</td>
+          //         <td style="border-left:1px solid; text-align:right;">'.number_format($value['jumlah'],2,",",".").'</td>
+          //         <td style="border-left:1px solid;">'.'-'.'</td>
+          //         <td style="border-left:1px solid;">'.'-'.'</td>
+          //         <td style="border-left:1px solid; text-align:right; ">'.number_format($nilai['jml_lalu'],2,",",".").'</td>
+          //         <td style="border-left:1px solid;">'.'-'.'</td>
+          //         <td style="border-left:1px solid;">'.'-'.'</td>
+          //         <td style="border-left:1px solid; text-align:right;  ">'.number_format($nilai['jumlah'],2,",",".").'</td>
+          //         <td style="border-left:1px solid; text-align:right; ">'.number_format($jml,2,",",".").'</td>
+          //         <td style="border-left:1px solid; text-align:right; ">'.number_format($sisa,2,",",".").'</td>
+          //         <td style="border-left:1px solid;">'.'-'.'</td>
+          //         <td style="border-left:1px solid; border-right:1px solid;">'.'-'.'</td>
+          //       </tr>';
           
       // }
     }
       echo '<tr>
               
               <td style="border:1px solid; text-align:center;" colspan="4">'.'TOTAL'.'</td>
-              <td style="border:1px solid; text-align:right;">'.'-'.'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_alokasi,2,",",".").'</td>
+              <td style="border:1px solid; text-align:right;">'.'-'.'</td>
               <td style="border:1px solid; text-align:right; ">'.'-'.'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_sp2d_lalu,2,",",".").'</td>
               <td style="border:1px solid;">'.'-'.'</td>
@@ -3230,7 +3234,7 @@ public function daftar_peng_riil($result,$det){
       $html = ob_get_contents();
       ob_clean();
       // var_dump($html);
-      $this->create_pdf("Rekap Realisasi Daya Serap","A4-L",$html);
+      $this->create_pdf("Rekap Realisasi Daya Serap",array(330,215),$html);
     }
 
     public function rekap_total($dir, $tanggal ) {
