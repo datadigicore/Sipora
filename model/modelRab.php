@@ -67,7 +67,7 @@
               <tr><td valign='top'>Output</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMOUTPUT]</td></tr>
               <tr><td valign='top'>Sub Output</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMSOUTPUT]</td></tr>
               <tr><td valign='top'>Komponen</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMKMPNEN]</td></tr>
-              <tr><td valign='top'>Sub Komponen</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NmSkmpnen]</td></tr>
+              <tr><td valign='top'>Sub Komponen</td><td valign='top'>:&nbsp;</td><td valign='top'>$fetch[NMSKMPNEN]</td></tr>
               <input type='hidden' id='thang' value='$fetch[THANG]' />
               <input type='hidden' id='kdgiat' value='$fetch[KDGIAT]' />
               <input type='hidden' id='kdoutput' value='$fetch[KDOUTPUT]' />

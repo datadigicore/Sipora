@@ -79,25 +79,42 @@
 <div class="modal fade" id="mdl-vol">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="<?php echo $url_rewrite;?>process/rab/revisi" method="POST">
+      <form action="<?php echo $url_rewrite;?>process/kegiatan/editvol" method="POST">
         <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
           <h4 class="modal-title">Dialog Box</h4>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="id_rab_rev" name="id_rab_rev" value="" />
+          <input type="hidden" id="idrkakl_vol" name="idrkakl_vol" value="" />
+          <input type="hidden" id="id_volume" name="id_volume" value="" />
           <div class="form-group">
-            <label>Maximum Volume Kegiatan Seluruh Kegiatan</label>
+            <label>Volume Kegiatan</label>
           </div>
           <div class="form-group">
-            <label>Volume</label>
-            <input type="text" id="volume" class="form-control" name="input-volume" value="" />
+            <div class="row">
+              <div class="col-md-8">
+                <label>Target Volume</label>
+                <input type="text" class="form-control nomor" id="vol_target" name="vol_target" placeholder="Target Volume" required />
+              </div>
+              <div class="col-md-4">
+                <label>Satuan</label>
+                <input type="text" class="form-control" id="satuan" name="satuan" onchange="inputrute(this.id,this.value)" placeholder="Satuan" required oncha/>
+              </div>
+            </div>
           </div>
-          <!-- <div class="form-group">
-            <label>Satuan</label>
-            <input type="text" id="satuan" class="form-control" name="input-satuan" value="" />
-          </div> -->
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-8">
+                <label>Realisasi Volume</label>
+                <input type="text" class="form-control nomor" id="vol_real" name="vol_real" placeholder="Realisasi Volume" required />
+              </div>
+              <div class="col-md-4">
+                <label>Satuan Kegiatan</label>
+                <input type="text" readonly class="form-control" id="satuan2" placeholder="Satuan" />
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
@@ -110,6 +127,8 @@
 <script>
 var table;
   $(document).ready(function() {
+    var tahun = $('#tahun2').val();
+    var direktorat = $('#direktorat2').val();
     table = $("#table").DataTable({
       "info":true,
         "oLanguage": {
@@ -121,7 +140,8 @@ var table;
         "ajax": {
           "url": "<?php echo $url_rewrite;?>process/kegiatan/table-rkakl",
           "type": "POST",
-          "data": { }
+          "data": { 'tahun' : tahun,
+                    'direktorat' : direktorat }
         },
         <?php if ($_SESSION['direktorat'] == "") { ?>
           "columnDefs" : [
@@ -151,199 +171,76 @@ var table;
     });
   });
   $(function () {
-     // $( "#datepicker" ).datepicker({
-     //    changeMonth: true,
-     //    changeYear: true,
-     //    format: 'dd/mm/yyyy'
-     //  });
-
-    // var tahun = $('#tahun2').val();
-    // var direktorat = $('#direktorat2').val();
-
-  /*.rowGrouping({
-                iGroupingColumnIndex: 0,
-                sGroupingColumnSortDirection: "asc",
-                iGroupingOrderByColumnIndex: 0,
-                                            bExpandableGrouping: true,
-      });*/
-    // table = $("#table").DataTable({
-    //     "processing": true,
-    //     "serverSide": true,
-    //     "scrollX": true,
-    //     "ajax": {
-    //       "url": "<?php echo $base_process;?>kegiatan/table-rkakl",
-    //       "type": "POST",
-    //       "data": {'tahun':tahun,
-    //                 'direktorat':direktorat }
-    //     },
-    //     <?php if ($_SESSION['direktorat'] == "") { ?>
-    //       "columnDefs" : [
-    //         {"targets" : 0,
-    //           "visible" : false},
-    //         {"targets" : 1,
-    //           "visible" : false},
-    //         {"targets" : 2},
-    //         {"targets" : 3},
-    //         {"targets" : 4},
-    //         {"targets" : 5},
-    //         {"targets" : 6,
-    //          "searchable" :false},
-    //         {"targets" : 7,
-    //          "searchable" :false},
-    //         {"targets" : 8,
-    //          "searchable" :false},
-    //         {"targets" : 9,
-    //          "searchable" :false},
-    //       ],
-    //       "drawCallback": function ( settings ) {
-    //         var api  = this.api();
-    //         var rows = api.rows( {page:'current'} ).nodes();
-    //         var last = null;
-    //         api.column(1, {page:'current'} ).data().each( function ( group, i ) {
-    //             if ( last !== group ) {
-    //                 $(rows).eq( i ).before(
-    //                     '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-    //                 );
-    //                 last = group;
-    //             }
-    //         } );
-    //     },
-    //     <?php }else{?>
-    //       "columnDefs" : [
-    //         {"targets" : 0,
-    //           "visible" : false},
-    //         {"targets" : 1,
-    //           "visible" : false},
-    //         {"targets" : 2,
-    //           "visible" : false},
-    //         {"targets" : 3},
-    //         {"targets" : 4},
-    //         {"targets" : 5},
-    //         {"targets" : 6,
-    //          "searchable" :false},
-    //         {"targets" : 7,
-    //          "searchable" :false},
-    //         {"targets" : 8,
-    //          "searchable" :false},
-    //         {"targets" : 9,
-    //          "searchable" :false},
-    //       ],
-    //       "drawCallback": function ( settings ) {
-    //         var api = this.api();
-    //         var rows = api.rows( {page:'current'} ).nodes();
-    //         var last=null;
- 
-    //         api.column(2, {page:'current'} ).data().each( function ( group, i ) {
-    //             if ( last !== group ) {
-    //                 $(rows).eq( i ).before(
-    //                     '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-    //                 );
- 
-    //                 last = group;
-    //             }
-    //         } );
-    //     },
-    //     <?php } ?>
-    //     "order": [[ 0, "desc" ]]        
-    // });
     
     $(document).on("click", "#btn-vol", function (){
       var tr = $(this).closest('tr');
+
       tabrow = table.row(tr);
-      // alert();
-      volume =tabrow.data()[17]; 
-      satuan =tabrow.data()[10]; 
-      $("#volume").val(volume);
+      idrkakl_vol =tabrow.data()[0]; 
+      satuan =tabrow.data()[13]; 
+      id_volume =tabrow.data()[14]; 
+      vol_target =tabrow.data()[15]; 
+      vol_real =tabrow.data()[16]; 
+
+      $("#idrkakl_vol").val(idrkakl_vol);
+      $("#vol_target").val(vol_target);
+      $("#vol_real").val(vol_real);
       $("#satuan").val(satuan);
+      $("#satuan2").val(satuan);
+      $("#id_volume").val(id_volume);
 
     });
   });
   
-  // function search(){
-  //   var tahun = $('#tahun2').val();
-  //   var direktorat = $('#direktorat2').val();
-  //   table.destroy();
-  //   table = $("#table").DataTable({
-  //       "processing": true,
-  //       "serverSide": true,
-  //       "scrollX": true,
-  //       "ajax": {
-  //         "url": "<?php echo $url_rewrite;?>api/api_rabrkakl.php",
-  //         "type": "POST",
-  //         "data": {'tahun':tahun,
-  //                   'direktorat':direktorat }
-  //       },
-  //       <?php if ($_SESSION['direktorat'] == "") { ?>
-  //         "columnDefs" : [
-  //           {"targets" : 0,
-  //             "visible" : false},
-  //           {"targets" : 1,
-  //             "visible" : false},
-  //           {"targets" : 2},
-  //           {"targets" : 3},
-  //           {"targets" : 4},
-  //           {"targets" : 5},
-  //           {"targets" : 6,
-  //            "searchable" :false},
-  //           {"targets" : 7,
-  //            "searchable" :false},
-  //           {"targets" : 8,
-  //            "searchable" :false},
-  //           {"targets" : 9,
-  //            "searchable" :false},
-  //         ],
-  //         "drawCallback": function ( settings ) {
-  //           var api = this.api();
-  //           var rows = api.rows( {page:'current'} ).nodes();
-  //           var last=null;
- 
-  //           api.column(1, {page:'current'} ).data().each( function ( group, i ) {
-  //               if ( last !== group ) {
-  //                   $(rows).eq( i ).before(
-  //                       '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-  //                   );
- 
-  //                   last = group;
-  //               }
-  //           } );
-  //       },
-  //       <?php }else{?>
-  //         "columnDefs" : [
-  //           {"targets" : 0,
-  //             "visible" : false},
-  //           {"targets" : 1,
-  //             "visible" : false},
-  //           {"targets" : 2,
-  //             "visible" : false},
-  //           {"targets" : 3},
-  //           {"targets" : 4},
-  //           {"targets" : 5},
-  //           {"targets" : 6,
-  //            "searchable" :false},
-  //           {"targets" : 7,
-  //            "searchable" :false},
-  //           {"targets" : 8,
-  //            "searchable" :false},
-  //           {"targets" : 9,
-  //            "searchable" :false},
-  //         ],
-  //         "drawCallback": function ( settings ) {
-  //           var api = this.api();
-  //           var rows = api.rows( {page:'current'} ).nodes();
-  //           var last=null;
- 
-  //           api.column(2, {page:'current'} ).data().each( function ( group, i ) {
-  //               if ( last !== group ) {
-  //                   $(rows).eq( i ).before(
-  //                       '<tr class="group" style="background-color:#00FF80;"><td colspan="11">'+group+'</td></tr>'
-  //                   );
- 
-  //                   last = group;
-  //               }
-  //           } );
-  //       },
-  //       <?php } ?>
-  //       "order": [[ 0, "desc" ]]        
-  //   });
-  // }
+  function search(){
+    var tahun = $('#tahun2').val();
+    var direktorat = $('#direktorat2').val();
+    table.destroy();
+    table = $("#table").DataTable({
+      "info":true,
+        "oLanguage": {
+          "sInfoFiltered": ""
+        },
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        "ajax": {
+          "url": "<?php echo $url_rewrite;?>process/kegiatan/table-rkakl",
+          "type": "POST",
+          "data": { 'tahun' : tahun,
+                    'direktorat' : direktorat }
+        },
+        <?php if ($_SESSION['direktorat'] == "") { ?>
+          "columnDefs" : [
+            {"targets" : 0,
+             "visible" : false},
+            {"targets" : 1},
+            {"targets" : 2},
+            {"targets" : 3},
+            {"targets" : 4},
+            {"targets" : 5},
+            {"targets" : 6},
+          ],
+        <?php }else{?>
+          "columnDefs" : [
+            {"targets" : 0,
+             "visible" : false},
+            {"targets" : 1,
+              "visible" : false},
+            {"targets" : 2},
+            {"targets" : 3},
+            {"targets" : 4},
+            {"targets" : 5},
+            {"targets" : 6},
+          ],
+        <?php } ?>
+        "order": [[ 0, "asc" ], [ 1, "asc" ], [ 2, "asc" ], [ 3, "asc" ], [ 4, "asc" ], [ 5, "asc" ]]
+    });
+  }
+
+
+  function inputrute(id,val){
+    var satuan = $('#satuan').val();
+    $('#satuan2').val(satuan);
+  }
 </script>

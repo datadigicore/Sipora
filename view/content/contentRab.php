@@ -16,7 +16,7 @@
             <h3 class="box-title" style="margin-top:6px;">Table Kegiatan</h3>
 
             <?php if ($_SESSION['level'] != '0') {
-              echo '<a href="'.$url_rewrite.'content/kegiatan-tambah/'.$idrkakl.'" class="btn btn-flat btn-success btn-md pull-right"><i class="fa fa-plus"></i>&nbsp;Tambah Kegiatan Baru</a>';
+              echo '<a id="tbl-tambah" href="'.$url_rewrite.'content/kegiatan-tambah/'.$idrkakl.'" class="btn btn-flat btn-success btn-md pull-right"><i class="fa fa-plus"></i>&nbsp;Tambah Kegiatan Baru</a>';
             }?>
 
           </div>
@@ -232,9 +232,59 @@
           <h4 class="modal-title">Dialog Box</h4>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="id_rab_del" name="id_rab_del" value="" />
+          <input type="hidden" id="id_rab_del" name="id" value="" />
           <div class="form-group">
             <label>Apakah Anda Yakin Ingin Melakukan Penghapusan Data ?</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
+          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="unlock">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="<?php echo $url_rewrite;?>process/kegiatan/lock" method="POST">
+        <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color:white">×</span></button>
+          <h4 class="modal-title">Dialog Box</h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="id_rab_unlock" name="id_rab_unlock" />
+          <input type="hidden" id="statuslock" name="statuslock" value="4" />
+          <input type="hidden" name="idrkakl" value="<?php echo $idrkakl;?>" />
+          <div class="form-group">
+            <label>Apakah Anda Yakin Ingin Melakukan Unlock Data ?</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
+          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="lock">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="<?php echo $url_rewrite;?>process/kegiatan/lock" method="POST">
+        <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color:white">×</span></button>
+          <h4 class="modal-title">Dialog Box</h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="id_rab_lock" name="id_rab_lock" />
+          <input type="hidden" id="statuslock" name="statuslock" value="0" />
+          <input type="hidden" name="idrkakl" value="<?php echo $idrkakl;?>" />
+          <div class="form-group">
+            <label>Apakah Anda Yakin Ingin Melakukan Lock Data ?</label>
           </div>
         </div>
         <div class="modal-footer">
@@ -319,7 +369,31 @@ var table;
       tabrow = table.row(tr);
       $("#id_rab_del").val(tabrow.data()[0]);
     });
+    $(document).on("click", "#btn-lock", function (){
+      var tr = $(this).closest('tr');
+      tabrow = table.row(tr);
+      $("#id_rab_lock").val(tabrow.data()[0]);
+    });
+    $(document).on("click", "#btn-unlock", function (){
+      var tr = $(this).closest('tr');
+      tabrow = table.row(tr);
+      $("#id_rab_unlock").val(tabrow.data()[0]);
+    });
+    cektriwulan();
     chprog();
   });
 
+function cektriwulan(){
+  $.ajax({
+    type: "post",
+    url : "<?php echo $base_process;?>kegiatan/gettriwulan",
+    success: function(data) {
+      if (data == "null") {
+        $('#tbl-tambah').hide();
+      }else{
+        $('#tbl-tambah').show();
+      };
+    }
+  });
+}
 </script>
