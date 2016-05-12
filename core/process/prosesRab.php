@@ -11,6 +11,7 @@ switch ($link[3]) {
     $key_stack=array();
 
     if (!is_null($result)) {
+      $realisasi['lock'] = true;
       foreach ($result as $key => $value) {
         $id=$value['id'];
         $thang=$value['thang'];
@@ -22,6 +23,10 @@ switch ($link[3]) {
         $kdskmpnen=$value['kdskmpnen'];
         $jumlah=$value['jumlah'];
         $volume=$value['volume'];
+        $status=$value['status'];
+        if ($status == 0) {
+          $realisasi['lock'] = false;
+        }
         $key="$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen";
         $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['key']=$key;
         $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['jumlah'] += $jumlah;
@@ -198,8 +203,13 @@ switch ($link[3]) {
       }),
       '12' => array('formatter' => function($d,$row,$data){ 
         $button = '<div class="col-md-12">';
-        $button .= '<a href="'.$data['url_rewrite'].'kegiatan-rinci/'.$d.'" class="btn btn-flat btn-primary btn-sm col-md-12" ><i class="fa fa-plus"></i>&nbsp; Tambah Kegiatan</a>';
+        $button .= '<a href="'.$data['url_rewrite'].'kegiatan-rinci/'.$d.'" class="btn btn-flat btn-primary btn-sm col-md-12" ><i class="fa fa-list"></i>&nbsp; Kegiatan</a>';
         $button .= '<a id="btn-vol" href="#mdl-vol" class="btn btn-flat btn-warning btn-sm col-md-12" data-toggle="modal"><i class="fa fa-pencil"></i>&nbsp; Edit Volume</a>';
+        if ($data['lock'] == false && $_SESSION['level'] == 0) {
+          $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-unlock-alt"></i>&nbsp; Unlock</a>';
+        }elseif($data['lock'] == true && $_SESSION['level'] == 0){
+          $button .= '<a id="btn-lock" href="#lock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-lock"></i>&nbsp; Lock</a>';
+        }
         $button .='</div>';
         return $button; 
       }),
@@ -277,7 +287,9 @@ switch ($link[3]) {
           $button = '<div class="col-md-12">';
           if($_SESSION['level'] != 0 && ($d == 1 || $d == 4)){
             $button .= '<a id="btn-trans" href="'.$data['url_rewrite'].'content/kegiatan-edit/'.$row[0].'/'.$data['idrkakl'].'" class="btn btn-flat btn-warning btn-sm col-md-6" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
-            $button .= '<a id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
+            if ($d == 1) {
+              $button .= '<a id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
+            }
           }
           elseif($_SESSION['level'] != 0 && $d == 0){
             $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"><i class="fa fa-warning"></i> No available</a>';
@@ -458,12 +470,57 @@ switch ($link[3]) {
     }
     $query = "UPDATE rabview SET status = '$status' WHERE id = '$id'";
     $result = $db->query($query);
-    $flash  = array(
+    if ($status == 4) {
+      $flash  = array(
               'category' => "success",
-              'messages' => "Data Volume Telah Diubah !"
+              'messages' => "Data Kegiatan Telah Dibuka Kembali !"
             );
+    }else{
+      $flash  = array(
+              'category' => "success",
+              'messages' => "Data Kegiatan Telah Dikunci Kembali !"
+            );
+    }
     $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
 
+    break;
+  case 'lockkomp':
+    $status = $_POST['statuslock'];
+    $idrkakl = $_POST['idrkakl'];
+    $query = "SELECT THANG, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN FROM rkakl_full where IDRKAKL = '$idrkakl' ";
+    $result = $db->_fetch_array($query,1);
+
+    $thang = $result[0]['THANG'];
+    $kdprogram = $result[0]['KDPROGRAM'];
+    $kdgiat = $result[0]['KDGIAT'];
+    $kdoutput = $result[0]['KDOUTPUT'];
+    $kdsoutput = $result[0]['KDSOUTPUT'];
+    $kdkmpnen = $result[0]['KDKMPNEN'];
+    $kdskmpnen = $result[0]['KDSKMPNEN'];
+
+    $query = "UPDATE rabview SET status = '$status' 
+              WHERE thang = '$thang' 
+              and kdprogram = '$kdprogram' 
+              and kdgiat = '$kdgiat'
+              and kdoutput = '$kdoutput'
+              and kdsoutput = '$kdsoutput'
+              and kdkmpnen = '$kdkmpnen'
+              and kdskmpnen = '$kdskmpnen'";
+    $result = $db->query($query);
+    if ($status == 4) {
+      $flash  = array(
+              'category' => "success",
+              'messages' => "Data Kegiatan Telah Dibuka Kembali !"
+            );
+    }else{
+      $flash  = array(
+              'category' => "success",
+              'messages' => "Data Kegiatan Telah Dikunci Kembali !"
+            );
+    }
+    $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
+
+    break;
     break;
   case 'editvol':
     $id_volume = $_POST['id_volume'];
@@ -515,7 +572,7 @@ switch ($link[3]) {
     $utility->location("content/kegiatan",$flash);
     break;
   default:
-    $utility->location_goto(".");
+    $utility->location(".");
   break;
 
   function cekpagu(){

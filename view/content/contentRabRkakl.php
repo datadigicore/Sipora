@@ -124,6 +124,54 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="unlock">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="<?php echo $url_rewrite;?>process/kegiatan/lockkomp" method="POST">
+        <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color:white">×</span></button>
+          <h4 class="modal-title">Dialog Box</h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="statuslock" name="statuslock" value="4" />
+          <input type="hidden" id="idrkakl_unlock" name="idrkakl" />
+          <div class="form-group">
+            <label>Apakah Anda Yakin Ingin Melakukan Unlock Data ?</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
+          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="lock">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="<?php echo $url_rewrite;?>process/kegiatan/lockkomp" method="POST">
+        <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color:white">×</span></button>
+          <h4 class="modal-title">Dialog Box</h4>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="statuslock" name="statuslock" value="0" />
+          <input type="hidden" id="idrkakl_lock" name="idrkakl" />
+          <div class="form-group">
+            <label>Apakah Anda Yakin Ingin Melakukan Lock Data ?</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
+          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <script>
 var table;
   $(document).ready(function() {
@@ -174,21 +222,29 @@ var table;
     
     $(document).on("click", "#btn-vol", function (){
       var tr = $(this).closest('tr');
-
       tabrow = table.row(tr);
       idrkakl_vol =tabrow.data()[0]; 
       satuan =tabrow.data()[13]; 
       id_volume =tabrow.data()[14]; 
       vol_target =tabrow.data()[15]; 
       vol_real =tabrow.data()[16]; 
-
       $("#idrkakl_vol").val(idrkakl_vol);
       $("#vol_target").val(vol_target);
       $("#vol_real").val(vol_real);
       $("#satuan").val(satuan);
       $("#satuan2").val(satuan);
       $("#id_volume").val(id_volume);
+    });
 
+    $(document).on("click", "#btn-lock", function (){
+      var tr = $(this).closest('tr');
+      tabrow = table.row(tr);
+      $("#idrkakl_lock").val(tabrow.data()[0]);
+    });
+    $(document).on("click", "#btn-unlock", function (){
+      var tr = $(this).closest('tr');
+      tabrow = table.row(tr);
+      $("#idrkakl_unlock").val(tabrow.data()[0]);
     });
   });
   
