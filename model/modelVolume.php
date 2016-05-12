@@ -3,7 +3,7 @@
 
   class modelVolume extends mysql_db {
 
-    public function insertvolume($data){
+    public function insertVolume($data){
       $thang     = $data['thang'];
       $kdprogram = $data['kdprogram'];
       $kdgiat    = $data['kdgiat'];
@@ -14,6 +14,17 @@
 
       $vol_target    = $data['vol_target'];
       $vol_real    = $data['vol_real'];
+
+      // if ($data['idtriwulan'] == "1") {
+      //   $tambahan = "vol_real1 = '$vol_real', ";
+      // }elseif ($data['idtriwulan'] == "2") {
+      //   $tambahan = "vol_real2 = '$vol_real', ";
+      // }elseif ($data['idtriwulan'] == "3") {
+      //   $tambahan = "vol_real3 = '$vol_real', ";
+      // }elseif ($data['idtriwulan'] == "4") {
+      //   $tambahan = "vol_real4 = '$vol_real', ";
+      // }
+      
       $satuan    = $data['satuan'];
 
       $created_by = $_SESSION['id'];
@@ -40,7 +51,7 @@
       return $result;
     }
 
-    public function updatevolume($data){
+    public function updateVolume($data){
       $id        = $data['id_volume'];
       $thang     = $data['thang'];
       $kdprogram = $data['kdprogram'];
@@ -52,6 +63,17 @@
 
       $vol_target    = $data['vol_target'];
       $vol_real    = $data['vol_real'];
+
+      // if ($data['idtriwulan'] == "1") {
+      //   $tambahan = "vol_real1 = '$vol_real', ";
+      // }elseif ($data['idtriwulan'] == "2") {
+      //   $tambahan = "vol_real2 = '$vol_real', ";
+      // }elseif ($data['idtriwulan'] == "3") {
+      //   $tambahan = "vol_real3 = '$vol_real', ";
+      // }elseif ($data['idtriwulan'] == "4") {
+      //   $tambahan = "vol_real4 = '$vol_real', ";
+      // }
+
       $satuan    = $data['satuan'];
       // $status    = $data['status'];
       $updated_by = $_SESSION['id'];
@@ -79,14 +101,14 @@
       return $result;
     }
 
-    public function deletevolume($data){
+    /*public function deleteVolume($data){
       $id = $data['id'];
 
       $query = "DELETE FROM volume where id = '$id'";
       $result = $this->query($query);
 
       return $result;
-    }
+    }*/
 
     /*public function insertlogvolume($id){
       $query = "SELECT * from volume where id = '$id'";

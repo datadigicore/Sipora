@@ -35,6 +35,8 @@
       else {
         $query    = "UPDATE triwulan SET status = '1', start_date = CURDATE()+1 WHERE id = '$data[id]'";
         $result   = $this->query($query);
+        $query  = "UPDATE rabview SET status = '0' WHERE idtriwulan = '$data[prev]'";
+        $result = $this->query($query);
       }
     }
     public function deactivate($data) {
@@ -50,8 +52,10 @@
       else {
         $query  = "SELECT start_date FROM triwulan WHERE (start_date = CURDATE() OR start_date = CURDATE()+1) && id = '$data[id]'";
         $result = $this->query($query);
-        if ($result->num_rows == 0) {
+        if ($result->num_rows !== 0) {
           $query      = "UPDATE triwulan SET status = '0', end_date = CURDATE() WHERE id = '$data[id]'";
+          $result     = $this->query($query);
+          $query      = "UPDATE rabview SET status = '0' WHERE idtriwulan = '$data[id]'";
           $result     = $this->query($query);
           $data[next] = $data[id] + 1;
           $query      = "UPDATE triwulan SET status = '2' WHERE id = '$data[next]'";

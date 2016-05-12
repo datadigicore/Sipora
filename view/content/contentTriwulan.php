@@ -77,6 +77,7 @@
 </div>
 <script type="text/javascript">
   var table = $("#table").DataTable({
+    "info":true,
     "oLanguage": {
       "sInfoFiltered": ""
     },
@@ -84,8 +85,9 @@
     "serverSide": true,
     "scrollX": true,
     "ajax": {
-      "url": "<?php echo $base_process;?>triwulan/table",
-      "type": "POST"
+      "url": "<?php echo $url_rewrite;?>process/triwulan/table",
+      "type": "POST",
+      "data": { }
     },
     "columnDefs" : [
       {"targets": 0,
@@ -94,13 +96,8 @@
        "data"   : null,
        "searchable": false,
        "orderable": false},
-      {"targets": 2},
-      {"targets": 3},
-      {"targets": 4},
-      {"targets": 5},
-      {"targets": 6},
     ],
-    "order": [[ 2, "asc" ]]
+    "order": [ 2, "asc" ]
   });
   table.on( 'order.dt search.dt draw.dt', function () {
     table.column(1, {search:'applied', order:'applied', draw:'applied'}).nodes().each( function (cell, i) {
@@ -122,11 +119,13 @@
   function ajaxPost(data){
     tabrow = table.row(data[0]);
     id = tabrow.data()[0];
+    alert(id);
     $.ajax({
       type: "post",
       url : "<?php echo $base_process;?>triwulan/"+data[1],
       data: {id:id},
       success: function(data) {
+        alert(data);
         table.draw();
       }
     });

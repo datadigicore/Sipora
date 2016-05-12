@@ -41,85 +41,104 @@
       }
     break;
     case 'table':
-      $table      = "triwulan";
+      $dataArray['url_rewrite'] = $url_rewrite;
+      $dataArray['idrkakl'] = $_POST['idrkakl'];
+      $tableKey   = "rabview";
       $primaryKey = "id";
-      $columns    = array(
-        array( 'db' => 'id',         'dt' => 0 ),
-        array( 'db' => 'nama',       'dt' => 2 ),
-        array( 'db' => 'start_date', 'dt' => 3, 'formatter' => function( $d, $row ) {
-          $arrbulan = array(
-                  '00'=>"00", '01'=>"Januari", '02'=>"Februari", '03'=>"Maret", '04'=>"April", '05'=>"Mei", '06'=>"Juni",
-                  '07'=>"Juli", '08'=>"Agustus", '09'=>"September", '10'=>"Oktober", '11'=>"November", '12'=>"Desember",
-          );
-          $pecahtgl = explode("-", $d);
-          if ($pecahtgl[2] == '00' && $pecahtgl[1] == '00') {
-            $tanggal = '<div class="text-center">-</div>';
-          }
-          else {
-            $tanggal = $pecahtgl[2].' - '.$arrbulan[$pecahtgl[1]].' - '.$pecahtgl[0];
-          }
-          return $tanggal;
-        }),
-        array( 'db' => 'end_date',   'dt' => 4, 'formatter' => function( $d, $row ) {
-          $arrbulan = array(
-                  '00'=>"00", '01'=>"Januari", '02'=>"Februari", '03'=>"Maret", '04'=>"April", '05'=>"Mei", '06'=>"Juni",
-                  '07'=>"Juli", '08'=>"Agustus", '09'=>"September", '10'=>"Oktober", '11'=>"November", '12'=>"Desember",
-          );
-          $pecahtgl = explode("-", $d);
-          if ($pecahtgl[2] == '00' && $pecahtgl[1] == '00') {
-            $tanggal = '<div class="text-center">-</div>';
-          }
-          else {
-            $tanggal = $pecahtgl[2].' - '.$arrbulan[$pecahtgl[1]].' - '.$pecahtgl[0];
-          }
-          return $tanggal;
-        }),
-        array( 'db' => 'status',     'dt' => 5, 'formatter' => function( $d, $row ) {
-          if ($d == 1) {
-            return '<div class="label label-success col-md-12"><i class="fa fa-check-circle"></i> Sedang Aktif</div>';
-          }
-          if ($d == 4) {
-            return '<div class="label label-warning col-md-12"><i class="fa fa-warning"></i> Sedang Revisi</div>';
-          }
-          else {
-            return '<div class="label label-danger col-md-12"><i class="fa fa-warning"></i> Tidak Aktif</div>';
-          }
-        }),
-        array( 'db' => 'status',     'dt' => 6, 'formatter' => function( $d, $row ) {
-          if ($d == 0) {
-            return '<a style="margin:1px 2px;" id="btn-unl" class="btn btn-flat btn-warning btn-xs col-md-12"><i class="fa fa-check-circle"></i> Unlock</a>';
-          }
-          elseif ($d == 1) {
-            return '<a style="margin:1px 2px;" id="btn-non" class="btn btn-flat btn-danger btn-xs col-md-12"><i class="fa fa-warning"></i> Non aktif</a>';
-          }
-          elseif ($d == 2) {
-            return '<a style="margin:1px 2px;" id="btn-act" class="btn btn-flat btn-success btn-xs col-md-12"><i class="fa fa-warning"></i> Aktifkan</a>';
-          }
-          elseif ($d == 4) {
-            return '<a style="margin:1px 2px;" id="btn-non" class="btn btn-flat btn-danger btn-xs col-md-12"><i class="fa fa-warning"></i> Non Aktif</a>';
-          }
-          else {
-            return '<a style="margin:1px 2px;" class="btn btn-flat btn-default btn-xs col-md-12"><i class="fa fa-warning"></i> No available</a>';
-          }
-        })
-      );
-      $datatable->get_rkakl_view($table, $primaryKey, $columns);
+      $columns    = array('id','id',
+                          'nama',
+                          'start_date',
+                          'end_date',
+                          'status',
+                          'status',
+                          );
+      $formatter  = array(
+          '3' => array('formatter' => function($d,$row,$data){ 
+            $arrbulan = array(
+                    '00'=>"00", '01'=>"Januari", '02'=>"Februari", '03'=>"Maret", '04'=>"April", '05'=>"Mei", '06'=>"Juni",
+                    '07'=>"Juli", '08'=>"Agustus", '09'=>"September", '10'=>"Oktober", '11'=>"November", '12'=>"Desember",
+            );
+            $pecahtgl = explode("-", $d);
+            if ($pecahtgl[2] == '00' && $pecahtgl[1] == '00') {
+              $tanggal = '<div class="text-center">-</div>';
+            }
+            else {
+              $tanggal = $pecahtgl[2].' - '.$arrbulan[$pecahtgl[1]].' - '.$pecahtgl[0];
+            }
+            return $tanggal;
+          }),
+          '4' => array('formatter' => function($d,$row,$data){ 
+            $arrbulan = array(
+                    '00'=>"00", '01'=>"Januari", '02'=>"Februari", '03'=>"Maret", '04'=>"April", '05'=>"Mei", '06'=>"Juni",
+                    '07'=>"Juli", '08'=>"Agustus", '09'=>"September", '10'=>"Oktober", '11'=>"November", '12'=>"Desember",
+            );
+            $pecahtgl = explode("-", $d);
+            if ($pecahtgl[2] == '00' && $pecahtgl[1] == '00') {
+              $tanggal = '<div class="text-center">-</div>';
+            }
+            else {
+              $tanggal = $pecahtgl[2].' - '.$arrbulan[$pecahtgl[1]].' - '.$pecahtgl[0];
+            }
+            return $tanggal;
+          }),
+          '5' => array('formatter' => function($d,$row,$data){ 
+            if ($d == 1) {
+              return '<div class="label label-success col-md-12"><i class="fa fa-check-circle"></i> Sedang Aktif</div>';
+            }
+            if ($d == 4) {
+              return '<div class="label label-warning col-md-12"><i class="fa fa-warning"></i> Sedang Revisi</div>';
+            }
+            else {
+              return '<div class="label label-danger col-md-12"><i class="fa fa-warning"></i> Tidak Aktif</div>';
+            }
+          }),
+          '6' => array('formatter' => function($d,$row,$data){ 
+            if ($d == 0) {
+              return '<a style="margin:1px 2px;" id="btn-unl" class="btn btn-flat btn-warning btn-xs col-md-12"><i class="fa fa-check-circle"></i> Unlock</a>';
+            }
+            elseif ($d == 1) {
+              return '<a style="margin:1px 2px;" id="btn-non" class="btn btn-flat btn-danger btn-xs col-md-12"><i class="fa fa-warning"></i> Non aktif</a>';
+            }
+            elseif ($d == 2) {
+              return '<a style="margin:1px 2px;" id="btn-act" class="btn btn-flat btn-success btn-xs col-md-12"><i class="fa fa-warning"></i> Aktifkan</a>';
+            }
+            elseif ($d == 4) {
+              return '<a style="margin:1px 2px;" id="btn-non" class="btn btn-flat btn-danger btn-xs col-md-12"><i class="fa fa-warning"></i> Non Aktif</a>';
+            }
+            else {
+              return '<a style="margin:1px 2px;" class="btn btn-flat btn-default btn-xs col-md-12"><i class="fa fa-warning"></i> No available</a>';
+            }
+          }),
+        );
+      
+      $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+                      FROM triwulan ";
+      $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter, $dataArray);
+
     break;
     case 'tablepro':
-      $table      = "triwulan";
+
+      $dataArray['url_rewrite'] = $url_rewrite;
+      $dataArray['idrkakl'] = $_POST['idrkakl'];
+      $tableKey   = "rabview";
       $primaryKey = "id";
-      $columns    = array(
-        array( 'db' => 'id',         'dt' => 0 ),
-        array( 'db' => 'nama',       'dt' => 2 ),
-        array( 'db' => 'thang',      'dt' => 3 ),
-        array( 'db' => 'prog_high',  'dt' => 4 ),
-        array( 'db' => 'prog_med',   'dt' => 5 ),
-        array( 'db' => 'prog_low',   'dt' => 6 ),
-        array( 'db' => 'status',     'dt' => 7, 'formatter' => function( $d, $row ) {
+      $columns    = array('id','id',
+                          'nama',
+                          'thang',
+                          'prog_high',
+                          'prog_med',
+                          'prog_low',
+                          'status',
+                          );
+      $formatter  = array(
+          '7' => array('formatter' => function($d,$row,$data){ 
             return '<a style="margin:1px 2px;" id="btn-edt" class="btn btn-flat btn-success btn-xs col-md-12"><i class="fa fa-pencil"></i> Edit Progress</a>';
-        })
-      );
-      $datatable->get_rkakl_view($table, $primaryKey, $columns);
+          }),
+        );
+      
+      $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+                      FROM triwulan ";
+      $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter, $dataArray);
     break;
     default:
       $utility->location("content/triwulan");

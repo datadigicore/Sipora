@@ -31,7 +31,7 @@ switch ($link[3]) {
     }
 
     #volume
-    $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `vol_target`, `vol_real`, `satuan`, `created_at`, `created_by` FROM `volume` order by id desc" ;
+    $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `vol_target`, `vol_real`, `vol_real1`, `vol_real2`, `vol_real3`, `vol_real4`, `satuan`, `created_at`, `created_by` FROM `volume` order by id desc" ;
     $result=$db->_fetch_array($query,1);
     $rabview =array();
 
@@ -47,6 +47,10 @@ switch ($link[3]) {
         $kdskmpnen=$value['kdskmpnen'];
         $vol_target=$value['vol_target'];
         $vol_real=$value['vol_real'];
+        $vol_real1=$value['vol_real1'];
+        $vol_real2=$value['vol_real2'];
+        $vol_real3=$value['vol_real3'];
+        $vol_real4=$value['vol_real4'];
         $satuan=$value['satuan'];
         $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_target'] = $vol_target;
         $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_real'] = $vol_real;
@@ -71,8 +75,24 @@ switch ($link[3]) {
     }
 
     $swhere = "";
+    if ($_POST['tahun'] != "") {
+      $swhere="WHERE THANG = '".$_POST['tahun']."' ";
+    }
+
+    if ($_POST['direktorat'] != "") {
+      if ($swhere == "") {
+        $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."' ";
+      }else{
+        $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' ";
+      }
+    }
+
     if ($_SESSION['direktorat'] != "") {
-      $swhere="WHERE KDGIAT = '".$_SESSION['direktorat']."' ";
+      if ($swhere == "") {
+        $swhere .= "WHERE KDGIAT = '".$_SESSION['direktorat']."' ";
+      }else{
+        $swhere .= "AND KDGIAT = '".$_SESSION['direktorat']."' ";
+      }
     }
 
     $tableKey   = "rkakl_full";
@@ -171,7 +191,7 @@ switch ($link[3]) {
       '11' => array('formatter' => function($d,$row,$data){ 
         if (isset($d) || $d != "" || $d != 0) {
           $sisa = ($d - $data[$row[7]]['jumlah']);
-          return $sisa;
+          return number_format($sisa,2,",",".");
         }else{
           return 0;
         }
@@ -263,10 +283,10 @@ switch ($link[3]) {
             $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"><i class="fa fa-warning"></i> No available</a>';
           }
           elseif($_SESSION['level'] == 0 && $d == 0){
-            $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-check"></i>&nbsp; UNLOCK</a>';
+            $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-unlock-alt"></i>&nbsp; Unlock</a>';
           }
           elseif($_SESSION['level'] == 0 && $d == 4){
-            $button .= '<a id="btn-lock" href="#lock" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; LOCK</a>';
+            $button .= '<a id="btn-lock" href="#lock" class="btn btn-flat btn-warning btn-sm col-md-12" data-toggle="modal"><i class="fa fa-lock"></i>&nbsp; Lock</a>';
           }
           $button .= '</div>';
           return $button;
@@ -421,9 +441,20 @@ switch ($link[3]) {
     $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
     break;
   case 'lock':
-    print_r($_POST);die;
-    $query = "SELECT idtriwulan FROM rabview WHERE id = '$id'";
-    $result = $db->_fetch_array($query,1);
+    $status = $_POST['statuslock'];
+    if (isset($_POST['id_rab_unlock'])) {
+      $id = $_POST['id_rab_unlock'];
+    }else{
+      $id = $_POST['id_rab_lock'];
+    }
+    $query = "UPDATE rabview SET status = '$status' WHERE id = '$id'";
+    $result = $db->query($query);
+    $flash  = array(
+              'category' => "success",
+              'messages' => "Data Volume Telah Diubah !"
+            );
+    $utility->location("content/kegiatan-rinci/".$_POST['idrkakl'],$flash);
+
     break;
   case 'editvol':
     $id_volume = $_POST['id_volume'];
@@ -439,19 +470,37 @@ switch ($link[3]) {
         $data['kdsoutput'] = $value['KDSOUTPUT'];
         $data['kdkmpnen'] = $value['KDKMPNEN'];
         $data['kdskmpnen'] = $value['KDSKMPNEN'];
+    }
+
+    $query = "SELECT * from triwulan where status = '1' ORDER BY id DESC LIMIT 1";
+    $result=$db->_fetch_array($query,1);
+    if (!is_null($result)) {
+      foreach ($result as $key => $value) {
+        $data['idtriwulan'] = $value['id'];
       }
-    if ($id_volume == "") {
-      $volume->insertVolume($data);
-      $flash  = array(
-            'category' => "success",
-            'messages' => "Data Volume Telah Ditambahkan !"
-          );
     }else{
-      $volume->updateVolume($data);
+      $data['idtriwulan'] = "";
+    }
+
+    if ($data['idtriwulan'] != "") {
+      if ($id_volume == "" || $id_volume == 0) {
+        $volume->insertVolume($data);
+        $flash  = array(
+              'category' => "success",
+              'messages' => "Data Volume Telah Ditambahkan !"
+            );
+      }else{
+        $volume->updateVolume($data);
+        $flash  = array(
+              'category' => "success",
+              'messages' => "Data Volume Telah Diubah !"
+            );
+      }
+    }else{
       $flash  = array(
-            'category' => "success",
-            'messages' => "Data Volume Telah Diubah !"
-          );
+              'category' => "error",
+              'messages' => "Gagal Melanjutkan Proses Karena Status Triwulan Sedang Tidak Aktif !"
+            );
     }
     
     $utility->location("content/kegiatan",$flash);

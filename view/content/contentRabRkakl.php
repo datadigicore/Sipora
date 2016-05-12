@@ -140,7 +140,8 @@ var table;
         "ajax": {
           "url": "<?php echo $url_rewrite;?>process/kegiatan/table-rkakl",
           "type": "POST",
-          "data": { }
+          "data": { 'tahun' : tahun,
+                    'direktorat' : direktorat }
         },
         <?php if ($_SESSION['direktorat'] == "") { ?>
           "columnDefs" : [
@@ -206,7 +207,8 @@ var table;
         "ajax": {
           "url": "<?php echo $url_rewrite;?>process/kegiatan/table-rkakl",
           "type": "POST",
-          "data": { }
+          "data": { 'tahun' : tahun,
+                    'direktorat' : direktorat }
         },
         <?php if ($_SESSION['direktorat'] == "") { ?>
           "columnDefs" : [
