@@ -93,19 +93,50 @@ switch ($link[3]) {
     $primaryKey = "id";
     $columns    = array('status','tahun','tanggal','no_dipa','status','status','filesave');
     $formatter  = array(
+      '2' => array('formatter' => function($d,$row){
+          $arrbulan = array(
+              '01'=>"Januari", '02'=>"Februari", '03'=>"Maret", '04'=>"April", '05'=>"Mei", '06'=>"Juni",
+              '07'=>"Juli", '08'=>"Agustus", '09'=>"September", '10'=>"Oktober", '11'=>"November", '12'=>"Desember",
+          );
+          $pecahtgl = explode("-", $d);
+          $tanggal = $pecahtgl[2].' '.$arrbulan[$pecahtgl[1]].' '.$pecahtgl[0];
+          return $tanggal;
+      }),
       '4' => array('formatter' => function($d,$row){ 
-        if($d==0){
-          return '<i>Belum Diajukan</i>';
-        }
         if($d==1){
-          return '<i>Telah Diajukan</i>';
+          return '<i>Digunakan</i> - Revisi '.$row[7];
+        }
+        if($d==2){
+          return '<i>Disusun</i> - Revisi '.$row[7];
+        }
+        else {
+          return '<i>Direvisi</i> - Revisi '.$row[7];
         }}),
       '5' => array('formatter' => function($d,$row){ 
-        if($d==0){
-          return '<i>Belum Diajukan</i>';
-        }
         if($d==1){
-          return '<i>Telah Diajukan</i>';
+          return  '<div class="col-md-12">'.
+            '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
+            '<a id="btn-edt" href="#editModal" class="btn btn-flat btn-success btn-sm col-md-6" data-toggle="modal"><i class="fa fa-edit"></i> Revisi</a>'.
+          '</div>';
+        }
+        else if($d==2 && $row[4]==1){
+          return  '<div class="col-md-12">'.
+            '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
+            '<a id="btn-edt" href="#editModal" class="btn btn-flat btn-success btn-sm col-md-6" data-toggle="modal"><i class="fa fa-edit"></i> Revisi</a>'.
+          '</div>';
+        }
+        else if($d==2 && $data==$row[1]){
+          return  '<div class="col-md-12">'.
+            '<a id="btn-act" class="btn btn-flat btn-info btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> Aktifkan</a>'.
+            '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
+            '<a id="btn-edt" href="#editModal" class="btn btn-flat btn-success btn-sm col-md-6" data-toggle="modal"><i class="fa fa-edit"></i> Revisi</a>'.
+          '</div>';
+        }
+        else{
+          return  '<div class="col-md-12">'.
+            '<a id="btn-viw" class="btn btn-flat btn-primary btn-sm col-md-6" data-toggle="modal"><i class="fa fa-file-text-o"></i> View</a>'.
+            '<a id="btn-pesan" href="#lihatpesan" class="btn btn-flat btn-warning btn-sm col-md-6" data-toggle="modal"><i class="fa fa-envelope"></i> Pesan</a>'.
+          '</div>';
         }}));
     $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
         FROM rkakl_view";

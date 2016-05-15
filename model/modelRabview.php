@@ -55,7 +55,6 @@
                 created_at = '$created_at'
       ";
       $result = $this->query($query);
-
       return $result;
     }
 

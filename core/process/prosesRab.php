@@ -203,7 +203,7 @@ switch ($link[3]) {
       }),
       '12' => array('formatter' => function($d,$row,$data){ 
         $button = '<div class="col-md-12">';
-        $button .= '<a href="'.$data['url_rewrite'].'kegiatan-rinci/'.$d.'" class="btn btn-flat btn-primary btn-sm col-md-12" ><i class="fa fa-list"></i>&nbsp; Kegiatan</a>';
+        $button .= '<a href="'.$data['base_content'].'kegiatan-rinci/'.$d.'" class="btn btn-flat btn-primary btn-sm col-md-12" ><i class="fa fa-list"></i>&nbsp; Kegiatan</a>';
         $button .= '<a id="btn-vol" href="#mdl-vol" class="btn btn-flat btn-warning btn-sm col-md-12" data-toggle="modal"><i class="fa fa-pencil"></i>&nbsp; Edit Volume</a>';
         if ($data['lock'] == false && $_SESSION['level'] == 0) {
           $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-unlock-alt"></i>&nbsp; Unlock</a>';
@@ -366,13 +366,14 @@ switch ($link[3]) {
     echo json_encode($result);
     break;
   case 'getkode':
-    $getrkakl = "SELECT THANG,KDPROGRAM,NMPROGRAM,KDGIAT,NMGIAT,KDOUTPUT,NMOUTPUT,KDSOUTPUT,NMSOUTPUT,KDKMPNEN,NMKMPNEN,KDSKMPNEN,NMSKMPNEN
+    // print_r($_POST);
+    $getrkakl = "SELECT THANG,KDPROGRAM,KDGIAT,NMGIAT,KDOUTPUT,NMOUTPUT,KDSOUTPUT,NMSOUTPUT,KDKMPNEN,NMKMPNEN,KDSKMPNEN,NMSKMPNEN
                         FROM rkakl_full 
                             WHERE idrkakl = '".$_POST['idrkakl']."'
                             AND THANG = '".$_POST['tahun']."'
                             AND KDGIAT = '".$_POST['kdgiat']."'
                             LIMIT 1
-                ";  
+                "; 
     $result=$db->_fetch_array($getrkakl,1);
     echo json_encode($result);
     break;
@@ -397,7 +398,7 @@ switch ($link[3]) {
     $skomp = $mdl_rab->getskomp($_POST['prog'],$_POST['output'],$_POST['soutput'],$_POST['komp'],$_POST['tahun'],$_POST['direktorat']);
     echo json_encode($skomp);
     break;
-  case 'save':
+  case 'save':  
     $idrkakl = $_POST['idrkakl'];
     $cek = $rabview->cekpagu($idrkakl,$_POST['jumlah'],$_POST['idtriwulan']);
       

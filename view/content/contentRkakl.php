@@ -49,11 +49,10 @@
         <div class="modal-body">
           <div class="form-group">
             <select class="form-control" name="thang" required>
-            <?php $earliest_year = date('Y');
-            echo '<option  value="" disabled selected>-- Pilih Tahun Anggaran --</option>';
-            foreach (range(date('Y'), $earliest_year+1) as $x) {
-              echo '<option value="'.$x.'">'.$x.'</option>';
-            }?>
+            <?php
+              echo '<option  value="" disabled selected>-- Pilih Tahun Anggaran --</option>';
+              echo '<option value="'.date('Y').'">'.date('Y').'</option>';
+            ?>
             </select>
           </div>
           <div class="form-group">

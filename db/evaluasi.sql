@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.0.10deb1
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 30, 2016 at 12:45 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.5.34
+-- Host: localhost
+-- Generation Time: May 16, 2016 at 03:40 AM
+-- Server version: 5.5.49-MariaDB-1ubuntu0.14.04.1
+-- PHP Version: 5.5.9-1ubuntu4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `evaluasi`
@@ -23,19 +23,38 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `grup`
+--
+
+CREATE TABLE IF NOT EXISTS `grup` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `kode` varchar(8) NOT NULL,
+  `nama` varchar(50) NOT NULL,
+  `kdprogram` varchar(255) NOT NULL,
+  `direktorat` varchar(255) NOT NULL,
+  `kdoutput` text NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `kode` (`kode`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pengguna`
 --
 
-CREATE TABLE `pengguna` (
-  `id` int(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `pengguna` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
   `nama` varchar(50) NOT NULL,
   `username` varchar(25) NOT NULL,
   `password` varchar(128) NOT NULL,
   `email` varchar(50) NOT NULL,
   `level` tinyint(1) NOT NULL DEFAULT '2',
   `status` tinyint(1) NOT NULL DEFAULT '0',
-  `direktorat` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `direktorat` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `pengguna`
@@ -53,8 +72,8 @@ INSERT INTO `pengguna` (`id`, `nama`, `username`, `password`, `email`, `level`, 
 -- Table structure for table `rabview`
 --
 
-CREATE TABLE `rabview` (
-  `id` int(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `rabview` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
   `thang` varchar(20) NOT NULL DEFAULT '-',
   `kdprogram` varchar(20) NOT NULL DEFAULT '-',
   `kdgiat` varchar(20) NOT NULL DEFAULT '-',
@@ -72,12 +91,13 @@ CREATE TABLE `rabview` (
   `jumlah` decimal(20,3) NOT NULL DEFAULT '0.000',
   `status` int(5) NOT NULL DEFAULT '0',
   `pesan` text NOT NULL,
-  `submit_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `submit_by` int(20) NOT NULL,
-  `approve_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `approve_by` int(20) NOT NULL,
-  `idtriwulan` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_by` int(20) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_by` int(20) NOT NULL,
+  `idtriwulan` int(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -85,7 +105,7 @@ CREATE TABLE `rabview` (
 -- Table structure for table `rkakl_full`
 --
 
-CREATE TABLE `rkakl_full` (
+CREATE TABLE IF NOT EXISTS `rkakl_full` (
   `IDRKAKL` varchar(255) NOT NULL,
   `THANG` varchar(20) NOT NULL DEFAULT '-',
   `KDDEPT` varchar(4) NOT NULL DEFAULT '-',
@@ -117,8 +137,9 @@ CREATE TABLE `rkakl_full` (
   `USULAN` decimal(20,3) NOT NULL DEFAULT '0.000',
   `SDANA` varchar(4) NOT NULL DEFAULT '-',
   `STATUS` tinyint(4) NOT NULL DEFAULT '0',
-  `VERSI` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `VERSI` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`IDRKAKL`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -126,8 +147,8 @@ CREATE TABLE `rkakl_full` (
 -- Table structure for table `rkakl_view`
 --
 
-CREATE TABLE `rkakl_view` (
-  `id` int(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `rkakl_view` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
   `tanggal` date NOT NULL,
   `no_dipa` varchar(255) NOT NULL,
   `filename` varchar(255) NOT NULL,
@@ -136,8 +157,9 @@ CREATE TABLE `rkakl_view` (
   `tahun` int(4) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `versi` int(12) NOT NULL DEFAULT '0',
-  `pesan` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `pesan` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -145,8 +167,8 @@ CREATE TABLE `rkakl_view` (
 -- Table structure for table `triwulan`
 --
 
-CREATE TABLE `triwulan` (
-  `id` int(32) NOT NULL,
+CREATE TABLE IF NOT EXISTS `triwulan` (
+  `id` int(32) NOT NULL AUTO_INCREMENT,
   `thang` int(4) NOT NULL,
   `nama` varchar(16) NOT NULL,
   `start_date` date NOT NULL,
@@ -154,67 +176,35 @@ CREATE TABLE `triwulan` (
   `prog_high` int(8) NOT NULL DEFAULT '0',
   `prog_med` int(8) NOT NULL DEFAULT '0',
   `prog_low` int(8) NOT NULL DEFAULT '0',
-  `status` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Table structure for table `volume`
 --
 
---
--- Indexes for table `pengguna`
---
-ALTER TABLE `pengguna`
-  ADD PRIMARY KEY (`id`);
+CREATE TABLE IF NOT EXISTS `volume` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `thang` varchar(20) NOT NULL DEFAULT '-',
+  `kdprogram` varchar(20) NOT NULL DEFAULT '-',
+  `kdgiat` varchar(20) NOT NULL DEFAULT '-',
+  `kdoutput` varchar(20) NOT NULL DEFAULT '-',
+  `kdsoutput` varchar(20) NOT NULL DEFAULT '-',
+  `kdkmpnen` varchar(20) NOT NULL DEFAULT '-',
+  `kdskmpnen` varchar(20) NOT NULL DEFAULT '-',
+  `vol_target` int(20) NOT NULL,
+  `vol_real` int(20) NOT NULL,
+  `satuan` varchar(16) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_by` int(20) NOT NULL,
+  `updated_by` int(20) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Indexes for table `rabview`
---
-ALTER TABLE `rabview`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `rkakl_full`
---
-ALTER TABLE `rkakl_full`
-  ADD PRIMARY KEY (`IDRKAKL`);
-
---
--- Indexes for table `rkakl_view`
---
-ALTER TABLE `rkakl_view`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `triwulan`
---
-ALTER TABLE `triwulan`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `pengguna`
---
-ALTER TABLE `pengguna`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- AUTO_INCREMENT for table `rabview`
---
-ALTER TABLE `rabview`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `rkakl_view`
---
-ALTER TABLE `rkakl_view`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `triwulan`
---
-ALTER TABLE `triwulan`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -92,18 +92,6 @@
                     <input type="text" class="form-control" id="lokasi" name="lokasi" placeholder="Kota" required />
                   </div>
                   <div class="form-group">
-                    <div class="row">
-                      <div class="col-md-8">
-                        <label>Volume Kegiatan</label>
-                        <input type="text" class="form-control nomor" id="volume" name="volume" placeholder="Volume" required />
-                      </div>
-                      <div class="col-md-4">
-                        <label>Satuan Kegiatan</label>
-                        <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Satuan" required />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
                     <label>Realisasi</label>
                     <input type="text" class="form-control uang" id="jumlah" name="jumlah" placeholder="Realisasi" required />
                   </div> 

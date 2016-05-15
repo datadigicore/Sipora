@@ -15,7 +15,7 @@
         include "./aksi.php";
       break;
       case 'logout':
-        include "./logout.php";
+        include "./keluar.php";
       break;
       case 'home':
         if ($_SESSION['username'] != '') {

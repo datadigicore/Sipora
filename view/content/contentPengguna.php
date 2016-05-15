@@ -20,7 +20,7 @@
           <div class="box-body">
             <?php include "view/include/contentAlert.php" ?>
             <table id="table-group" class="display nowrap table table-bordered table-striped" cellspacing="0" width="100%">
-              <thead style="background-color:#11245B;color:white;">
+              <thead style="background-color:#2B91CF;color:white;">
                 <tr>
                   <th>Id</th>
                   <th>Kode</th>
@@ -63,10 +63,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <form method="POST" action="<?php echo $base_process;?>pengguna/edit-group" id="edit-group-form">
-        <div class="modal-header" style="background-color:#111F3F !important; color:white;">
+        <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
-          <h4 class="modal-title">Edit Pengguna</h4>
+          <h4 class="modal-title">Edit Grup</h4>
         </div>
         <div class="modal-body">
           <input type="hidden" name="id" id="id-group"></input>
@@ -173,7 +173,6 @@
           <div class="form-group">
             <select class="form-control" id="level" name="level" required>
               <option value="" disabled selected>-- Pilih Kewenangan --</option>
-              <option value="1">Operator Bendahara Pengeluaran</option>
               <option value="2">Bendahara Pengeluaran Pembantu</option>
               <option value="3">Operator Bendahara Pengeluaran Pembantu</option>
             </select>
