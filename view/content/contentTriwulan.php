@@ -119,13 +119,11 @@
   function ajaxPost(data){
     tabrow = table.row(data[0]);
     id = tabrow.data()[0];
-    alert(id);
     $.ajax({
       type: "post",
       url : "<?php echo $base_process;?>triwulan/"+data[1],
       data: {id:id},
       success: function(data) {
-        alert(data);
         table.draw();
       }
     });
