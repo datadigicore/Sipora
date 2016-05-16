@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 16, 2016 at 03:40 AM
+-- Generation Time: May 16, 2016 at 08:25 AM
 -- Server version: 5.5.49-MariaDB-1ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `rabview` (
   `kdsoutput` varchar(20) NOT NULL DEFAULT '-',
   `kdkmpnen` varchar(20) NOT NULL DEFAULT '-',
   `kdskmpnen` varchar(20) NOT NULL DEFAULT '-',
+  `idtriwulan` int(20) NOT NULL,
   `deskripsi` text NOT NULL,
   `tanggal` date NOT NULL,
   `tanggal_akhir` date NOT NULL,
@@ -90,12 +91,42 @@ CREATE TABLE IF NOT EXISTS `rabview` (
   `satuan` varchar(16) NOT NULL,
   `jumlah` decimal(20,3) NOT NULL DEFAULT '0.000',
   `status` int(5) NOT NULL DEFAULT '0',
-  `pesan` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_by` int(20) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_by` int(20) NOT NULL,
+  `updated_by` int(20) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rabview_log`
+--
+
+CREATE TABLE IF NOT EXISTS `rabview_log` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `thang` varchar(20) NOT NULL DEFAULT '-',
+  `kdprogram` varchar(20) NOT NULL DEFAULT '-',
+  `kdgiat` varchar(20) NOT NULL DEFAULT '-',
+  `kdoutput` varchar(20) NOT NULL DEFAULT '-',
+  `kdsoutput` varchar(20) NOT NULL DEFAULT '-',
+  `kdkmpnen` varchar(20) NOT NULL DEFAULT '-',
+  `kdskmpnen` varchar(20) NOT NULL DEFAULT '-',
   `idtriwulan` int(20) NOT NULL,
+  `deskripsi` text NOT NULL,
+  `tanggal` date NOT NULL,
+  `tanggal_akhir` date NOT NULL,
+  `tempat` varchar(255) NOT NULL,
+  `lokasi` varchar(200) NOT NULL,
+  `volume` int(16) NOT NULL DEFAULT '0',
+  `satuan` varchar(16) NOT NULL,
+  `jumlah` decimal(20,3) NOT NULL DEFAULT '0.000',
+  `status` int(5) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_by` int(20) NOT NULL,
+  `updated_by` int(20) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -197,6 +228,10 @@ CREATE TABLE IF NOT EXISTS `volume` (
   `kdskmpnen` varchar(20) NOT NULL DEFAULT '-',
   `vol_target` int(20) NOT NULL,
   `vol_real` int(20) NOT NULL,
+  `vol_real1` int(20) NOT NULL,
+  `vol_real2` int(20) NOT NULL,
+  `vol_real3` int(20) NOT NULL,
+  `vol_real4` int(20) NOT NULL,
   `satuan` varchar(16) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_by` int(20) NOT NULL,

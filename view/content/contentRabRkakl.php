@@ -30,10 +30,10 @@
                   </tr>
                   <?php if ($_SESSION['direktorat'] == "") { ?>
                   <tr>
-                    <td><label>Direktorat</label></td>
+                    <td><label>Deputi</label></td>
                       <td>
                         <select id="direktorat2" name="direktorat2" class="form-control" onchange="search()">
-                          <option value="">Semua Direktorat</option>
+                          <option value="">Semua Deputi</option>
                           <?php $rab->kdkegiatan(); ?>
                         </select>
                       </td>

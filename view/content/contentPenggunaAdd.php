@@ -49,16 +49,16 @@
                     <div class="col-sm-10">
                       <select class="form-control" name="level" required>
                         <option value="" disabled selected>-- Pilih Kewenangan --</option>
-                        <option value="2">Bendahara Pengeluaran Pembantu</option>
-                        <option value="3">Operator Bendahara Pengeluaran Pembantu</option>
+                        <option value="2">Operator</option>
+                        <option value="3">Assisten Operator</option>
                       </select>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">Direktorat</label>
+                    <label for="inputPassword3" class="col-sm-2 control-label">Deputi</label>
                     <div class="col-sm-10">
                       <select id="direktorat" class="form-control select2" name="direktorat" required style="width:100%">
-                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                        <option value="" disabled selected>-- Pilih Deputi --</option>
                         <?php $pengguna->kdkegiatan(); ?>
                       </select>
                     </div>

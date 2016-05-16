@@ -23,10 +23,10 @@
                 <div class="row">
                   <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
                     <div class="form-group">
-                      <label class="col-sm-3 control-label">Direktorat</label>
+                      <label class="col-sm-3 control-label">Deputi</label>
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
-                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                        <option value="" disabled selected>-- Pilih Deputi --</option>
                         <?php $report->selectDirektorat(); ?>
                       </select>
                     </div>
@@ -53,10 +53,10 @@
                 <div class="row">
                   <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
                     <div class="form-group">
-                      <label class="col-sm-3 control-label">Direktorat</label>
+                      <label class="col-sm-3 control-label">Deputi</label>
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
-                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                        <option value="" disabled selected>-- Pilih Deputi --</option>
                         <?php $report->selectDirektorat(); ?>
                       </select>
                     </div>
@@ -83,10 +83,10 @@
                 <div class="row">
                   <div class="box-body well col-sm-6 col-sm-offset-3" style="padding-bottom:0;">
                     <div class="form-group">
-                      <label class="col-sm-3 control-label">Direktorat</label>
+                      <label class="col-sm-3 control-label">Deputi</label>
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
-                        <option value="" disabled selected>-- Pilih Direktorat --</option>
+                        <option value="" disabled selected>-- Pilih Deputi --</option>
                         <?php $report->selectDirektorat(); ?>
                       </select>
                     </div>

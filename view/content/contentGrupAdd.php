@@ -62,7 +62,7 @@
               <div class="well" data-toggle="tooltip" data-placement="top" title="Kode Direktorat">
 
                 <div class="row text-center" data-toggle="popover" data-placement="left" data-content="Isi Kode Direktorat" id="row-direktorat">
-                  <label>Direktorat</label>
+                  <label>Kode Deputi</label>
                 </div>
                 <div class="row text-center" id="kdgiat-div">
                   
