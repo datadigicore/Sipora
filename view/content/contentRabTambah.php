@@ -1,12 +1,12 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Data RAB 
+      Data Kegiatan 
     </h1>
     <ol class="breadcrumb">
       <li><i class="fa fa-table"></i> <b>
-        <a href="<?php echo $url_rewrite?>content/rab"> Data RAB</a> 
-        > Tambah RAB 
+        <a href="<?php echo $url_rewrite.'content/kegiatan-rinci/'.$idrkakl?>"> Data Kegiatan</a> 
+        > Tambah Kegiatan 
         </b>
       </li>
     </ol>
@@ -16,7 +16,7 @@
       <div class="col-md-10 col-md-offset-1">
         <div class="box">
           <div class="box-header with-border">
-            <h3 class="box-title" style="margin-top:6px;">Tambah RAB</h3>
+            <h3 class="box-title" style="margin-top:6px;">Tambah Kegiatan</h3>
           </div>
           <form action="<?php echo $base_process;?>kegiatan/save" method="POST" enctype="multipart/form-data">
             <input type="hidden" id="idrkakl" name="idrkakl" value="<?php echo $idrkakl;?>">
