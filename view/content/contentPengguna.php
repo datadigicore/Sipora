@@ -173,8 +173,8 @@
           <div class="form-group">
             <select class="form-control" id="level" name="level" required>
               <option value="" disabled selected>-- Pilih Kewenangan --</option>
-              <option value="2">Bendahara Pengeluaran Pembantu</option>
-              <option value="3">Operator Bendahara Pengeluaran Pembantu</option>
+              <option value="2">Operator</option>
+              <option value="3">Asisten Operator</option>
             </select>
           </div>
           <div class="form-group">

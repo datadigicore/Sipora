@@ -87,13 +87,13 @@ switch ($link[3]) {
       }),
       '5' => array('formatter' => function($d,$row,$data){ 
         if($d==1){
-          return 'Operator Bendahara Pengeluaran';
+          return 'Operator';
         }
         else if ($d==2){
-          return 'Bendahara Pengeluaran Pembantu';
+          return 'Operator';
         }
         else if ($d==3){
-          return 'Operator BPP';
+          return 'Asisten Operator';
         }
       })
 
