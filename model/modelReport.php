@@ -68,20 +68,25 @@
       foreach ($results as $data) {
         unset($prev_value);
         if ($data['SUM(TRIWULAN'.$i.')'] == 0) {
-          $prev_value = array('value' => 'Triwulan '.$i, 'amount' => '0');
+          $prev_value = array('value' => 'Triwulan '.$i, 'total' => '0', 'amount' => '0');
         }
         else {
           $val1 = floatval($data['SUM(TRIWULAN'.$i.')']);
           $val2 = floatval($data['SUM(JUMLAH)']);
           $persentase = ($val1 / $val2) * 100;
-          $prev_value = array('value' => 'Triwulan '.$i, 'amount' => $persentase);
+          $totsentase = ($val2 / $val2) * 100;
+          $prev_value = array('value' => 'Triwulan '.$i, 'total' => $totsentase, 'amount' => $persentase);
         }
         $newResults[] =& $prev_value;
         $i++;
       }
       for ($i=0; $i < count($newResults) ; $i++) { 
-        $newresult[$i][] =& $newResults[$i]['value'];
-        $newresult[$i][] =& $newResults[$i]['amount'];
+        $newresult[0][$i][] =& $newResults[$i]['value'];
+        $newresult[0][$i][] =& $newResults[$i]['total'];
+      }
+      for ($i=0; $i < count($newResults) ; $i++) { 
+        $newresult[1][$i][] =& $newResults[$i]['value'];
+        $newresult[1][$i][] =& $newResults[$i]['amount'];
       }
       echo json_encode($newresult);
     }
