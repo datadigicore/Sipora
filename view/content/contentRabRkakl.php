@@ -202,6 +202,19 @@ var table;
             {"targets" : 5},
             {"targets" : 6},
           ],
+          "drawCallback": function ( settings ) {
+            var api  = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last = null;
+            api.column(1, {page:'current'} ).data().each( function ( group, i ) {
+              if ( last !== group ) {
+                $(rows).eq( i ).before(
+                  '<tr class="group" style="background-color:#FFDD77;"><td colspan="12">'+group+'</td></tr>'
+                );
+              last = group;
+              }
+            });
+          },
         <?php }else{?>
           "columnDefs" : [
             {"targets" : 0,
@@ -214,6 +227,19 @@ var table;
             {"targets" : 5},
             {"targets" : 6},
           ],
+          "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+              if ( last !== group ) {
+                $(rows).eq( i ).before(
+                  '<tr class="group" style="background-color:#FFDD77;"><td colspan="12">'+group+'</td></tr>'
+                );
+              last = group;
+              }
+            });
+          },
         <?php } ?>
         "order": [[ 0, "asc" ], [ 1, "asc" ], [ 2, "asc" ], [ 3, "asc" ], [ 4, "asc" ], [ 5, "asc" ]]
     });

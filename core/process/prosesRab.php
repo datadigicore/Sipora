@@ -106,7 +106,7 @@ switch ($link[3]) {
     $tableKey   = "rkakl_full";
     $primaryKey = "idrkakl";
     $columns    = array('IDRKAKL',
-                        'KDGIAT',
+                        'CONCAT(KDGIAT, " - ", UPPER(NMGIAT))',
                         'CONCAT(KDOUTPUT," - ",NMOUTPUT)',
                         'CONCAT(KDSOUTPUT," - ",NMSOUTPUT)',
                         'CONCAT(KDKMPNEN," - ",NMKMPNEN)',
