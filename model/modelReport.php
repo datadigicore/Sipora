@@ -47,21 +47,11 @@
     }
 
     public function getChartIDRKAKL($id){
-      $result = $this->query("SELECT SUM(TRIWULAN1), SUM(JUMLAH) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
-      while($res=$this->fetch_array($result)){
-          $results[] = $res;
-      }
-      $result = $this->query("SELECT SUM(TRIWULAN2), SUM(JUMLAH) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
-      while($res=$this->fetch_array($result)){
-          $results[] = $res;
-      }
-      $result = $this->query("SELECT SUM(TRIWULAN3), SUM(JUMLAH) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
-      while($res=$this->fetch_array($result)){
-          $results[] = $res;
-      }
-      $result = $this->query("SELECT SUM(TRIWULAN4), SUM(JUMLAH) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
-      while($res=$this->fetch_array($result)){
-          $results[] = $res;
+      for ($i=1; $i <= 4 ; $i++) { 
+        $result = $this->query("SELECT SUM(TRIWULAN".$i."), SUM(JUMLAH) from rkakl_full where KDGIAT = '$id'  group by KDGIAT");
+        while($res=$this->fetch_array($result)){
+            $results[] = $res;
+        }
       }
       $prev_value = array('value' => null, 'amount' => null);
       $i = 1;
@@ -74,7 +64,7 @@
           $val1 = floatval($data['SUM(TRIWULAN'.$i.')']);
           $val2 = floatval($data['SUM(JUMLAH)']);
           $persentase = ($val1 / $val2) * 100;
-          $totsentase = ($val2 / $val2) * 100;
+          $totsentase = (($val2 / $val2) * 100) - $persentase;
           $prev_value = array('value' => 'Triwulan '.$i, 'total' => $totsentase, 'amount' => $persentase);
         }
         $newResults[] =& $prev_value;

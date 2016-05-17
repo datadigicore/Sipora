@@ -1,11 +1,8 @@
 <?php
 $sess_id    = $_SESSION['user_id'];
 $direktorat = $_SESSION['direktorat'];
-
 // $id = $data[3];
-
 // $kdakun = $report->get_kd_akun($id);
-
 // $param  = explode("-", $data[3]);
 // $id = $param[0];
 // $penerima = str_replace("%20"," ",$param[1]);
@@ -14,11 +11,9 @@ switch ($link[3]) {
   case 'cetak_dok':
     $report->cetak_dok($id,$param[1],$format);
   break;
-
   case 'pajak_orang':
     $report->pajak_orang($_POST['penerima']);
   break;
-
   case 'chart_pie':
     $report->getChartRKAKL();
   break;
@@ -32,11 +27,9 @@ switch ($link[3]) {
   case 'pengajuan_UMK':
     $report->pengajuan_UMK($data[3]);
   break;
-
   case 'rincian_kebutuhan_dana':
     $report->rincian_kebutuhan_dana($data[3],$data[4]);
   break;
-
   case '522151':
     $report->Kuitansi_Honor_Uang_Saku($data_pengguna);
   break;
