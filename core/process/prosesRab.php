@@ -4,14 +4,30 @@ include 'config/application.php';
 switch ($link[3]) {
   case 'table-rkakl':
     $dataArray['url_rewrite'] = $url_rewrite;
+
+    #triwulan
+    $query = "SELECT * from triwulan where status = '1' ORDER BY id DESC LIMIT 1";
+    $result=$db->_fetch_array($query,1);
+    if (!is_null($result)) {
+      $idtriaktif = $result[0]['id'];
+      foreach ($result as $key => $value) {
+        $dataArray['prog_low'] = $value['prog_low'];
+        $dataArray['prog_med'] = $value['prog_med'];
+        $dataArray['prog_high'] = $value['prog_high'];
+      }
+    }else{
+      $idtriaktif = '';
+      $dataArray['prog_low'] = -1;
+      $dataArray['prog_med'] = -1;
+      $dataArray['prog_high'] = -1;
+    }
+
     #realisasi
     $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` FROM `rabview` " ;
     $result=$db->_fetch_array($query,1);
     $rabview =array();
     $key_stack=array();
-
     if (!is_null($result)) {
-      $realisasi['lock'] = true;
       foreach ($result as $key => $value) {
         $id=$value['id'];
         $thang=$value['thang'];
@@ -21,16 +37,18 @@ switch ($link[3]) {
         $kdsoutput=$value['kdsoutput'];
         $kdkmpnen=$value['kdkmpnen'];
         $kdskmpnen=$value['kdskmpnen'];
+        $idtriwulan=$value['idtriwulan'];
         $jumlah=$value['jumlah'];
         $volume=$value['volume'];
         $status=$value['status'];
-        if ($status == 0) {
-          $realisasi['lock'] = false;
-        }
         $key="$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen";
         $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['key']=$key;
         $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['jumlah'] += $jumlah;
         $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['volume'] += $volume;
+          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['lock'] += 0;
+        if ($idtriaktif !== $idtriwulan) {
+          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['lock'] += $status;
+        }
       }
       $dataArray = $realisasi;
     }
@@ -62,21 +80,6 @@ switch ($link[3]) {
         $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['satuan'] = $satuan;
         $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['id_vol'] = $id_vol;
       }
-    }
-
-    #triwulan
-    $query = "SELECT * from triwulan where status = '1' ORDER BY id DESC LIMIT 1";
-    $result=$db->_fetch_array($query,1);
-    if (!is_null($result)) {
-      foreach ($result as $key => $value) {
-        $dataArray['prog_low'] = $value['prog_low'];
-        $dataArray['prog_med'] = $value['prog_med'];
-        $dataArray['prog_high'] = $value['prog_high'];
-      }
-    }else{
-      $dataArray['prog_low'] = -1;
-      $dataArray['prog_med'] = -1;
-      $dataArray['prog_high'] = -1;
     }
 
     $swhere = "";
@@ -115,6 +118,7 @@ switch ($link[3]) {
                         'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
                         'SUM(JUMLAH)',
                         'IDRKAKL',
+                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
                         'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
                         'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
                         'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
@@ -205,9 +209,9 @@ switch ($link[3]) {
         $button = '<div class="col-md-12">';
         $button .= '<a href="'.$data['base_content'].'kegiatan-rinci/'.$d.'" class="btn btn-flat btn-primary btn-sm col-md-12" ><i class="fa fa-list"></i>&nbsp; Kegiatan</a>';
         $button .= '<a id="btn-vol" href="#mdl-vol" class="btn btn-flat btn-warning btn-sm col-md-12" data-toggle="modal"><i class="fa fa-pencil"></i>&nbsp; Edit Volume</a>';
-        if ($data['lock'] == false && $_SESSION['level'] == 0) {
+        if ($data[$row[17]]['lock'] == 0 && $_SESSION['level'] == 0) {
           $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-unlock-alt"></i>&nbsp; Unlock</a>';
-        }elseif($data['lock'] == true && $_SESSION['level'] == 0){
+        }elseif($data[$row[17]]['lock'] > 0 && $_SESSION['level'] == 0){
           $button .= '<a id="btn-lock" href="#lock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-lock"></i>&nbsp; Lock</a>';
         }
         $button .='</div>';
@@ -256,6 +260,7 @@ switch ($link[3]) {
     $primaryKey = "id";
     $columns    = array('id',
                         'deskripsi',
+                        'idtriwulan',
                         'tanggal',
                         'lokasi',
                         'jumlah',
@@ -265,16 +270,16 @@ switch ($link[3]) {
                         'tempat',
                         );
     $formatter  = array(
-        '2' => array('formatter' => function($d,$row,$data){ 
-          return date("d M Y", strtotime($d)) . ' - ' . date("d M Y", strtotime($row[7]));
-        }),
         '3' => array('formatter' => function($d,$row,$data){ 
-          return $row[8] . ', ' . $d;
+          return date("d M Y", strtotime($d)) . ' - ' . date("d M Y", strtotime($row[8]));
         }),
         '4' => array('formatter' => function($d,$row,$data){ 
-          return number_format($d,2,",",".");
+          return $row[9] . ', ' . $d;
         }),
         '5' => array('formatter' => function($d,$row,$data){ 
+          return number_format($d,2,",",".");
+        }),
+        '6' => array('formatter' => function($d,$row,$data){ 
           if ($d == "1") {
             return "<i>Aktif</i>";
           }elseif ($d == "0") {
@@ -283,7 +288,7 @@ switch ($link[3]) {
             return "<i>Revisi</i>";
           }
         }),
-        '6' => array('formatter' => function($d,$row,$data){ 
+        '7' => array('formatter' => function($d,$row,$data){ 
           $button = '<div class="col-md-12">';
           if($_SESSION['level'] != 0 && ($d == 1 || $d == 4)){
             $button .= '<a id="btn-trans" href="'.$data['url_rewrite'].'content/kegiatan-edit/'.$row[0].'/'.$data['idrkakl'].'" class="btn btn-flat btn-warning btn-sm col-md-6" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
@@ -291,7 +296,7 @@ switch ($link[3]) {
               $button .= '<a id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
             }
           }
-          elseif($_SESSION['level'] != 0 && $d == 0){
+          elseif(($_SESSION['level'] != 0 && $d == 0) || ($_SESSION['level'] == 0 && $d == 1) ){
             $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"><i class="fa fa-warning"></i> No available</a>';
           }
           elseif($_SESSION['level'] == 0 && $d == 0){
@@ -367,13 +372,29 @@ switch ($link[3]) {
     break;
   case 'getkode':
     // print_r($_POST);
+    /*$kdgrup = $_SESSION['kdgrup'];
+    $query = "SELECT * FROM grup WHERE id = '$kdgrup'";
+    $res = $db->_fetch_array($query,1);
+
+    $direktorat = explode(",", $res[0]['direktorat']);
+    $kodegiat = '(';
+    foreach ($direktorat as $key => $value) {
+      $pecah = explode("-", $value);
+      $kodegiat .= "'".$pecah[1]."',";
+      print_r($pecah);
+    }
+    $kodegiat = substr($kodegiat,0,-1);
+    $kodegiat .= ")";
+    print_r($kodegiat);
+    die;*/
+
     $getrkakl = "SELECT THANG,KDPROGRAM,KDGIAT,NMGIAT,KDOUTPUT,NMOUTPUT,KDSOUTPUT,NMSOUTPUT,KDKMPNEN,NMKMPNEN,KDSKMPNEN,NMSKMPNEN
                         FROM rkakl_full 
                             WHERE idrkakl = '".$_POST['idrkakl']."'
                             AND THANG = '".$_POST['tahun']."'
-                            AND KDGIAT = '".$_POST['kdgiat']."'
                             LIMIT 1
                 "; 
+
     $result=$db->_fetch_array($getrkakl,1);
     echo json_encode($result);
     break;
@@ -488,6 +509,15 @@ switch ($link[3]) {
   case 'lockkomp':
     $status = $_POST['statuslock'];
     $idrkakl = $_POST['idrkakl'];
+    #triwulan
+    $query = "SELECT id from triwulan where status = '1' ORDER BY id DESC LIMIT 1";
+    $result=$db->_fetch_array($query,1);
+    if (!is_null($result)) {
+      $idtriaktif = $result[0]['id'];
+    }else{
+      $idtriaktif = '';
+    }
+
     $query = "SELECT THANG, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN FROM rkakl_full where IDRKAKL = '$idrkakl' ";
     $result = $db->_fetch_array($query,1);
 
@@ -506,7 +536,8 @@ switch ($link[3]) {
               and kdoutput = '$kdoutput'
               and kdsoutput = '$kdsoutput'
               and kdkmpnen = '$kdkmpnen'
-              and kdskmpnen = '$kdskmpnen'";
+              and kdskmpnen = '$kdskmpnen'
+              and idtriwulan != '$idtriaktif'";
     $result = $db->query($query);
     if ($status == 4) {
       $flash  = array(

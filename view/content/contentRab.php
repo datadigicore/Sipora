@@ -24,19 +24,27 @@
             <?php include "view/include/contentAlert.php" ?>
             <table class="display table table-bordered table-striped">
               <tr>
-                <th><label>Info</label></th>
+                <th colspan='2'><label>Info</label></th>
+              </tr>
               <tr>
                 <td valign="top" class="col-md-1">
                   <table class="table-striped col-md-12">
                       <?php $rab->getinfo($idrkakl); ?>
                   </table>
                 </td>
+                <td valign="top" class="col-md-1">
+                  <table class="table-striped col-md-12">
+                      <?php $rab->getinfojumlah($idrkakl); ?>
+                  </table>
+                </td>
+              </tr>
             </table>
             <table id="table" class="display table table-bordered table-striped " cellspacing="0" width="100%">
               <thead style="background-color:#2B91CF;color:white;">
                 <tr>
                   <th>No</th>
                   <th width="15%">Uraian Acara</th>
+                  <th width="5%">Triwulan</th>
                   <th width="18%">Tanggal</th>
                   <th width="10%">Lokasi</th>
                   <th width="10%">Jumlah</th>

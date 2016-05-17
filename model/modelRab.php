@@ -77,6 +77,62 @@
             ";
       }
     }
+    public function getinfojumlah($id){
+      $pecahid = explode(".", $id);
+      $countarr = count($pecahid);
+      unset($pecahid[$countarr-1]);
+      unset($pecahid[$countarr-2]);
+      $idrkakl = implode(".", $pecahid);
+      $query  = "SELECT KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, SUM(JUMLAH) as JUMLAH FROM rkakl_full as r where IDRKAKL like '$idrkakl%'   ";
+      $fetch=$this->_fetch_array($query,1);
+
+      $query2="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` 
+              FROM `rabview` WHERE kdprogram = '".$fetch[0][KDPROGRAM]."' and kdgiat = '".$fetch[0][KDGIAT]."' and kdoutput = '".$fetch[0][KDOUTPUT]."' and kdsoutput = '".$fetch[0][KDSOUTPUT]."' and kdkmpnen = '".$fetch[0][KDKMPNEN]."' and kdskmpnen = '".$fetch[0][KDSKMPNEN]."'" ;
+      $result2=$this->_fetch_array($query2,1);
+
+      if (!is_null($result2)) {
+        foreach ($result2 as $key => $value) {
+          $id=$value['id'];
+          $thang=$value['thang'];
+          $kdprogram=$value['kdprogram'];
+          $kdgiat=$value['kdgiat'];
+          $kdoutput=$value['kdoutput'];
+          $kdsoutput=$value['kdsoutput'];
+          $kdkmpnen=$value['kdkmpnen'];
+          $kdskmpnen=$value['kdskmpnen'];
+          $idtriwulan=$value['idtriwulan'];
+          $jumlah = $value['jumlah'];      
+          $triwulan1+=0;    
+          $triwulan2+=0;    
+          $triwulan3+=0;    
+          $triwulan4+=0;    
+          if ($idtriwulan == 1) {
+            $triwulan1+=$jumlah;
+          }elseif ($idtriwulan == 2) {
+            $triwulan2+=$jumlah;
+          }elseif ($idtriwulan == 3) {
+            $triwulan3+=$jumlah;
+          }elseif ($idtriwulan == 4) {
+            $triwulan4+=$jumlah;
+          }
+          $key="$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen";
+          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['key']=$key;
+          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['triwulan1'] = $triwulan1;
+          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['triwulan2'] = $triwulan2;
+          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['triwulan3'] = $triwulan3;
+          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['triwulan4'] = $triwulan4;
+        }
+      }
+      $key = $fetch[0][KDPROGRAM]."-".$fetch[0][KDGIAT]."-".$fetch[0][KDOUTPUT]."-".$fetch[0][KDSOUTPUT]."-".$fetch[0][KDKMPNEN]."-".$fetch[0][KDSKMPNEN];
+      echo "<tr><td valign='top'>Jumlah Anggaran</td> <td valign='top'>:&nbsp;</td> <td valign='top'>".number_format($fetch[0]['JUMLAH'],2,",",".")."</td></tr>
+            <tr><td valign='top'>Realisasi Triwulan 1</td><td valign='top'>:&nbsp;</td><td valign='top'>".number_format($realisasi[$key]['triwulan1'],2,",",".")."</td></tr>
+            <tr><td valign='top'>Realisasi Triwulan 2</td><td valign='top'>:&nbsp;</td><td valign='top'>".number_format($realisasi[$key]['triwulan2'],2,",",".")."</td></tr>
+            <tr><td valign='top'>Realisasi Triwulan 3</td><td valign='top'>:&nbsp;</td><td valign='top'>".number_format($realisasi[$key]['triwulan3'],2,",",".")."</td></tr>
+            <tr><td valign='top'>Realisasi Triwulan 4</td><td valign='top'>:&nbsp;</td><td valign='top'>".number_format($realisasi[$key]['triwulan4'],2,",",".")."</td></tr>
+            <tr><td valign='top'>Jumlah Realisasi</td><td valign='top'>:&nbsp;</td><td valign='top'>".number_format(($realisasi[$key]['triwulan1']+$realisasi[$key]['triwulan2']+$realisasi[$key]['triwulan3']+$realisasi[$key]['triwulan4']),2,",",".")."</td></tr>
+            <tr><td valign='top'>Sisa Anggaran</td><td valign='top'>:&nbsp;</td><td valign='top'>".number_format(($fetch[0][JUMLAH] - ($realisasi[$key]['triwulan1']+$realisasi[$key]['triwulan2']+$realisasi[$key]['triwulan3']+$realisasi[$key]['triwulan4'])),2,",",".")."</td></tr>
+          ";
+    }
 
     public function delete($data){
       $idview = $data['id_rab_del'];

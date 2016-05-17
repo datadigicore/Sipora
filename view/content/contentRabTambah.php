@@ -34,23 +34,18 @@
                     </select>
                   </div>
 
-                  <!-- STATIC KDPROGRAM -->
                   <div class="form-group">
                     <label>Program</label>
                     <select class="form-control" id="program" name="kdprogram" required>
                     </select>
                   </div>
 
-                  <?php if ($_SESSION['direktorat'] == "") { ?>
-                  <!-- <div class="form-group">
-                    <label>Kode Kegiatan</label>
-                    <select class="form-control" id="kdgiat" name="kdgiat" onchange="chout()">
-                      <option value="">-- Pilih Kode Kegiatan --</option>
+                  <div class="form-group">
+                    <label>Kegiatan</label>
+                    <select class="form-control" id="giat" name="kdgiat" required>
                     </select>
-                  </div> -->
-                  <?php } else{ ?>
-                  <input type="hidden" id="kdgiat" name="kdgiat" value="<?php echo $_SESSION['direktorat']; ?>" />
-                  <?php } ?>
+                  </div>
+
                   <div class="form-group">
                     <label>Output</label>
                     <select class="form-control" id="output" name="kdoutput" required>
@@ -169,23 +164,24 @@ function cektanggal(){
 }
 
 function getkode(){
+    $("#program option").remove();   
+    $("#giat option").remove();   
     $("#output option").remove();   
     $("#soutput option").remove();   
     $("#kmpnen option").remove();   
     $("#skmpnen option").remove();   
     var idrkakl = $('#idrkakl').val();
     var tahun = $('#tahun').val();
-    var kdgiat = $('#kdgiat').val();
     $.ajax({
       type: "POST",
       url: "<?php echo $url_rewrite;?>process/kegiatan/getkode",
       data: { 'idrkakl' : idrkakl,
               'tahun' : tahun,
-              'kdgiat' : kdgiat
             },
       success: function(data){
         var obj = jQuery.parseJSON(data);
-        $('#program').append('<option value="'+obj[0].KDPROGRAM+'" selected>'+obj[0].KDPROGRAM+' - '+obj[0].NMPROGRAM+'</option>');
+        $('#program').append('<option value="'+obj[0].KDPROGRAM+'" selected>'+obj[0].KDPROGRAM+'</option>');
+        $('#giat').append('<option value="'+obj[0].KDGIAT+'" selected>'+obj[0].KDGIAT+' - '+obj[0].NMGIAT+'</option>');
         $('#output').append('<option value="'+obj[0].KDOUTPUT+'" selected>'+obj[0].KDOUTPUT+' - '+obj[0].NMOUTPUT+'</option>');
         $('#soutput').append('<option value="'+obj[0].KDSOUTPUT+'" selected>'+obj[0].KDSOUTPUT+' - '+obj[0].NMSOUTPUT+'</option>');
         $('#kmpnen').append('<option value="'+obj[0].KDKMPNEN+'" selected>'+obj[0].KDKMPNEN+' - '+obj[0].NMKMPNEN+'</option>');
