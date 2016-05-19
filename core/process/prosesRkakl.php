@@ -1,6 +1,5 @@
 <?php
 switch ($link[3]) {
-
   case 'import':
     ini_set('memory_limit', '-1');
     $thang    = $purifier->purify($_POST['thang']);
@@ -87,7 +86,6 @@ switch ($link[3]) {
       $utility->location("content/anggaran", $flash);
     }
   break;
-
   case 'table':
     $tableKey   = "rkakl_view";
     $primaryKey = "id";
@@ -142,7 +140,6 @@ switch ($link[3]) {
         FROM rkakl_view";
     $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter);
   break;
-
   case 'view':
     ini_set('memory_limit', '-1');
     $filesave = $purifier->purify($_POST['filename']);
@@ -170,10 +167,8 @@ switch ($link[3]) {
       </html>';
     }
   break;
-
   default:
     $utility->location(".");
   break;
-
 }
 ?>

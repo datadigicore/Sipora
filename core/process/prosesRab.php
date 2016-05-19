@@ -1,10 +1,9 @@
 <?php
-include 'config/application.php';
 
+include 'config/application.php';
 switch ($link[3]) {
   case 'table-rkakl':
     $dataArray['url_rewrite'] = $url_rewrite;
-
     #triwulan
     $query = "SELECT * from triwulan where status = '1' ORDER BY id DESC LIMIT 1";
     $result=$db->_fetch_array($query,1);
@@ -21,7 +20,6 @@ switch ($link[3]) {
       $dataArray['prog_med'] = -1;
       $dataArray['prog_high'] = -1;
     }
-
     #realisasi
     $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` FROM `rabview` " ;
     $result=$db->_fetch_array($query,1);
@@ -629,9 +627,9 @@ switch ($link[3]) {
   default:
     $utility->location(".");
   break;
-
   function cekpagu(){
     return 'tes';
   }
 }
+
 ?>
