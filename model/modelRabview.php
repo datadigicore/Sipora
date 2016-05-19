@@ -54,6 +54,7 @@
                 created_by = '$created_by',
                 created_at = '$created_at'
       ";
+
       $result = $this->query($query);
       return $result;
     }

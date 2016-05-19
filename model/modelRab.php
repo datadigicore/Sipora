@@ -16,6 +16,26 @@
         echo "<input type='hidden' value='$fetch[KDGIAT]' /><label>($fetch[KDGIAT]) $fetch[NMGIAT]</label>";
       }
     }
+    public function kdkegiatanbyGrup(){
+      $kdgrup = $_SESSION['kdgrup'];
+      $query = "SELECT * FROM grup WHERE id = '$kdgrup'";
+      $res = $this->_fetch_array($query,1);
+
+      $direktorat = explode(",", $res[0]['direktorat']);
+      $kodegiat = '(';
+      foreach ($direktorat as $key => $value) {
+        $pecah = explode("-", $value);
+        $kodegiat .= "'".$pecah[1]."',";
+      }
+      $kodegiat = substr($kodegiat,0,-1);
+      $kodegiat .= ")";
+
+      $query  = "SELECT KDGIAT, NMGIAT FROM rkakl_full WHERE KDGIAT IN ".$kodegiat."  GROUP BY KDGIAT";
+      $result = $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        echo "<option value='$fetch[KDGIAT]'>$fetch[KDGIAT] -- $fetch[NMGIAT]</option>";
+      }
+    }
     public function getYear(){
       $query  = "SELECT thang FROM rkakl_full as r where thang != ''    group by r.thang";
       $result = $this->query($query);

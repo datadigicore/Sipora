@@ -54,12 +54,21 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Deputi</label>
                     <div class="col-sm-10">
                       <select id="direktorat" class="form-control select2" name="direktorat" required style="width:100%">
                         <option value="" disabled selected>-- Pilih Deputi --</option>
                         <?php $pengguna->kdkegiatan(); ?>
+                      </select>
+                    </div>
+                  </div> -->
+                  <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">Kode Grup</label>
+                    <div class="col-sm-10">
+                      <select id="grup" class="form-control select2" name="grup" required style="width:100%">
+                        <option value="" disabled selected>-- Pilih Kode Grup --</option>
+                        <?php $pengguna->kdgrup(); ?>
                       </select>
                     </div>
                   </div>

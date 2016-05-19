@@ -14,6 +14,7 @@ $email        = $purifier->purify($_POST[email]);
 $level        = $purifier->purify($_POST[level]);
 $kdprogram    = $purifier->purifyArray($_POST[kdprogram]);
 $direktorat   = $purifier->purifyArray($_POST[direktorat]);
+$grup   = $purifier->purifyArray($_POST[grup]);
 $kdoutput     = $purifier->purifyArray($_POST[kdoutput]);
 $status       = $purifier->purify($_POST[status]);
 
@@ -56,6 +57,7 @@ $data_pengguna = array(
   "level"        => $level,
   "kdprogram"    => $strKdprogram,
   "direktorat"   => $strDirektorat,
+  "grup"   => $grup,
   "kdoutput"     => $strKdoutput,
   "status"       => $status
 );

@@ -29,29 +29,25 @@
                     <select class="form-control" name="thang" id="tahun" required>
                     </select>
                   </div>
-                  <div id="tri" class="form-group">
+                  <div class="form-group">
                     <label>Status Triwulan</label>
                     <select class="form-control" name="idtriwulan" id="idtriwulan" required>
+                      <option value="<?php echo $getview['idtriwulan'];?>">Triwulan <?php echo $getview['idtriwulan'];?></option>
                     </select>
                   </div>
 
-                  <!-- STATIC KDPROGRAM -->
                   <div class="form-group">
                     <label>Program</label>
                     <select class="form-control" id="program" name="kdprogram" required>
                     </select>
                   </div>
 
-                  <?php if ($_SESSION['direktorat'] == "") { ?>
-                  <!-- <div class="form-group">
-                    <label>Kode Kegiatan</label>
-                    <select class="form-control" id="kdgiat" name="kdgiat" onchange="chout()">
-                      <option value="">-- Pilih Kode Kegiatan --</option>
+                  <div class="form-group">
+                    <label>Kegiatan</label>
+                    <select class="form-control" id="giat" name="kdgiat" required>
                     </select>
-                  </div> -->
-                  <?php } else{ ?>
-                  <input type="hidden" id="kdgiat" name="kdgiat" value="<?php echo $_SESSION['direktorat']; ?>" />
-                  <?php } ?>
+                  </div>
+
                   <div class="form-group">
                     <label>Output</label>
                     <select class="form-control" id="output" name="kdoutput" required>
@@ -185,7 +181,8 @@ function getkode(){
             },
       success: function(data){
         var obj = jQuery.parseJSON(data);
-        $('#program').append('<option value="'+obj[0].KDPROGRAM+'" selected>'+obj[0].KDPROGRAM+' - '+obj[0].NMPROGRAM+'</option>');
+        $('#program').append('<option value="'+obj[0].KDPROGRAM+'" selected>'+obj[0].KDPROGRAM+'</option>');
+        $('#giat').append('<option value="'+obj[0].KDGIAT+'" selected>'+obj[0].KDGIAT+' - '+obj[0].NMGIAT+'</option>');
         $('#output').append('<option value="'+obj[0].KDOUTPUT+'" selected>'+obj[0].KDOUTPUT+' - '+obj[0].NMOUTPUT+'</option>');
         $('#soutput').append('<option value="'+obj[0].KDSOUTPUT+'" selected>'+obj[0].KDSOUTPUT+' - '+obj[0].NMSOUTPUT+'</option>');
         $('#kmpnen').append('<option value="'+obj[0].KDKMPNEN+'" selected>'+obj[0].KDKMPNEN+' - '+obj[0].NMKMPNEN+'</option>');
@@ -204,22 +201,9 @@ function getyear(){
       var obj = jQuery.parseJSON(data);
       $('#tahun').append('<option value="'+obj[0].THANG+'" selected>'+obj[0].THANG+'</option>');
       getkode();
-      gettriwulan();
     },
   });
 }
-function gettriwulan(){
-  $.ajax({
-    type: "POST",
-    url: "<?php echo $url_rewrite;?>process/kegiatan/gettriwulan",
-    data: { },
-    success: function(data){
-      var obj = jQuery.parseJSON(data);
-      $('#idtriwulan').append('<option value="'+obj[0].id+'" selected>'+obj[0].nama+'</option>');
-      $('#tri').append('<input type="hidden" class="form-control" id="statustri" name="status" />');
-      $('#statustri').val(obj[0].status);
-    },
-  });
-}
+
 
   </script>
