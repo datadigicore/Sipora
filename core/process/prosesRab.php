@@ -79,8 +79,8 @@ switch ($link[3]) {
       }
     }
 
-    $kdgrup = $_SESSION['kdgrup'];
-    $query = "SELECT * FROM grup WHERE id = '$kdgrup'";
+    $kdgrup = $_SESSION['direktorat'];
+    $query = "SELECT * FROM grup WHERE kode = '$kdgrup'";
     $res = $db->_fetch_array($query,1);
 
     $direktorat = explode(",", $res[0]['direktorat']);

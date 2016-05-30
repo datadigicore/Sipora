@@ -17,8 +17,8 @@
       }
     }
     public function kdkegiatanbyGrup(){
-      $kdgrup = $_SESSION['kdgrup'];
-      $query = "SELECT * FROM grup WHERE id = '$kdgrup'";
+      $kdgrup = $_SESSION['direktorat'];
+      $query = "SELECT * FROM grup WHERE kode = '$kdgrup'";
       $res = $this->_fetch_array($query,1);
 
       $direktorat = explode(",", $res[0]['direktorat']);
