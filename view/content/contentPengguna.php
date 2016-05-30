@@ -48,7 +48,7 @@
                   <th>Username</th>
                   <th>Email</th>
                   <th>Kewenangan</th>
-                  <th>Deputi</th>
+                  <th>Nama Grup</th>
                   <th>Aksi</th>
                 </tr>
               </thead>

@@ -37,26 +37,47 @@
         case 'laporan':          
           include "./view/content/contentReport.php";
         break;
-        case 'pengguna':          
-          $kdprog = $rab->getProg();
-          $group = $pengguna->getGroup();
-          include "./view/content/contentPengguna.php";
+        case 'pengguna':
+          if ($_SESSION['level'] == 0) {          
+            $kdprog = $rab->getProg();
+            $group = $pengguna->getGroup();
+            include "./view/content/contentPengguna.php"; }
+          else {
+            $utility->location("content/home"); }
         break;
         case 'edtpengguna':          
           include "./view/content/contentEditProfile.php";
         break;
-        case 'addpengguna':          
-          include "./view/content/contentPenggunaAdd.php";
+        case 'addpengguna':
+          if ($_SESSION['level'] == 0) {
+            include "./view/content/contentPenggunaAdd.php"; }
+          else {
+            $utility->location("content/home"); }
         break;
         case 'addgroup':
-          $kdprog = $rab->getProg();
-          include ('view/content/contentGrupAdd.php');
+          if ($_SESSION['level'] == 0) {
+            $kdprog = $rab->getProg();
+            include ('view/content/contentGrupAdd.php'); }
+          else {
+            $utility->location("content/home"); }
         break;
         case 'triwulan':          
-          include "./view/content/contentTriwulan.php";
+          if ($_SESSION['level'] == 0) {
+            include "./view/content/contentTriwulan.php"; }
+          else {
+            $utility->location("content/home"); }
         break;
-        case 'prosentase':          
-          include "./view/content/contentProgress.php";
+        case 'prosentase':
+          if ($_SESSION['level'] == 0) {
+            include "./view/content/contentProgress.php"; }
+          else {
+            $utility->location("content/home"); }
+        break;
+        case 'berita':
+          if ($_SESSION['level'] == 0) {
+            include "./view/content/contentBerita.php"; }
+          else {
+            $utility->location("content/home"); }
         break;
         default:
           $utility->location("content/home");

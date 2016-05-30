@@ -4,7 +4,7 @@
   $elements = explode('/', $path);
   $link     = array_filter($elements);
   if (count($link[1]) == 0){
-    $utility->location("login");
+    $utility->location("home");
   }
   else {
     switch ($link[1]) {

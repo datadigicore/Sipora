@@ -22,6 +22,9 @@
       case 'triwulan':
         include "./core/process/prosesTriwulan.php";
       break;
+      case 'berita':
+        include "./core/process/prosesBerita.php";
+      break;
       default:
         $utility->location(".");
       break;

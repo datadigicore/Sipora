@@ -14,8 +14,11 @@
 <link rel="stylesheet" href="<?php echo $base_url ?>static/plugin/datatables/media/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="<?php echo $base_url ?>static/plugin/font-awesome/css/font-awesome.min.css" type="text/css"/>
 <link rel="stylesheet" href="<?php echo $base_url ?>static/css/style.css" type="text/css"/>
+<link rel="stylesheet" href="<?php echo $base_url ?>static/plugins/fullcalendar/fullcalendar.css" type="text/css"/>
 <script src="<?php echo $base_url ?>static/plugin/datatables/media/js/jquery.js"></script>
 <script src="<?php echo $base_url ?>static/plugin/bootstrap/bootstrap.min.js"></script>
+<script src="<?php echo $base_url ?>static/dist/js/moment.min.js"></script>
+<script src="<?php echo $base_url ?>static/plugins/fullcalendar/fullcalendar.js"></script>
 <script src="<?php echo $base_url ?>static/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo $base_url ?>static/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
 <script src="<?php echo $base_url ?>static/plugin/jquery/jquery.scrollTo.min.js"></script>

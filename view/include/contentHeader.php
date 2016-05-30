@@ -39,6 +39,18 @@
           </div>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+              <?php if ($_SESSION['level'] == 0): ?>
+              <li <?php if ($link[2] == 'beritautama' OR $link[2] == 'beritaterkait' OR $link[2] == 'beritamenteri' OR $link[2] == 'pengumuman' OR $link[2] == 'agenda' OR $link[2] == 'mediasosial'){ echo "class='dropdown active'";} else{ echo "class='dropdown'";}?>>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Publikasi <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" style="background: white;">
+                  <li><a href="<?php echo $url_rewrite;?>content/berita">Berita</a></li>
+                  <li><a href="<?php echo $url_rewrite;?>content/pengumuman">Pengumuman</a></li>
+                  <li class="divider"></li>
+                  <li><a href="<?php echo $url_rewrite;?>content/agenda">Agenda Kegiatan</a></li>
+                  <li><a href="<?php echo $url_rewrite;?>content/mediasosial">Media Sosial</a></li>
+                </ul>
+              </li>
+              <?php endif ?>
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="<?php echo $url_rewrite;?>static/dist/img/Kemenpora.png" class="img-circle" alt="User Image" style="width: 18px; height: 18px">
