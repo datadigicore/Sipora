@@ -178,6 +178,16 @@
             </select>
           </div>
           <div class="form-group">
+            <select class="form-control" name="direktorat" data-toggle="tooltip" data-placement="top" title="Group" id="group-select" required>
+              <option value="" disabled selected>-- Pilih Grup --</option>
+              <?php foreach ($group as $key => $value){ ?>
+              <option value="<?php echo $key ?>"><?php echo $key." - ".$value ?></option>
+                 
+
+               <?php } ?>
+            </select>
+          </div>
+          <div class="form-group">
             <select class="form-control" id="status" name="status" required>
               <option value="" disabled selected>-- Pilih Status Akun --</option>
               <option value="1">Aktif</option>

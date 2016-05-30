@@ -45,7 +45,8 @@
         case 'edtpengguna':          
           include "./view/content/contentEditProfile.php";
         break;
-        case 'addpengguna':          
+        case 'addpengguna':    
+          $group = $pengguna->getGroup();      
           include "./view/content/contentPenggunaAdd.php";
         break;
         case 'addgroup':

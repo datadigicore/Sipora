@@ -110,7 +110,7 @@
       return $fetch->password;
     }
     public function getGroup() {
-      $query  = "SELECT kode, nama FROM  grup as r";
+      $query  = "SELECT kode, nama FROM  grup as r where status=1";
       $result = $this->query($query);
       $i=0;
       while($fetch  = $this->fetch_object($result)) {

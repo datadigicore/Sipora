@@ -54,7 +54,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Deputi</label>
                     <div class="col-sm-10">
                       <select id="direktorat" class="form-control select2" name="direktorat" required style="width:100%">
@@ -62,7 +62,21 @@
                         <?php $pengguna->kdkegiatan(); ?>
                       </select>
                     </div>
+                  </div> -->
+                  <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">Deputi</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" name="direktorat" data-toggle="tooltip" data-placement="top" title="Group" id="direktorat" required>
+                        <option value="" disabled selected>-- Pilih Deputi --</option>
+                        <?php foreach ($group as $key => $value){ ?>
+                        <option value="<?php echo $key ?>"><?php echo $key." - ".$value ?></option>
+                           
+
+                         <?php } ?>
+                      </select>
+                    </div>
                   </div>
+                    
                   <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Status</label>
                     <div class="col-sm-10">  
