@@ -10,6 +10,14 @@
       }
     }
 
+    public function kdgrup(){
+      $query  = "SELECT id, kode, nama FROM grup ";
+      $result = $this->query($query);
+      while ($fetch = $this->fetch_array($result)) {
+        echo "<option value='$fetch[id]'>$fetch[kode] -- $fetch[nama]</option>";
+      }
+    }
+
     public function insertPengguna($data) {
       $nama       = $data['name'];
       $username   = $data['username'];
@@ -17,6 +25,7 @@
       $email      = $data['email'];
       $level      = $data['level'];
       $direktorat = $data['direktorat'];
+      $grup = $data['grup'];
       $status     = $data['status'];
 
       $query      = "INSERT INTO pengguna SET
@@ -26,6 +35,7 @@
         email     = '$email',
         level     = '$level',
         direktorat= '$direktorat',
+        kdgrup    = '$grup',
         status    = '$status'
       ";
 

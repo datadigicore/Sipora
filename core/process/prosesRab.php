@@ -40,15 +40,14 @@ switch ($link[3]) {
         $volume=$value['volume'];
         $status=$value['status'];
         $key="$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen";
-        $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['key']=$key;
-        $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['jumlah'] += $jumlah;
-        $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['volume'] += $volume;
-          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['lock'] += 0;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['key']=$key;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['jumlah'] += $jumlah;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['volume'] += $volume;
+          $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['lock'] += 0;
         if ($idtriaktif !== $idtriwulan) {
-          $realisasi["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['lock'] += $status;
+          $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['lock'] += $status;
         }
       }
-      $dataArray = $realisasi;
     }
 
     #volume
@@ -80,24 +79,47 @@ switch ($link[3]) {
       }
     }
 
+    $kdgrup = $_SESSION['kdgrup'];
+    $query = "SELECT * FROM grup WHERE id = '$kdgrup'";
+    $res = $db->_fetch_array($query,1);
+
+    $direktorat = explode(",", $res[0]['direktorat']);
+    $kodegiat = '(';
+    foreach ($direktorat as $key => $value) {
+      $pecah = explode("-", $value);
+      $kodegiat .= "'".$pecah[1]."',";
+    }
+    $kodegiat = substr($kodegiat,0,-1);
+    $kodegiat .= ")";
+    // print_r($kodegiat);
+    // die;
+
     $swhere = "";
     if ($_POST['tahun'] != "") {
       $swhere="WHERE THANG = '".$_POST['tahun']."' ";
     }
 
-    if ($_POST['direktorat'] != "") {
-      if ($swhere == "") {
-        $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."' ";
+    if ($_SESSION['kdgrup'] != "") {
+      if ($_POST['direktorat'] != "") {
+        if ($swhere == "") {
+          $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."' ";
+        }else{
+          $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' ";
+        }
       }else{
-        $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' ";
+        if ($swhere == "") {
+          $swhere .= "WHERE KDGIAT IN ".$kodegiat." ";
+        }else{
+          $swhere .= "AND KDGIAT IN ".$kodegiat." ";
+        }
       }
-    }
-
-    if ($_SESSION['direktorat'] != "") {
-      if ($swhere == "") {
-        $swhere .= "WHERE KDGIAT = '".$_SESSION['direktorat']."' ";
-      }else{
-        $swhere .= "AND KDGIAT = '".$_SESSION['direktorat']."' ";
+    }else{
+      if ($_POST['direktorat'] != "") {
+        if ($swhere == "") {
+          $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."' ";
+        }else{
+          $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' ";
+        }
       }
     }
 
@@ -136,14 +158,14 @@ switch ($link[3]) {
       '8' => array('formatter' => function($d,$row,$data){ 
         if (isset($data[$row[7]]['jumlah'])) {
           $persen = ($data[$row[7]]['jumlah'] / $d) *100;
-
+          $persen = number_format($persen,2);
           if ($data['prog_low'] != "-1") {
             if ($persen <= $data['prog_low']) {
               $status = 'danger';
             }elseif ($persen <= $data['prog_med']) {
               $status = 'warning';
             }else{
-              $status = 'success';
+              $status = 'default';
             }
           }else{
             $status = 'default';
@@ -169,6 +191,7 @@ switch ($link[3]) {
       '10' => array('formatter' => function($d,$row,$data){ 
         if ($data[$d]['id_vol'] != "") {
           $persenvol = ($data[$d]['vol_real'] / $data[$d]['vol_target']) * 100;
+          $persenvol = number_format($persenvol,2);
           if ($data['prog_low'] != "-1") {
             if ($persenvol <= $data['prog_low']) {
               $status = 'danger';
@@ -295,7 +318,7 @@ switch ($link[3]) {
             }
           }
           elseif(($_SESSION['level'] != 0 && $d == 0) || ($_SESSION['level'] == 0 && $d == 1) ){
-            $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"><i class="fa fa-warning"></i> No available</a>';
+            $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"> - </a>';
           }
           elseif($_SESSION['level'] == 0 && $d == 0){
             $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-unlock-alt"></i>&nbsp; Unlock</a>';
