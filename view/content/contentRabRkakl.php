@@ -28,7 +28,7 @@
                       </select>
                     </td>
                   </tr>
-                  <?php if ($_SESSION['kdgrup'] == "") { ?>
+                  <?php if ($_SESSION['direktorat'] == "") { ?>
                   <tr>
                     <td><label>Deputi</label></td>
                       <td>
