@@ -76,10 +76,19 @@
         break;
         case 'berita':
           if ($_SESSION['level'] == 0) {
+
             include "./view/content/contentBerita.php"; }
           else {
             $utility->location("content/home"); }
         break;
+        case 'pengumuman':
+          if ($_SESSION['level'] == 0) {
+            
+            include "./view/content/contentPengumuman.php"; }
+          else {
+            $utility->location("content/home"); }
+        break;
+        
         default:
           $utility->location("content/home");
         break;

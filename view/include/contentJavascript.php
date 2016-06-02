@@ -37,6 +37,8 @@
   <script src="<?php echo $url_rewrite;?>static/dist/js/app.min.js"></script>
   <!-- Show Pass -->
   <script src="<?php echo $url_rewrite;?>static/plugins/show-pass/bootstrap-show-password.min.js"></script>
+  <!-- summernote -->
+  <script src="<?php echo $url_rewrite;?>static/plugins/summernote/summernote.min.js"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="<?php echo $url_rewrite;?>static/dist/js/demo.js"></script>
   <!-- jQuery Mask -->

@@ -12,6 +12,7 @@ require_once __DIR__ .'/../library/mPDF/mpdf.php';
 require_once __DIR__ .'/../library/security/HTMLPurifier.auto.php';
 // =========== TAMBAHKAN FILE MODEL DISINI ============
 require_once __DIR__ .'/../model/modelLogin.php';
+require_once __DIR__ .'/../model/modelBerita.php';
 require_once __DIR__ .'/../model/modelHome.php';
 require_once __DIR__ .'/../model/modelRkakl.php';
 require_once __DIR__ .'/../model/modelRab.php';
@@ -32,6 +33,7 @@ $utility   = new utilityCode();
 $datatable = new datatable();
 //=========== TAMBAHKAN CLASS MODEL DISINI ===========
 $login    = new modelLogin(); 
+$berita    = new modelBerita(); 
 $home     = new modelHome();
 $rkakl    = new modelRkakl();
 $rab      = new modelRab();

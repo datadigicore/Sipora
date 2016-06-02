@@ -31,6 +31,7 @@
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="<?php echo $base_url ?>static/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <link rel="stylesheet" href="<?php echo $base_url ?>static/plugins/jQueryUI/jquery-ui.css">
+  <link rel="stylesheet" href="<?php echo $base_url ?>static/plugins/summernote/summernote.css">
   <link rel="stylesheet" href="<?php echo $base_url ?>static/dist/css/skins/skin-blue.min.css">
   <link rel="stylesheet" href="<?php echo $base_url ?>static/dist/css/select2.min.css">
   <style type="text/css">

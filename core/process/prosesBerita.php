@@ -2,24 +2,49 @@
 
 switch ($link[3]) {
   case 'getContent':
-    if ($_POST['option'] == 'utama') {
+
+    if ($_POST['option'] == '1') {
       echo '<div class="form-group">
               <label for="inputPassword3" class="col-sm-2 control-label">Judul</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="judul" placeholder="Judul Berita" required>
               </div>
-            </div>';
+            </div>
+            <textarea class="input-block-level" id="summernote" name="isi" rows="18">
+          </textarea>';
     }
-    elseif ($_POST['option'] == 'terkait') {
+    elseif ($_POST['option'] == '2') {
+      echo '<div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">Judul</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="judul" placeholder="Judul Berita" required>
+              </div>
+            </div>
+            <textarea class="input-block-level" id="summernote" name="isi" rows="18">
+          </textarea>';
       
     }
-    elseif ($_POST['option'] == 'menteri') {
+    elseif ($_POST['option'] == '3') {
       
     }
   break;
   case 'unlock':
     $data = $purifier->purifyArray($_POST);
     $triwulan->unlock($data);
+  break;
+  case 'uploadImg':
+
+    //TODO List
+    // 1) Rename the File
+    // 2) For Multiple Upload , Loop through $_FILES
+
+    $md5 = md5(time());
+    $dir_name = $path_upload."berita/".$md5."/";
+    if(!file_exists($dir_name))mkdir($dir_name, 0777, true);
+
+    move_uploaded_file($_FILES['file']['tmp_name'],$dir_name.$_FILES['file']['name']);
+    // echo "<img src='../static/uploads/berita/".$md5."/".$_FILES['file']['name']."'>";
+    echo $base_url."static/uploads/berita/".$md5."/".$_FILES['file']['name'];
   break;
   case 'aktifkan':
     $data = $purifier->purifyArray($_POST);
@@ -31,22 +56,10 @@ switch ($link[3]) {
   break;
   case 'add':
     $data = $purifier->purifyArray($_POST);
-    $result = $triwulan->cekTriwulan($data);
-    if ($result == 0) {
-      $triwulan->addTriwulan($data);
-      $flash  = array(
-        'category' => "success",
-        'messages' => "Data Triwulan berhasil ditambahkan"
-      );
-      $utility->location("content/triwulan",$flash);
-    }
-    else {
-      $flash  = array(
-        'category' => "warning",
-        'messages' => "Maaf Data Triwulan sudah ada"
-      );
-      $utility->location("content/triwulan",$flash);
-    }
+    print_r($data);
+    $rs = $berita->addBerita($data);
+    echo $rs;
+    // print_r($data);
   break;
   case 'table':
     $dataArray['url_rewrite'] = $url_rewrite;

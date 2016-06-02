@@ -22,6 +22,16 @@
           $utility->location("content/home");
         }
         else {
+          //ganti paramaeter dibawah sesuai dengan jenisnya
+          /*
+            1 = berita utama
+            2 = berita terkait
+            3 = berita kementerian
+          */
+          $arrBerita = $berita->getBerita(array(1,2),4);
+          $arrBeritaTerkait = $berita->getBerita(array(1),5);
+          $arrBeritaKementerian = $berita->getBerita(array(3),5);
+            
           include "./view/include/homeHead.php";
           include "./view/homeIndex.php";
         }
@@ -44,11 +54,24 @@
           include "./view/homeReview.php";
         }
       break;
+      case 'baca-berita':
+        if($link[2]!=""){
+          $utility->location("content/home");
+        } else {
+          $arrBerita = $berita->getBerita(array(1,2),1,$link[2]);
+          $arrBeritaTerkait = $berita->getBerita(array(1),5);
+          $arrBeritaKementerian = $berita->getBerita(array(3),5,array());
+          include "./view/include/homeHead.php";
+          include "./view/homeRead.php";
+        }
+        
+      break;
       case 'login':
         if ($_SESSION['username'] != '') {
           $utility->location("content/home");
         }
         else {
+
           include "./view/include/homeHead.php";
           include "./view/homeLogin.php";
         }

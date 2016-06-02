@@ -7,8 +7,12 @@
   $base_process      = "http://localhost/sipora/process/";
   $url_rewrite       = "http://localhost/sipora/";
   $url_img           = "http://localhost/sipora/";
-  $path              = "/var/www/html/sipora/";
-  $path_upload       = "/var/www/html/sipora/static/uploads/";
+  //================== PATH UPLOAD LOCAL linux LAMPP =================//
+  $path              = "/opt/lampp/htdocs/sipora/";
+  $path_upload       = "/opt/lampp/htdocs/sipora/static/uploads/";
+  //================== PATH UPLOAD LOCAL linux=================//
+  // $path              = "/var/www/html/sipora/";
+  // $path_upload       = "/var/www/html/sipora/static/uploads/";
   //================== PATH UPLOAD LOCAL WINDOWS =================//
   // $path              = "C:/xampp/htdocs/sipora/";
   // $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
@@ -19,7 +23,7 @@
   class config {
     public $db_host             = "localhost";
     public $db_user             = "root";
-    public $db_pass             = "admin";
+    public $db_pass             = "";
     public $database            = "evaluasi";
     public $url_rewrite_class   = "http://localhost/sipora/";
     public static $debug        = 1;

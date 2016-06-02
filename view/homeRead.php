@@ -34,10 +34,10 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-9">
             <div class="content-box">
               <div class="content-box-header dark-green">
-                Berita Utama
+                <label><?php echo $arrBerita[tanggal][$key] ?></label>
               </div>
               <div class="content-box-body">
               <?php 
@@ -48,9 +48,10 @@
                     <div class="media">
                       <div class="media-body">
                         <h2 class="media-heading"><a href="#"><?php echo $arrBerita[judul][$key] ?></a></h2>
+                        
+                        <hr>
                         <p><?php echo $arrBerita[isi][$key] ?></p>            
                       <ul class="list-inline pull-right">
-                        <li><a href="#">Selengkapnya</a></li>
                       </ul>
                       </div>
                     </div>
@@ -67,44 +68,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3">
-            <div class="panel panel-default">
-              <div class="content-box-header dark-green">
-                Pengumuman
-              </div>
-              <div class="panel-body">
-                <form>
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="uid" name="uid" placeholder="Username">
-                  </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
-                  </div>
-                  <button type="submit" class="btn btn-default">Log In</button>
-                </form>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="content-box-header dark-green">
-                Agenda Kegiatan
-              </div>
-              <div class="panel-body">
-                <div id='calendar'></div>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="content-box-header dark-green">
-                Sosial Media
-              </div>
-              <div class="list-group">
-                <a href="#" class="list-group-item">Resource Taxing</a>
-                <a href="#" class="list-group-item">Premier Niche Markets <span class="badge">New</span></a>
-                <a href="#" class="list-group-item">Dynamically Innovate</a>
-                <a href="#" class="list-group-item">Objectively Innovate</a>
-                <a href="#" class="list-group-item">Proactively Envisioned</a>
-              </div>
-            </div>
-          </div>
+          
         </div>
       </div><!-- end of row -->
     </div><!-- end of main class -->
