@@ -262,20 +262,12 @@
           var ckbx = '';
           for (var i = 0; i < obj.KDGIAT.length; i++) {
             
-            // $ckbx = $ckbx + '<option value="'+obj.KDGIAT[i]+'"">'+obj.KDGIAT[i]+' - '+obj.NMGIAT[i]+'</option>';
-            if($.inArray(obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i],direktorat)==-1){
-              ckbx+=' <div class=" col-md-4 ">'+
-                      '<div class="checkbox">'+
-                        '<label><input type="checkbox" class="kdgiat" name="direktorat[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'"> '+obj.KDGIAT[i]+' - '+obj.NMGIAT[i]+' ('+obj.KDPROGRAM[i]+')</label>'+
-                      '</div>'+
-                    '</div>';
-            } else {
                 ckbx+=' <div class=" col-md-4 ">'+
                       '<div class="checkbox">'+
                         '<label><input type="checkbox" class="kdgiat" name="direktorat[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'" checked> '+obj.KDGIAT[i]+' - '+obj.NMGIAT[i]+' ('+obj.KDPROGRAM[i]+')</label>'+
                       '</div>'+
                     '</div>';
-            }
+            
             
           };
           $('#kdgiat-div').html(ckbx);
@@ -348,23 +340,13 @@
           var obj = jQuery.parseJSON(data);
           var ckbx = "";
           for (var i = 0; i < obj.KDOUTPUT.length; i++) {
-            var val =  obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'-'+obj.KDOUTPUT[i];
-            if($.inArray(val,kdoutput)==-1){
-
-              ckbx= ckbx+' <div class=" col-md-4 ">'+
-                      '<div class="checkbox">'+
-                        '<label><input type="checkbox" id="kdoutput" class="kdoutput" name="kdoutput[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'-'+obj.KDOUTPUT[i]+'"> '+obj.KDOUTPUT[i]+' - '+obj.NMOUTPUT[i]+' ('+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+')</label>'+
-                      '</div>'+
-                    '</div>';
-            } else {
-
 
               ckbx= ckbx+' <div class=" col-md-4 ">'+
                       '<div class="checkbox">'+
                         '<label><input type="checkbox" id="kdoutput" class="kdoutput" name="kdoutput[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'-'+obj.KDOUTPUT[i]+'" checked> '+obj.KDOUTPUT[i]+' - '+obj.NMOUTPUT[i]+' ('+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+')</label>'+
                       '</div>'+
                     '</div>';
-            }
+            
           };
           $('#kdoutput-div').html(ckbx);
 

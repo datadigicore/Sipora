@@ -106,12 +106,6 @@ switch ($link[3]) {
         }else{
           $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' ";
         }
-      }else{
-        if ($swhere == "") {
-          $swhere .= "WHERE KDGIAT IN ".$kodegiat." ";
-        }else{
-          $swhere .= "AND KDGIAT IN ".$kodegiat." ";
-        }
       }
     }else{
       if ($_POST['direktorat'] != "") {

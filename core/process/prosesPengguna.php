@@ -43,7 +43,7 @@ foreach ($direktorat as $value) {
     $strDirektorat = $strDirektorat.",".$value;
   }
 }
-
+if($strDirektorat =="") $strDirektorat = $direktorat;
 $data_pengguna = array(
   "id"           => $id,
   "id_data"      => $id_data,

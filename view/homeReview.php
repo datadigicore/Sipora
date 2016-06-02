@@ -77,11 +77,12 @@
     $(document).ready(function () {
       $.ajax({
         type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
         dataType: "json",
         success: function(result)
         {
           chartpie.series[0].setData(result[0]);
-          chartpie.series[1].setData(result[1]);
+          // chartpie.series[1].setData(result[1]);
         }
       });
       var today = new Date();

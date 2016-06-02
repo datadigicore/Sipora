@@ -50,6 +50,7 @@
         break;
         case 'addpengguna':
           if ($_SESSION['level'] == 0) {
+            $group = $pengguna->getGroup();
             include "./view/content/contentPenggunaAdd.php"; }
           else {
             $utility->location("content/home"); }

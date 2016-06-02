@@ -64,14 +64,19 @@
                     </div>
                   </div> -->
                   <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">Kode Grup</label>
+                    <label for="inputPassword3" class="col-sm-2 control-label">Deputi</label>
                     <div class="col-sm-10">
-                      <select id="grup" class="form-control select2" name="grup" required style="width:100%">
-                        <option value="" disabled selected>-- Pilih Kode Grup --</option>
-                        <?php $pengguna->kdgrup(); ?>
+                      <select class="form-control" name="direktorat" data-toggle="tooltip" data-placement="top" title="Group" id="direktorat" required>
+                        <option value="" disabled selected>-- Pilih Deputi --</option>
+                        <?php foreach ($group as $key => $value){ ?>
+                        <option value="<?php echo $key ?>"><?php echo $key." - ".$value ?></option>
+                           
+
+                         <?php } ?>
                       </select>
                     </div>
                   </div>
+                    
                   <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Status</label>
                     <div class="col-sm-10">  

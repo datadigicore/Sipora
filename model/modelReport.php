@@ -81,6 +81,40 @@
       echo json_encode($newresult);
     }
 
+    public function getAllChartIDRKAKL(){
+      for ($i=1; $i <= 4 ; $i++) { 
+        $result = $this->query("SELECT KDGIAT, SUM(TRIWULAN".$i."), SUM(JUMLAH) from rkakl_full group by KDGIAT");
+        while($res=$this->fetch_array($result)){
+            $results['SUM(TRIWULAN'.$i.')'][] = $res;
+        }
+      }
+      $prev_value = array('value' => null, 'amount' => null);
+      $i = 1;
+      foreach ($results as $data) {
+        $jmlData = count($data);
+        for ($j=0; $j <$jmlData ; $j++) { 
+          unset($prev_value);
+          if ($data[$j] == 0) {
+            $prev_value = array('value' => 'KDGIAT '.$data[$j][KDGIAT], 'total' => '0', 'amount' => '0');
+          }
+          else {
+            $val1 = floatval($data[$j]['SUM(TRIWULAN'.$i.')']);
+            $val2 = floatval($data[$j]['SUM(JUMLAH)']);
+            $persentase = ($val1 / $val2) * 100;
+            $totsentase = (($val2 / $val2) * 100) - $persentase;
+            $prev_value = array('value' => ''.$data[$j][KDGIAT], 'total' => $totsentase, 'amount' => $persentase);
+          }
+          $newResults[] =& $prev_value;
+        }
+        $i++;
+      }
+      for ($i=0; $i < count($newResults) ; $i++) { 
+        $newresult[0][$i][] =& $newResults[$i]['value'];
+        $newresult[0][$i][] =& $newResults[$i]['amount'];
+      }
+      echo json_encode($newresult);
+    }
+
     public function get_kd_akun($id){
       $result = $this->query("SELECT kdakun from rabfull where id='$id' ");
       $array = $this->fetch_array($result);
