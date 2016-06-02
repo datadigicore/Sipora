@@ -95,22 +95,26 @@
         for ($j=0; $j <$jmlData ; $j++) { 
           unset($prev_value);
           if ($data[$j] == 0) {
-            $prev_value = array('value' => 'KDGIAT '.$data[$j][KDGIAT], 'total' => '0', 'amount' => '0');
+            $prev_value = array('value' => 'KDGIAT - '.$data[$j][KDGIAT], 'total' => '0', 'amount' => '0');
           }
           else {
             $val1 = floatval($data[$j]['SUM(TRIWULAN'.$i.')']);
             $val2 = floatval($data[$j]['SUM(JUMLAH)']);
             $persentase = ($val1 / $val2) * 100;
             $totsentase = (($val2 / $val2) * 100) - $persentase;
-            $prev_value = array('value' => ''.$data[$j][KDGIAT], 'total' => $totsentase, 'amount' => $persentase);
+            $prev_value = array('value' => 'KDGIAT - '.$data[$j][KDGIAT], 'total' => $totsentase, 'amount' => $persentase);
           }
-          $newResults[] =& $prev_value;
+          $newResults['SUM(TRIWULAN'.$i.')'][] =& $prev_value;
         }
         $i++;
       }
-      for ($i=0; $i < count($newResults) ; $i++) { 
-        $newresult[0][$i][] =& $newResults[$i]['value'];
-        $newresult[0][$i][] =& $newResults[$i]['amount'];
+      // print_r($newResults);
+      // die();
+      for ($i=1; $i <= 4 ; $i++) { 
+        for ($j=0; $j < count($newResults['SUM(TRIWULAN'.$i.')']) ; $j++) { 
+          $newresult[$i-1][$j][] =& $newResults['SUM(TRIWULAN'.$i.')'][$j]['value'];
+          $newresult[$i-1][$j][] =& $newResults['SUM(TRIWULAN'.$i.')'][$j]['amount'];
+        }
       }
       echo json_encode($newresult);
     }
