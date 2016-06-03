@@ -21,7 +21,7 @@ switch ($link[3]) {
     $report->getChartIDRKAKL($_POST['id']);
   break;
   case 'chart_all_column':
-    $report->getAllChartIDRKAKL();
+    $report->getAllChartIDRKAKL2();
   break;
   case 'Rincian_Biaya_PD':
 

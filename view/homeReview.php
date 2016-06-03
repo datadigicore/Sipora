@@ -8,10 +8,10 @@
             </div>
             <div class="content-box-body">
               <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#triwulan1" aria-controls="triwulan1" role="tab" data-toggle="tab">Triwulan I</a></li>
-                <li role="presentation"><a href="#triwulan2" aria-controls="triwulan2" role="tab" data-toggle="tab">Triwulan II</a></li>
-                <li role="presentation"><a href="#triwulan3" aria-controls="triwulan3" role="tab" data-toggle="tab">Triwulan III</a></li>
-                <li role="presentation"><a href="#triwulan4" aria-controls="triwulan4" role="tab" data-toggle="tab">Triwulan IV</a></li>
+                <li role="presentation" class="active"><a href="#triwulan1" onclick="chart1()" aria-controls="triwulan1" role="tab" data-toggle="tab">Triwulan I</a></li>
+                <li role="presentation"><a href="#triwulan2" onclick="chart2()"  aria-controls="triwulan2" role="tab" data-toggle="tab">Triwulan II</a></li>
+                <li role="presentation"><a href="#triwulan3" aria-controls="triwulan3" onclick="chart3()" role="tab" data-toggle="tab">Triwulan III</a></li>
+                <li role="presentation"><a href="#triwulan4" aria-controls="triwulan4" onclick="chart4()" role="tab" data-toggle="tab">Triwulan IV</a></li>
               </ul>
               <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="triwulan1">
@@ -38,22 +38,30 @@
 <script src="<?php echo $base_url ?>static/plugins/highcharts/js/highcharts.js"></script>
 <script src="<?php echo $base_url ?>static/plugins/highcharts/js/modules/exporting.js"></script>
 <script type="text/javascript">
+var chartpie1;
+var chartpie2;
+var chartpie3;
+var chartpie4;
   $(function () {
     $(document).ready(function () {
-      $.ajax({
+      chart1();
+    });
+  });
+
+  function chart1(){
+    // chartpie2.destroy();
+    $.ajax({
         type: "post",
         url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
         dataType: "json",
         success: function(result)
         {
+            // alert(result);
           chartpie1.series[0].setData(result[0]);
-          chartpie2.series[1].setData(result[1]);
-          chartpie3.series[2].setData(result[2]);
-          chartpie4.series[3].setData(result[3]);
         }
       });
       var today = new Date();
-      var chartpie1 = new Highcharts.Chart({
+      chartpie1 = new Highcharts.Chart({
         chart: {
             renderTo: 'chartDonut1',
             type: 'column'
@@ -112,7 +120,21 @@
             }
         }]
       });
-      var chartpie2 = new Highcharts.Chart({
+     
+  }
+
+  function chart2(){
+    $.ajax({
+        type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        dataType: "json",
+        success: function(result)
+        {
+          chartpie2.series[1].setData(result[1]);
+        }
+      });
+      var today = new Date();
+      chartpie2 = new Highcharts.Chart({
         chart: {
             renderTo: 'chartDonut2',
             type: 'column'
@@ -171,7 +193,21 @@
             }
         }]
       });
-      var chartpie3 = new Highcharts.Chart({
+     
+  }
+
+  function chart3(){
+    $.ajax({
+        type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        dataType: "json",
+        success: function(result)
+        {
+          chartpie3.series[2].setData(result[2]);
+        }
+      });
+      var today = new Date();
+      chartpie3 = new Highcharts.Chart({
         chart: {
             renderTo: 'chartDonut3',
             type: 'column'
@@ -230,7 +266,21 @@
             }
         }]
       });
-      var chartpie4 = new Highcharts.Chart({
+     
+  }
+
+  function chart4(){
+    $.ajax({
+        type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        dataType: "json",
+        success: function(result)
+        {
+          chartpie4.series[3].setData(result[3]);
+        }
+      });
+      var today = new Date();
+      chartpie4 = new Highcharts.Chart({
         chart: {
             renderTo: 'chartDonut4',
             type: 'column'
@@ -289,8 +339,8 @@
             }
         }]
       });
-    });
-  });
+     
+  }
 </script>
 </body>
 </html>
