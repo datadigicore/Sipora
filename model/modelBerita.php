@@ -6,7 +6,7 @@
 
       $judul = $data['judul'];
       $isi = $data['isi'];
-      $created_by = $_SESSION['username'];
+      $created_by = $_SESSION['id'];
       $created_at = date("Y-m-d H:i:s");
       $jenis = $data['jenis'];
       $status = 1;
@@ -22,6 +22,22 @@
       $result = $this->query($query);
       return $result;
     }
+
+    public function addPengumuman($data){
+
+      $isi = $data['isi'];
+      $created_by = $_SESSION['id'];
+      $created_at = date("Y-m-d H:i:s");
+
+      $query = "UPDATE pengumuman SET
+      isi = '$isi',
+      created_by = '$created_by',
+      created_at = '$created_at'";
+      // echo $query;  
+      $result = $this->query($query);
+      return $result;
+    }
+
     public function getBerita($jenis,$limit = 0,$id=NULL){
       $where = "";
       foreach ($jenis as $key => $value) {

@@ -27,7 +27,7 @@
                         <option value="" disabled selected>-- Pilih Konten Berita --</option>
                         <option value="1">Berita Utama</option>
                         <option value="2">Berita Terkait</option>
-                        <!-- <option value="3">Berita Kementerian</option> -->
+                        <option value="3">Berita Kementerian</option>
                       </select>
                     </div>
                   </div>

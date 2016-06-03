@@ -56,10 +56,21 @@ switch ($link[3]) {
   break;
   case 'add':
     $data = $purifier->purifyArray($_POST);
-    print_r($data);
     $rs = $berita->addBerita($data);
-    echo $rs;
-    // print_r($data);
+    $flash  = array(
+            'category' => "success",
+            'messages' => "Berita berhasil ditambahkan !"
+          );
+    $utility->location("content/berita",$flash);
+  break;
+  case 'addpengumuman':
+    $data = $purifier->purifyArray($_POST);
+    $rs = $berita->addPengumuman($data);
+    $flash  = array(
+            'category' => "success",
+            'messages' => "Pengumuman berhasil diubah !"
+          );
+    $utility->location("content/pengumuman",$flash);
   break;
   case 'table':
     $dataArray['url_rewrite'] = $url_rewrite;

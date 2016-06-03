@@ -15,35 +15,35 @@
           <div class="box-header with-border">
             <h3 class="box-title" style="margin-top:6px;">Tambah Berita</h3>
           </div>
-          <form method="POST" action="<?php echo $base_process;?>berita/add">
+          <form method="POST" action="<?php echo $base_process;?>berita/addpengumuman">
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <div class="box-body well form-horizontal">
                   <?php include "view/include/contentAlert.php" ?>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Content</label>
                     <div class="col-sm-10">
                       <select class="form-control" name="jenis" required readonly>
-                        <!-- <option value="" disabled selected>-- Pilih Konten Berita --</option>
+                        <option value="" disabled selected>-- Pilih Konten Berita --</option>
                         <option value="1">Berita Utama</option>
-                        <option value="2">Berita Terkait</option> -->
+                        <option value="2">Berita Terkait</option>
                         <option value="3">Berita Kementerian</option>
                       </select>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">Judul</label>
+                    <label for="inputPassword3" class="col-sm-2 control-label">Pengumuman</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="judul" placeholder="Judul Berita" required>
+                      <textarea class="form-control" name="isi" placeholder="Pengumuman"><?php echo $pengumuman;?></textarea>
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Link terkait</label>
                     <div class="col-sm-10">
                       <textarea class="form-control" name="isi"> </textarea>
                     </div>
-                  </div>
+                  </div> -->
                   
                 </div>
               </div>

@@ -83,7 +83,9 @@
         break;
         case 'pengumuman':
           if ($_SESSION['level'] == 0) {
-            
+            $query = "SELECT isi from pengumuman";
+            $result=$db->_fetch_array($query,1);
+            $pengumuman = $result[0]['isi'];
             include "./view/content/contentPengumuman.php"; }
           else {
             $utility->location("content/home"); }
