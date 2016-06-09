@@ -16,11 +16,11 @@
           <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
             <ul class="nav navbar-nav">
             <?php if ($_SESSION['level'] == 0): ?>
-              <li <?php if ($link[2] == 'home'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/home">Dashboard<span class="sr-only">(current)</span></a></li>
-              <li <?php if ($link[2] == 'anggaran'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/anggaran">Anggaran</a></li>
-              <li <?php if ($link[2] == 'kegiatan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/kegiatan">Kegiatan</a></li>
-              <li <?php if ($link[2] == 'laporan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/laporan">Laporan</a></li>
-              <li <?php if ($link[2] == 'pengguna' OR $link[2] == 'triwulan' OR $link[2] == 'prosentase'){ echo "class='dropdown active'";} else{ echo "class='dropdown'";}?>>
+              <li <?php if ($link[1] == 'home'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/home">Dashboard<span class="sr-only">(current)</span></a></li>
+              <li <?php if ($link[1] == 'anggaran'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/anggaran">Anggaran</a></li>
+              <li <?php if ($link[1] == 'kegiatan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/kegiatan">Kegiatan</a></li>
+              <li <?php if ($link[1] == 'laporan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/laporan">Laporan</a></li>
+              <li <?php if ($link[1] == 'pengguna' OR $link[1] == 'triwulan' OR $link[1] == 'prosentase'){ echo "class='dropdown active'";} else{ echo "class='dropdown'";}?>>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pengaturan <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" style="background: white;">
                   <li><a href="<?php echo $url_rewrite;?>content/triwulan">Triwulan</a></li>
@@ -31,23 +31,20 @@
               </li>
             <?php endif ?>
             <?php if ($_SESSION['level'] != 0 ): ?>
-              <li <?php if ($link[2] == 'home'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/home">Dashboard<span class="sr-only">(current)</span></a></li>
-              <li <?php if ($link[2] == 'kegiatan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/kegiatan">Kegiatan</a></li>
-              <li <?php if ($link[2] == 'laporan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/laporan">Laporan</a></li>
+              <li <?php if ($link[1] == 'home'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/home">Dashboard<span class="sr-only">(current)</span></a></li>
+              <li <?php if ($link[1] == 'kegiatan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/kegiatan">Kegiatan</a></li>
+              <li <?php if ($link[1] == 'laporan'){ echo "class='active'";}?>><a href="<?php echo $url_rewrite;?>content/laporan">Laporan</a></li>
             <?php endif ?>
             </ul>
           </div>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <?php if ($_SESSION['level'] == 0): ?>
-              <li <?php if ($link[2] == 'beritautama' OR $link[2] == 'beritaterkait' OR $link[2] == 'beritamenteri' OR $link[2] == 'pengumuman' OR $link[2] == 'agenda' OR $link[2] == 'mediasosial'){ echo "class='dropdown active'";} else{ echo "class='dropdown'";}?>>
+              <li <?php if ($link[1] == 'beritautama' OR $link[1] == 'beritaterkait' OR $link[1] == 'beritamenteri' OR $link[1] == 'pengumuman' OR $link[1] == 'agenda' OR $link[1] == 'mediasosial'){ echo "class='dropdown active'";} else{ echo "class='dropdown'";}?>>
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Publikasi <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu" style="background: white;">
                   <li><a href="<?php echo $url_rewrite;?>content/berita">Berita</a></li>
                   <li><a href="<?php echo $url_rewrite;?>content/pengumuman">Pengumuman</a></li>
-                  <li class="divider"></li>
-                  <li><a href="<?php echo $url_rewrite;?>content/agenda">Agenda Kegiatan</a></li>
-                  <li><a href="<?php echo $url_rewrite;?>content/mediasosial">Media Sosial</a></li>
                 </ul>
               </li>
               <?php endif ?>
