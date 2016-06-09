@@ -40,6 +40,7 @@
                 Pengumuman
               </div>
               <div class="panel-body">
+                <?php echo $arrPengumuman[isi][0] ?>
               </div>
             </div>
           </div>

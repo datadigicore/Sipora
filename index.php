@@ -29,8 +29,10 @@
             3 = berita kementerian
           */
           $arrBerita = $berita->getBerita(array(1,2),4);
-          $arrBeritaTerkait = $berita->getBerita(array(1),5);
+          $arrBeritaTerkait = $berita->getBerita(array(2),5);
           $arrBeritaKementerian = $berita->getBerita(array(3),5);
+
+          $arrPengumuman = $berita->getPengumuman();
             
           include "./view/include/homeHead.php";
           include "./view/homeIndex.php";
