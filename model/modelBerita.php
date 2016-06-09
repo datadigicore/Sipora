@@ -28,13 +28,24 @@
       $isi = $data['isi'];
       $created_by = $_SESSION['id'];
       $created_at = date("Y-m-d H:i:s");
-
-      $query = "UPDATE pengumuman SET
-      isi = '$isi',
-      created_by = '$created_by',
-      created_at = '$created_at'";
-      // echo $query;  
+      $query = "SELECT * FROM pengumuman";
       $result = $this->query($query);
+      if ($result->num_rows == 1) {
+        $query = "UPDATE pengumuman SET
+        isi = '$isi',
+        created_by = '$created_by',
+        created_at = '$created_at' where
+        created_by = '$created_by'
+        ";
+        $result = $this->query($query);   
+      }
+      else {
+        $query = "INSERT INTO pengumuman SET
+        isi = '$isi',
+        created_by = '$created_by',
+        created_at = '$created_at'";
+        $result = $this->query($query);   
+      }
       return $result;
     }
 
