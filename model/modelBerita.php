@@ -40,13 +40,14 @@
 
     public function getBerita($jenis,$limit = 0,$id=NULL){
       $where = "";
+
       foreach ($jenis as $key => $value) {
         if($key!=0) {
           $where .= " OR ";
         }
         $where .= "jenis = $value";
       }
-      if(id!=NULL){
+      if($id!==NULL){
         if($where != ""){
           $where .= " AND ";
         }
@@ -70,6 +71,19 @@
       }
       return $data;
     }
+
+    public function getPengumuman(){
+      $query  = "SELECT * FROM  pengumuman";
+
+      $result = $this->query($query);
+      $i=0;
+      while($fetch  = $this->fetch_object($result)) {
+        $data['isi'][] = $fetch->isi;
+        $i++;
+      }
+      return $data;
+    }
+
     public function kdkegiatan(){
       $query  = "SELECT KDGIAT, NMGIAT FROM rkakl_full WHERE KDGIAT IS NOT NULL GROUP BY KDGIAT";
       $result = $this->query($query);

@@ -73,15 +73,7 @@
                 Pengumuman
               </div>
               <div class="panel-body">
-                <form>
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="uid" name="uid" placeholder="Username">
-                  </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
-                  </div>
-                  <button type="submit" class="btn btn-default">Log In</button>
-                </form>
+                <?php echo $arrPengumuman[isi][0] ?>
               </div>
             </div>
             <div class="panel panel-default">
@@ -97,11 +89,9 @@
                 Sosial Media
               </div>
               <div class="list-group">
-                <a href="#" class="list-group-item">Resource Taxing</a>
-                <a href="#" class="list-group-item">Premier Niche Markets <span class="badge">New</span></a>
-                <a href="#" class="list-group-item">Dynamically Innovate</a>
-                <a href="#" class="list-group-item">Objectively Innovate</a>
-                <a href="#" class="list-group-item">Proactively Envisioned</a>
+                <a href="#" class="list-group-item">Facebook</a>
+                <a href="#" class="list-group-item">Twitter</a>
+                <a href="#" class="list-group-item">Instagram</a>
               </div>
             </div>
           </div>
