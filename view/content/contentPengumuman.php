@@ -20,31 +20,12 @@
               <div class="col-md-8 col-md-offset-2">
                 <div class="box-body well form-horizontal">
                   <?php include "view/include/contentAlert.php" ?>
-                  <!-- <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">Content</label>
-                    <div class="col-sm-10">
-                      <select class="form-control" name="jenis" required readonly>
-                        <option value="" disabled selected>-- Pilih Konten Berita --</option>
-                        <option value="1">Berita Utama</option>
-                        <option value="2">Berita Terkait</option>
-                        <option value="3">Berita Kementerian</option>
-                      </select>
-                    </div>
-                  </div> -->
                   <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Pengumuman</label>
                     <div class="col-sm-10">
                       <textarea class="form-control" name="isi" placeholder="Pengumuman"><?php echo $pengumuman;?></textarea>
                     </div>
                   </div>
-
-                  <!-- <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">Link terkait</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" name="isi"> </textarea>
-                    </div>
-                  </div> -->
-                  
                 </div>
               </div>
             </div>
@@ -64,7 +45,3 @@
     </div>
   </section>
 </div>
-<script type="text/javascript">
-  $(document).ready(function(){
-  });
-</script>

@@ -1,13 +1,13 @@
 <?php
   if ($_SESSION['username'] != '') {
-    if (count($link[1]) == 0) {
+    if (count($link[1 - config::$root]) == 0) {
       $utility->location(".");
     }
     else {
       include './view/include/contentMeta.php';
       include './view/include/contentJavascript.php';
       include './view/include/contentHeader.php';
-      switch ($link[2]) {
+      switch ($link[2 - config::$root]) {
         case 'home':          
           include "./view/content/contentHome.php";
         break;
@@ -21,16 +21,16 @@
           include "./view/content/contentRabRkakl.php";
         break;
         case 'kegiatan-rinci':       
-          $idrkakl = $link[3];   
+          $idrkakl = $link[3 - config::$root];   
           include "./view/content/contentRab.php";
         break;
         case 'kegiatan-tambah':   
-          $idrkakl = $link[3];
+          $idrkakl = $link[3 - config::$root];
           include "./view/content/contentRabTambah.php";
         break;
         case 'kegiatan-edit':   
-          $idrkakl = $link[4];   
-          $idview = $link[3];   
+          $idrkakl = $link[4 - config::$root];   
+          $idview = $link[3 - config::$root];   
           $getview = $rab->getview($idview);
           include "./view/content/contentRabEdit.php";
         break;

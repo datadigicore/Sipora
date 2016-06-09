@@ -7,7 +7,7 @@ $direktorat = $_SESSION['direktorat'];
 // $id = $param[0];
 // $penerima = str_replace("%20"," ",$param[1]);
 // $format = $param[2];
-switch ($link[3]) {
+switch ($link[3 - config::$root]) {
   case 'cetak_dok':
     $report->cetak_dok($id,$param[1],$format);
   break;

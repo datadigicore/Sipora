@@ -8,25 +8,22 @@
   $url_rewrite       = "http://localhost/sipora/";
   $url_img           = "http://localhost/sipora/";
   //================== PATH UPLOAD LOCAL linux LAMPP =================//
-  $path              = "/opt/lampp/htdocs/sipora/";
-  $path_upload       = "/opt/lampp/htdocs/sipora/static/uploads/";
-  //================== PATH UPLOAD LOCAL linux=================//
-  // $path              = "/var/www/html/sipora/";
-  // $path_upload       = "/var/www/html/sipora/static/uploads/";
+  // $path              = "/opt/lampp/htdocs/sipora/";
+  // $path_upload       = "/opt/lampp/htdocs/sipora/static/uploads/";
+  // ================== PATH UPLOAD LOCAL linux=================//
+  $path              = "/var/www/html/sipora/";
+  $path_upload       = "/var/www/html/sipora/static/uploads/";
   //================== PATH UPLOAD LOCAL WINDOWS =================//
   // $path              = "C:/xampp/htdocs/sipora/";
   // $path_upload       = "C:/xampp/htdocs/sipora/static/uploads/";
-  //================== PATH UPLOAD LOCAL OSX =================//
-  // $path              = "/opt/lampp/htdocs/sipora/";
-  // $path_upload       = "/opt/lampp/htdocs/sipora/static/uploads/";
   
   class config {
     public $db_host             = "localhost";
     public $db_user             = "root";
-    public $db_pass             = "";
+    public $db_pass             = "admin";
     public $database            = "evaluasi";
     public $url_rewrite_class   = "http://localhost/sipora/";
-    public static $debug        = 1;
+    public static $root         = 0;
     public static $session_time = 7200 /*2 hours*/;
     public function open_connection() {
       $this->link_db = mysqli_connect($this->db_host, $this->db_user, $this->db_pass,$this->database)

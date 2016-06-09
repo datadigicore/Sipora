@@ -3,11 +3,11 @@
   $path     = ltrim($_SERVER['REQUEST_URI'], '/');
   $elements = explode('/', $path);
   $link     = array_filter($elements);
-  if (count($link[0]) == 0){
+  if (count($link[1 - config::$root]) == 0){
     $utility->location("home");
   }
   else {
-    switch ($link[0]) {
+    switch ($link[1 - config::$root]) {
       case 'content':
         include "./isi.php";
       break;
@@ -57,10 +57,10 @@
         }
       break;
       case 'baca-berita':
-        if($link[1]!=""){
+        if($link[2 - config::$root]!=""){
           $utility->location("content/home");
         } else {
-          $arrBerita = $berita->getBerita(array(1,2),1,$link[2]);
+          $arrBerita = $berita->getBerita(array(1,2),1,$link[3 - config::$root]);
           $arrBeritaTerkait = $berita->getBerita(array(1),5);
           $arrBeritaKementerian = $berita->getBerita(array(3),5,array());
           include "./view/include/homeHead.php";

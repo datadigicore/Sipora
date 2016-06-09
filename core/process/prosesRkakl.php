@@ -1,5 +1,5 @@
 <?php
-switch ($link[3]) {
+switch ($link[3 - config::$root]) {
   case 'import':
     ini_set('memory_limit', '-1');
     $thang    = $purifier->purify($_POST['thang']);

@@ -37,7 +37,7 @@
                       <input type="text" class="form-control" name="judul" placeholder="Judul Berita" required>
                     </div>
                   </div>
-                  <textarea class="input-block-level" id="summernote" name="isi" ></textarea>
+                  <textarea class="input-block-level" id="summernote" name="isi"></textarea>
                 </div>
               </div>
             </div>

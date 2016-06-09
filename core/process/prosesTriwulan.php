@@ -1,6 +1,6 @@
 <?php
 
-switch ($link[3]) {
+switch ($link[3 - config::$root]) {
   case 'prosentase':
     $data = $purifier->purifyArray($_POST);
     $triwulan->prosentase($data);

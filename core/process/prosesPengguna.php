@@ -62,7 +62,7 @@ $data_pengguna = array(
   "status"       => $status
 );
 
-switch ($link[3]) {
+switch ($link[3 - config::$root]) {
 
   case 'table':
     $tableKey = "pengguna";

@@ -35,8 +35,6 @@
     </div> <!-- end of main class -->
     <div class="footer">Powered By BBSDM Team : <b><a href='<?php echo $base_content ?>'>Susunan Redaksi</a></b> </div>
   </div><!-- end of container -->
-<script src="<?php echo $base_url ?>static/plugins/highcharts/js/highcharts.js"></script>
-<script src="<?php echo $base_url ?>static/plugins/highcharts/js/modules/exporting.js"></script>
 <script type="text/javascript">
 var chartpie1;
 var chartpie2;

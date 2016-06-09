@@ -1,7 +1,7 @@
 <?php
 
 include 'config/application.php';
-switch ($link[3]) {
+switch ($link[3 - config::$root]) {
   case 'table-rkakl':
     $dataArray['url_rewrite'] = $url_rewrite;
     #triwulan

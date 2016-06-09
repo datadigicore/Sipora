@@ -1,9 +1,9 @@
 <?php
-  if (count($link[1]) == 0) {
+  if (count($link[1 - config::$root]) == 0) {
     $utility->location(".");
   }
   else {
-    switch ($link[2]) {
+    switch ($link[2 - config::$root]) {
       case 'login':
         include "./core/prosesLogin.php";
       break;

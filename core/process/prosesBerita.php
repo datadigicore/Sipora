@@ -1,6 +1,6 @@
 <?php
 
-switch ($link[3]) {
+switch ($link[3 - config::$root]) {
   case 'getContent':
 
     if ($_POST['option'] == '1') {

@@ -26,11 +26,7 @@
                 <hr>
                 <?php
               }
-
               ?>
-                
-
-                
               </div>
             </div>
           </div>
@@ -155,7 +151,7 @@ var chartpie4;
             name: 'Total Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
@@ -167,7 +163,7 @@ var chartpie4;
             name: 'Rincian Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
@@ -228,7 +224,7 @@ var chartpie4;
             name: 'Total Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
@@ -240,7 +236,7 @@ var chartpie4;
             name: 'Rincian Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
@@ -301,7 +297,7 @@ var chartpie4;
             name: 'Total Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
@@ -313,7 +309,7 @@ var chartpie4;
             name: 'Rincian Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
@@ -374,7 +370,7 @@ var chartpie4;
             name: 'Total Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
@@ -386,7 +382,7 @@ var chartpie4;
             name: 'Rincian Anggaran',
             dataLabels: {
                 enabled: true,
-                color: '#000000',
+                color: '#444',
                 format: '{point.y:.3f} %', // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
