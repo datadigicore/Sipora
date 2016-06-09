@@ -3,11 +3,11 @@
   $path     = ltrim($_SERVER['REQUEST_URI'], '/');
   $elements = explode('/', $path);
   $link     = array_filter($elements);
-  if (count($link[1]) == 0){
+  if (count($link[0]) == 0){
     $utility->location("home");
   }
   else {
-    switch ($link[1]) {
+    switch ($link[0]) {
       case 'content':
         include "./isi.php";
       break;
@@ -55,7 +55,7 @@
         }
       break;
       case 'baca-berita':
-        if($link[2]!=""){
+        if($link[1]!=""){
           $utility->location("content/home");
         } else {
           $arrBerita = $berita->getBerita(array(1,2),1,$link[2]);
