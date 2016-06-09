@@ -1,40 +1,7 @@
   <div class="container-fluid">
     <div class="main">    
       <div class="row"> 
-        <div class="col-sm-12">
-          <div id="modal" class="modal-window"></div>
-          <div class="col-sm-3">
-            <div class="panel panel-default">
-              <div class="content-box-header dark-green">
-                Berita Terkait
-              </div>
-              <div class="list-group">
-              <?php
-              foreach ($arrBeritaTerkait[id] as $key => $value) { ?>
-                <a href="#" class="list-group-item"><?php echo $arrBeritaTerkait[judul][$key] ?></a>
-                <?php
-              }
-
-              ?>
-              </div>
-            </div>
-            <div class="panel panel-default">
-              <div class="content-box-header dark-green">
-                Berita Kementerian
-              </div>
-              <div class="list-group">
-              <?php
-              foreach ($arrBeritaKementerian[id] as $key => $value) { ?>
-                <a target="_blank" href="<?php echo $arrBeritaKementerian[isi][$key] ?>" class="list-group-item"><?php echo $arrBeritaKementerian[judul][$key] ?></a>
-                <?php
-              }
-
-              ?>
-                
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
+          <div class="col-sm-9">
             <div class="content-box">
               <div class="content-box-header dark-green">
                 Berita Utama
@@ -73,35 +40,34 @@
                 Pengumuman
               </div>
               <div class="panel-body">
-                <form>
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="uid" name="uid" placeholder="Username">
-                  </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
-                  </div>
-                  <button type="submit" class="btn btn-default">Log In</button>
-                </form>
               </div>
             </div>
-            <div class="panel panel-default">
-              <div class="content-box-header dark-green">
-                Agenda Kegiatan
-              </div>
-              <div class="panel-body">
-                <div id='calendar'></div>
-              </div>
+          </div>
+                <div class="col-sm-12">
+          <div class="content-box">
+            <div class="content-box-header dark-green">
+              Status Capaian Anggaran
             </div>
-            <div class="panel panel-default">
-              <div class="content-box-header dark-green">
-                Sosial Media
-              </div>
-              <div class="list-group">
-                <a href="#" class="list-group-item">Resource Taxing</a>
-                <a href="#" class="list-group-item">Premier Niche Markets <span class="badge">New</span></a>
-                <a href="#" class="list-group-item">Dynamically Innovate</a>
-                <a href="#" class="list-group-item">Objectively Innovate</a>
-                <a href="#" class="list-group-item">Proactively Envisioned</a>
+            <div class="content-box-body">
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#triwulan1" onclick="chart1()" aria-controls="triwulan1" role="tab" data-toggle="tab">Triwulan I</a></li>
+                <li role="presentation"><a href="#triwulan2" onclick="chart2()"  aria-controls="triwulan2" role="tab" data-toggle="tab">Triwulan II</a></li>
+                <li role="presentation"><a href="#triwulan3" aria-controls="triwulan3" onclick="chart3()" role="tab" data-toggle="tab">Triwulan III</a></li>
+                <li role="presentation"><a href="#triwulan4" aria-controls="triwulan4" onclick="chart4()" role="tab" data-toggle="tab">Triwulan IV</a></li>
+              </ul>
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="triwulan1">
+                  <div id="chartDonut1"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="triwulan2">
+                  <div id="chartDonut2"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="triwulan3">
+                  <div id="chartDonut3"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="triwulan4">
+                  <div id="chartDonut4"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -127,4 +93,309 @@
      font-size: 24px;
   }
 </style>
+<script type="text/javascript">
+var chartpie1;
+var chartpie2;
+var chartpie3;
+var chartpie4;
+  $(function () {
+    $(document).ready(function () {
+      chart1();
+    });
+  });
+
+  function chart1(){
+    // chartpie2.destroy();
+    $.ajax({
+        type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        dataType: "json",
+        success: function(result)
+        {
+            // alert(result);
+          chartpie1.series[0].setData(result[0]);
+        }
+      });
+      var today = new Date();
+      chartpie1 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chartDonut1',
+            type: 'column'
+        },
+        title: {
+            text: 'Realisasi Anggaran Kegiatan <?php echo $_POST['data'] ?> per Triwulan'
+        },
+        subtitle: {
+            text: 'Tahun Anggaran '+today.getFullYear()
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Realisasi'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Realisasi Anggaran '+today.getFullYear()+': <b>{point.y:.3f} %</b>'
+        },
+        series: [{
+            name: 'Total Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+              }
+        },{
+            name: 'Rincian Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+      });
+     
+  }
+
+  function chart2(){
+    $.ajax({
+        type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        dataType: "json",
+        success: function(result)
+        {
+          chartpie2.series[1].setData(result[1]);
+        }
+      });
+      var today = new Date();
+      chartpie2 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chartDonut2',
+            type: 'column'
+        },
+        title: {
+            text: 'Realisasi Anggaran Kegiatan <?php echo $_POST['data'] ?> per Triwulan'
+        },
+        subtitle: {
+            text: 'Tahun Anggaran '+today.getFullYear()
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Realisasi'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Realisasi Anggaran '+today.getFullYear()+': <b>{point.y:.3f} %</b>'
+        },
+        series: [{
+            name: 'Total Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+              }
+        },{
+            name: 'Rincian Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+      });
+     
+  }
+
+  function chart3(){
+    $.ajax({
+        type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        dataType: "json",
+        success: function(result)
+        {
+          chartpie3.series[2].setData(result[2]);
+        }
+      });
+      var today = new Date();
+      chartpie3 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chartDonut3',
+            type: 'column'
+        },
+        title: {
+            text: 'Realisasi Anggaran Kegiatan <?php echo $_POST['data'] ?> per Triwulan'
+        },
+        subtitle: {
+            text: 'Tahun Anggaran '+today.getFullYear()
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Realisasi'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Realisasi Anggaran '+today.getFullYear()+': <b>{point.y:.3f} %</b>'
+        },
+        series: [{
+            name: 'Total Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+              }
+        },{
+            name: 'Rincian Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+      });
+     
+  }
+
+  function chart4(){
+    $.ajax({
+        type: "post",
+        url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        dataType: "json",
+        success: function(result)
+        {
+          chartpie4.series[3].setData(result[3]);
+        }
+      });
+      var today = new Date();
+      chartpie4 = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chartDonut4',
+            type: 'column'
+        },
+        title: {
+            text: 'Realisasi Anggaran Kegiatan <?php echo $_POST['data'] ?> per Triwulan'
+        },
+        subtitle: {
+            text: 'Tahun Anggaran '+today.getFullYear()
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Realisasi'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Realisasi Anggaran '+today.getFullYear()+': <b>{point.y:.3f} %</b>'
+        },
+        series: [{
+            name: 'Total Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+              }
+        },{
+            name: 'Rincian Anggaran',
+            dataLabels: {
+                enabled: true,
+                color: '#FFFFFF',
+                format: '{point.y:.3f} %', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        }]
+      });
+     
+  }
+</script>
 </html>
