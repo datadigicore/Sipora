@@ -182,7 +182,7 @@
         foreach ($datarab as $key => $value) {
           $indeks = $key;
           $pecah = explode("-", $indeks);
-          $kode[$j] = "KDGIAT - ".$pecah[2];
+          $kode[$j] = $pecah[2];
           
           if ($i == 1) {
             $persen[$j] = ($value[1]['jumlah'] / $value['rkakl']) * 100;
