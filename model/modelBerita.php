@@ -26,7 +26,33 @@
       $result = $this->query($query);
       return $result;
     }
-
+    public function editBerita($data){
+      $id         = $data['id'];
+      $judul      = $data['judul'];
+      $date       = str_replace('/', '-', $data['tanggal']);
+      $pecahtgl   = date("d M Y", strtotime($date));
+      $tanggal    = utilityCode::format_tanggal_db($pecahtgl);
+      $isi        = $data['isi'];
+      $created_by = $_SESSION['id'];
+      $created_at = date("Y-m-d H:i:s");
+      $jenis      = $data['jenis'];
+      $status     = 1;
+      $query      = "UPDATE berita SET
+        judul      = '$judul',
+        tanggal    = '$tanggal',
+        isi        = '$isi',
+        created_by = '$created_by',
+        created_at = '$created_at',
+        status     = '$status'
+        WHERE id   = '$id'";
+      $result = $this->query($query);
+      return $result;
+    }
+    public function deleteBerita($id) {
+      $query = "delete from berita where id='$id'";
+      $result = $this->query($query);
+      return $result;
+    }
     public function addPengumuman($data){
 
       $isi = $data['isi'];

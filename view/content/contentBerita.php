@@ -73,9 +73,82 @@
     </div>
   </section>
 </div>
+<div class="modal fade" id="hapusModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="<?php echo $base_process;?>berita/delete">
+        <div class="modal-header" style="background-color:#d33724 !important; color:white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color:white">×</span></button>
+          <h4 class="modal-title">Hapus Berita</h4>
+        </div>
+        <div class="modal-body">
+          <p>Anda yakin ingin menghapus berita ini?</p>
+          <input type="hidden" name="id" id="modid"></input>
+          <table>
+            <tr>
+              <td>Tanggal Berita</td>
+              <td>&nbsp;:&nbsp;</td>
+              <td id="modtanggal"></td>
+            </tr>
+            <tr>
+              <td>Judul Berita</td>
+              <td>&nbsp;:&nbsp;</td>
+              <td id="modjudul"></td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-flat btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="<?php echo $base_process;?>berita/edit">
+        <div class="modal-header" style="background-color:#00a65a !important; color:white;">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color:white">×</span></button>
+          <h4 class="modal-title">Edit Berita</h4>
+        </div>
+        <div class="col-md-12">
+          <div class="box-body well form-horizontal">
+            <input type="hidden" name="id" id="edtid"></input>
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">Tanggal</label>
+              <div class="col-sm-10">
+                <input class="form-control tanggal" type="text" id="edttanggal" name="tanggal" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">Judul</label>
+              <div class="col-sm-10">
+                <input type="text" id="edtjudul" class="form-control" name="judul" placeholder="Judul Berita" required>
+              </div>
+            </div>
+            <textarea id="edtsummernote" name="isi"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-flat btn-success">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
   $(document).ready(function() {
     $("#tanggal").datepicker({
+      autoclose: true,
+      monthNames: [ "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
+      maxDate: 0,
+      changeMonth: true,
+      dateFormat: 'dd/mm/yy',
+  });
+    $("#edttanggal").datepicker({
       autoclose: true,
       monthNames: [ "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
       maxDate: 0,
@@ -117,6 +190,21 @@
       cell.innerHTML = i+1;
     });
   }).draw();
+  $(document).on("click", "#btn-del", function (){
+      var tr = $(this).closest('tr');
+      tabrow = table.row( tr );
+      $("#modid").val(tabrow.data()[0]);
+      $("#modtanggal").text(tabrow.data()[2]);
+      $("#modjudul").text(tabrow.data()[3]);
+    });
+  $(document).on("click", "#btn-edt", function (){
+      var tr = $(this).closest('tr');
+      tabrow = table.row( tr );
+      $("#edtid").val(tabrow.data()[0]);
+      $("#edttanggal").text(tabrow.data()[2]);
+      $("#edtjudul").text(tabrow.data()[3]);
+      $("#edtsummernote").text(tabrow.data()[4]);
+    });
     $('#summernote').summernote({
           height: 300,
           callbacks: {
@@ -140,6 +228,37 @@
                       // editor.summernote('insertImage', url, welEditable);
                       // var node = document.createElement('div');
                       $('#summernote').summernote('insertImage', node);
+                  }
+              });
+              // upload image to server and create imgNode...
+              // sendFile(files[0], editor, welEditable);
+              // $summernote.summernote('insertNode', imgNode);
+            }
+          }
+         });
+    $('#edtsummernote').summernote({
+          height: 200,
+          callbacks: {
+            // onImageUpload: function(files, editor, welEditable) {
+            //   alert
+            //   sendFile(files[0], editor, welEditable);
+            // },
+            onImageUpload: function(files) {
+
+              
+              data = new FormData();
+              data.append("file", files[0]);//You can append as many data as you want. Check mozilla docs for this
+              $.ajax({
+                  data: data,
+                  type: "POST",
+                  url: '<?php echo $base_process;?>berita/uploadImg',
+                  cache: false,
+                  contentType: false,
+                  processData: false,
+                  success: function(node) {
+                      // editor.summernote('insertImage', url, welEditable);
+                      // var node = document.createElement('div');
+                      $('#edtsummernote').summernote('insertImage', node);
                   }
               });
               // upload image to server and create imgNode...

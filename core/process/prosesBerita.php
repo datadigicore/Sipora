@@ -63,6 +63,24 @@ switch ($link[3 - config::$root]) {
           );
     $utility->location("content/berita",$flash);
   break;
+  case 'edit':
+    $data = $purifier->purifyArray($_POST);
+    $berita->editBerita($data);
+    $flash  = array(
+            'category' => "success",
+            'messages' => "Berita berhasil di edit"
+          );
+    $utility->location("content/berita",$flash);
+  break;
+  case 'delete':
+    $id = $_POST['id'];
+    $berita->deleteBerita($id);
+    $flash  = array(
+      'category' => "success",
+      'messages' => "Content Berita berhasil dihapus"
+    );
+    $utility->location("content/berita", $flash);
+  break;
   case 'addpengumuman':
     $data = $purifier->purifyArray($_POST);
     $rs = $berita->addPengumuman($data);
