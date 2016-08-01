@@ -24,6 +24,58 @@
       }  
     }
 
+    public function selectDeputi(){
+      // $kode_direktorat = $_SESSION["direktorat"];
+      // $sql_direktorat = "SELECT direktorat from grup where kode='$kode_direktorat' ";
+      $kdgrup = $_SESSION['direktorat'];
+    $query = "SELECT * FROM grup WHERE kode = '$kdgrup'";
+    $res = $this->_fetch_array($query,1);
+
+    $direktorat = explode(",", $res[0]['direktorat']);
+    $kodegiat = '(';
+    foreach ($direktorat as $key => $value) {
+      $pecah = explode("-", $value);
+      $kodegiat .= "'".$pecah[1]."',";
+    }
+    $kodegiat = substr($kodegiat,0,-1);
+    $kodegiat .= ")";
+    // print_r($kodegiat);
+    // die;
+
+    $where = "";
+    // if ($_POST['tahun'] != "") {
+    //   $swhere="WHERE THANG = '".$_POST['tahun']."' ";
+    // }
+
+    if ($_SESSION['kdgrup'] != "") {
+      if ($_SESSION['direktorat'] != "") {
+        if ($swhere == "") {
+          $swhere .= "WHERE KDGIAT = '".$_SESSION['direktorat']."' ";
+        }else{
+          $swhere .= "AND KDGIAT = '".$_SESSION['direktorat']."' ";
+        }
+      }
+    }else{
+      if ($_SESSION['direktorat'] != "") {
+        if ($swhere == "") {
+          $swhere .= "WHERE KDGIAT = '".$_SESSION['direktorat']."' ";
+        }else{
+          $swhere .= "AND KDGIAT = '".$_SESSION['direktorat']."' ";
+        }
+      }
+    }
+     // echo $where;
+     $query ="SELECT DISTINCT KDGIAT, NMGIAT from rkakl_full where KDGIAT in ".$kodegiat;
+     $res_deputi = $this->query($query);
+     echo "<option value=$kodegiat >Semua Pilihan</option>";
+     while ($fetch = $this->fetch_array($res_deputi)) {
+
+          echo "<option value='$fetch[KDGIAT]'>$fetch[KDGIAT] $fetch[NMGIAT]</option>";
+        
+      } 
+
+    }
+
     public function getChartRKAKL(){
       $result = $this->query("SELECT KDGIAT, sum(jumlah), sum(realisasi) from rkakl_full group by KDGIAT");
       while($res=$this->fetch_array($result)){
@@ -3553,9 +3605,18 @@ public function daftar_peng_riil($result,$det){
 
     public function realisasi_anggaran_dan_kinerja($direktorat, $bulan){
       $nama="";
-      $sql = "SELECT IDRKAKL, KDDEPT,KDUNIT, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, NMGIAT, NMOUTPUT, NMSOUTPUT, NMKMPNEN, NMSKMPNEN, VOLKEG, SATKEG from rkakl_full WHERE KDGIAT='$direktorat' and KDOUTPUT like '%' ORDER BY IDRKAKL ASC ";
-      $sql_results = $this->query($sql);
+      $where_kdgiat="";
+      if(strlen($direktorat)>4){
+        $where_kdgiat = " KDGIAT in $direktorat ";
 
+      }
+      else{
+        $where_kdgiat = " KDGIAT='$direktorat' ";
+      }
+      $sql = "SELECT IDRKAKL, KDDEPT,KDUNIT, KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, NMGIAT, NMOUTPUT, NMSOUTPUT, NMKMPNEN, NMSKMPNEN, VOLKEG, SATKEG from rkakl_full WHERE ".$where_kdgiat." and KDOUTPUT like '%' ORDER BY IDRKAKL ASC ";
+      $sql_results = $this->query($sql);
+      // echo $sql;
+      // die();
        $objPHPExcel = new PHPExcel();
       // Set properties
       $objPHPExcel->getProperties()->setCreator("Kementrian Pemuda Dan Olahraga")

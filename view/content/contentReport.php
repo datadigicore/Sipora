@@ -15,7 +15,7 @@
           <ul class="nav nav-pills nav-justified" style="border-bottom: 1px solid #f4f4f4">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><b>Realisasi Anggaran dan Kinerja</b></a></li>
             <li ><a href="#tab_2" data-toggle="tab" aria-expanded="true"><b>Rekap Realisasi Daya Serap Per kegiatan</b></a></li>
-            <li ><a href="#tab_3" data-toggle="tab" aria-expanded="true"><b>Rekap Total Realisasi Daya Serap</b></a></li>
+            <li ><a href="#tab_3" data-toggle="tab" aria-expanded="true"><b>Rekap Total Realisasi Daya Serap  </b></a></li>
           </ul>
           <div class="tab-content" style="padding:0 0;">
             <div class="tab-pane active" id="tab_1">
@@ -27,7 +27,7 @@
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
                         <option value="" disabled selected>-- Pilih Deputi --</option>
-                        <?php $report->selectDirektorat(); ?>
+                       <?php $report->selectDeputi(); ?>
                       </select>
                     </div>
                     </div>
@@ -57,7 +57,7 @@
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
                         <option value="" disabled selected>-- Pilih Deputi --</option>
-                        <?php $report->selectDirektorat(); ?>
+                        <?php $report->selectDeputi(); ?>
                       </select>
                     </div>
                     </div>
@@ -87,7 +87,7 @@
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
                         <option value="" disabled selected>-- Pilih Deputi --</option>
-                        <?php $report->selectDirektorat(); ?>
+                        <?php $report->selectDeputi(); ?>
                       </select>
                     </div>
                     </div>
