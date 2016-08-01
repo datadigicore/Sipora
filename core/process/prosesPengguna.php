@@ -166,12 +166,22 @@ switch ($link[3 - config::$root]) {
     $pengguna->deactivatePengguna($id);
   break;
   case 'add':
-    $pengguna->insertPengguna($data_pengguna);
-    $flash  = array(
-      'category' => "success",
-      'messages' => "Data pengguna berhasil ditambahkan"
-    );
-    $utility->location("content/addpengguna", $flash);
+    $result = $pengguna->insertPengguna($data_pengguna);
+    if ($result == "error") {
+      $flash  = array(
+        'category' => "error",
+        'messages' => "Username sudah ada, harap gunakan username lain"
+      );
+      $utility->location("content/addpengguna", $flash);
+    }
+    else {
+      $flash  = array(
+        'category' => "success",
+        'messages' => "Data pengguna berhasil ditambahkan"
+      );
+      $utility->location("content/addpengguna", $flash);
+    }
+    
   break;
   case 'add-group':
     

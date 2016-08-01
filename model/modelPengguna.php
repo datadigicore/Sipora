@@ -26,8 +26,13 @@
       $level      = $data['level'];
       $direktorat = $data['direktorat'];
       $status     = $data['status'];
-
-      $query      = "INSERT INTO pengguna SET
+      $query      = "SELECT username FROM pengguna where username  = '$username'";
+      $result     = $this->query($query);
+      if ($result->num_rows) {
+        return "error";
+      }
+      else {
+        $query      = "INSERT INTO pengguna SET
         nama      = '$nama',
         username  = '$username',
         password  = '$password',
@@ -35,9 +40,10 @@
         level     = '$level',
         direktorat= '$direktorat',
         status    = '$status'
-      ";
-      $result = $this->query($query);
-      return $result;
+        ";
+        $result = $this->query($query);
+        return "success";
+      }
     }
     public function insertGroup($data) {
       $kode       = $data['kode'];
