@@ -5,6 +5,9 @@
     public function addBerita($data){
 
       $judul = $data['judul'];
+      $date = str_replace('/', '-', $data['tanggal']);
+      $pecahtgl  = date("d M Y", strtotime($date));
+      $tanggal   = utilityCode::format_tanggal_db($pecahtgl);
       $isi = $data['isi'];
       $created_by = $_SESSION['id'];
       $created_at = date("Y-m-d H:i:s");
@@ -13,6 +16,7 @@
 
       $query = "INSERT INTO berita SET
       judul = '$judul',
+      tanggal = '$tanggal',
       isi = '$isi',
       created_by = '$created_by',
       created_at = '$created_at',

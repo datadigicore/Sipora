@@ -23,7 +23,7 @@
                   <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Tanggal</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" name="tanggal" placeholder="Tanggal Berita"></input>
+                      <input class="form-control tanggal" type="text" id="tanggal" name="tanggal" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" required />
                     </div>
                   </div>
                   <div class="form-group">
@@ -32,7 +32,7 @@
                       <input type="text" class="form-control" name="judul" placeholder="Judul Berita" required>
                     </div>
                   </div>
-                  <textarea id="summernote" name="isi" style="display: none"></textarea>
+                  <textarea id="summernote" name="isi"></textarea>
                 </div>
               </div>
             </div>
@@ -75,6 +75,13 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
+    $("#tanggal").datepicker({
+      autoclose: true,
+      monthNames: [ "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ],
+      maxDate: 0,
+      changeMonth: true,
+      dateFormat: 'dd/mm/yy',
+  });
     var table = $("#table").DataTable({
     "info":true,
     "oLanguage": {
