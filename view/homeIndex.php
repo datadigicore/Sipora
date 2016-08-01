@@ -193,7 +193,7 @@ var chartpie4;
         dataType: "json",
         success: function(result)
         {
-          chartpie2.series[1].setData(result[1]);
+          chartpie2.series[0].setData(result[1]);
         }
       });
       var today = new Date();
@@ -210,10 +210,13 @@ var chartpie4;
         },
         xAxis: {
             type: 'category',
+            title: {
+                text: 'Kode Kegiatan'
+            },
             labels: {
                 rotation: -45,
                 style: {
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontFamily: 'Verdana, sans-serif'
                 }
             }
@@ -230,31 +233,38 @@ var chartpie4;
         tooltip: {
             pointFormat: 'Realisasi Anggaran '+today.getFullYear()+': <b>{point.y:.3f} %</b>'
         },
+        plotOptions: {
+            series: {
+                colorByPoint: true
+            }
+        },
         series: [{
             name: 'Total Anggaran',
             dataLabels: {
                 enabled: true,
                 color: '#444',
-                format: '{point.y:.3f} %', // one decimal
-                y: 10, // 10 pixels down from the top
+                format: '{point.y:.2f}%', // one decimal
+                y: 3, // 10 pixels down from the top
                 style: {
-                    fontSize: '13px',
+                    fontSize: '10px',
                     fontFamily: 'Verdana, sans-serif'
                 }
               }
-        },{
-            name: 'Rincian Anggaran',
-            dataLabels: {
-                enabled: true,
-                color: '#444',
-                format: '{point.y:.3f} %', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        }]
+        }
+        // ,{
+        //     name: 'Rincian Anggaran',
+        //     dataLabels: {
+        //         enabled: true,
+        //         color: '#444',
+        //         format: '{point.y:.2f}%', // one decimal
+        //         y: 3, // 10 pixels down from the top
+        //         style: {
+        //             fontSize: '10px',
+        //             fontFamily: 'Verdana, sans-serif'
+        //         }
+        //     }
+        // }
+        ]
       });
      
   }
@@ -266,7 +276,7 @@ var chartpie4;
         dataType: "json",
         success: function(result)
         {
-          chartpie3.series[2].setData(result[2]);
+          chartpie3.series[0].setData(result[2]);
         }
       });
       var today = new Date();
@@ -283,10 +293,13 @@ var chartpie4;
         },
         xAxis: {
             type: 'category',
+            title: {
+                text: 'Kode Kegiatan'
+            },
             labels: {
                 rotation: -45,
                 style: {
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontFamily: 'Verdana, sans-serif'
                 }
             }
@@ -303,31 +316,38 @@ var chartpie4;
         tooltip: {
             pointFormat: 'Realisasi Anggaran '+today.getFullYear()+': <b>{point.y:.3f} %</b>'
         },
+        plotOptions: {
+            series: {
+                colorByPoint: true
+            }
+        },
         series: [{
             name: 'Total Anggaran',
             dataLabels: {
                 enabled: true,
                 color: '#444',
-                format: '{point.y:.3f} %', // one decimal
-                y: 10, // 10 pixels down from the top
+                format: '{point.y:.2f}%', // one decimal
+                y: 3, // 10 pixels down from the top
                 style: {
-                    fontSize: '13px',
+                    fontSize: '10px',
                     fontFamily: 'Verdana, sans-serif'
                 }
               }
-        },{
-            name: 'Rincian Anggaran',
-            dataLabels: {
-                enabled: true,
-                color: '#444',
-                format: '{point.y:.3f} %', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        }]
+        }
+        // ,{
+        //     name: 'Rincian Anggaran',
+        //     dataLabels: {
+        //         enabled: true,
+        //         color: '#444',
+        //         format: '{point.y:.2f}%', // one decimal
+        //         y: 3, // 10 pixels down from the top
+        //         style: {
+        //             fontSize: '10px',
+        //             fontFamily: 'Verdana, sans-serif'
+        //         }
+        //     }
+        // }
+        ]
       });
      
   }
@@ -339,7 +359,7 @@ var chartpie4;
         dataType: "json",
         success: function(result)
         {
-          chartpie4.series[3].setData(result[3]);
+          chartpie4.series[0].setData(result[3]);
         }
       });
       var today = new Date();
@@ -356,10 +376,13 @@ var chartpie4;
         },
         xAxis: {
             type: 'category',
+            title: {
+                text: 'Kode Kegiatan'
+            },
             labels: {
                 rotation: -45,
                 style: {
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontFamily: 'Verdana, sans-serif'
                 }
             }
@@ -376,31 +399,38 @@ var chartpie4;
         tooltip: {
             pointFormat: 'Realisasi Anggaran '+today.getFullYear()+': <b>{point.y:.3f} %</b>'
         },
+        plotOptions: {
+            series: {
+                colorByPoint: true
+            }
+        },
         series: [{
             name: 'Total Anggaran',
             dataLabels: {
                 enabled: true,
                 color: '#444',
-                format: '{point.y:.3f} %', // one decimal
-                y: 10, // 10 pixels down from the top
+                format: '{point.y:.2f}%', // one decimal
+                y: 3, // 10 pixels down from the top
                 style: {
-                    fontSize: '13px',
+                    fontSize: '10px',
                     fontFamily: 'Verdana, sans-serif'
                 }
               }
-        },{
-            name: 'Rincian Anggaran',
-            dataLabels: {
-                enabled: true,
-                color: '#444',
-                format: '{point.y:.3f} %', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        }]
+        }
+        // ,{
+        //     name: 'Rincian Anggaran',
+        //     dataLabels: {
+        //         enabled: true,
+        //         color: '#444',
+        //         format: '{point.y:.2f}%', // one decimal
+        //         y: 3, // 10 pixels down from the top
+        //         style: {
+        //             fontSize: '10px',
+        //             fontFamily: 'Verdana, sans-serif'
+        //         }
+        //     }
+        // }
+        ]
       });
      
   }
