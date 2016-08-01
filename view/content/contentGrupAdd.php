@@ -264,7 +264,7 @@
             
                 ckbx+=' <div class=" col-md-4 ">'+
                       '<div class="checkbox">'+
-                        '<label><input type="checkbox" class="kdgiat" name="direktorat[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'" checked> '+obj.KDGIAT[i]+' - '+obj.NMGIAT[i]+' ('+obj.KDPROGRAM[i]+')</label>'+
+                        '<label><input type="checkbox" class="kdgiat" name="direktorat[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'"> '+obj.KDGIAT[i]+' - '+obj.NMGIAT[i]+' ('+obj.KDPROGRAM[i]+')</label>'+
                       '</div>'+
                     '</div>';
             
@@ -343,7 +343,7 @@
 
               ckbx= ckbx+' <div class=" col-md-4 ">'+
                       '<div class="checkbox">'+
-                        '<label><input type="checkbox" id="kdoutput" class="kdoutput" name="kdoutput[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'-'+obj.KDOUTPUT[i]+'" checked> '+obj.KDOUTPUT[i]+' - '+obj.NMOUTPUT[i]+' ('+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+')</label>'+
+                        '<label><input type="checkbox" id="kdoutput" class="kdoutput" name="kdoutput[]" value="'+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+'-'+obj.KDOUTPUT[i]+'" > '+obj.KDOUTPUT[i]+' - '+obj.NMOUTPUT[i]+' ('+obj.KDPROGRAM[i]+'-'+obj.KDGIAT[i]+')</label>'+
                       '</div>'+
                     '</div>';
             
