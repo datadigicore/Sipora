@@ -27,7 +27,7 @@
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
                         <option value="" disabled selected>-- Pilih Deputi --</option>
-                       <?php $report->selectDeputi(); ?>
+                       <?php $report->selectDeputi(1); ?>
                       </select>
                     </div>
                     </div>
@@ -57,7 +57,7 @@
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
                         <option value="" disabled selected>-- Pilih Deputi --</option>
-                        <?php $report->selectDeputi(); ?>
+                        <?php $report->selectDeputi(0); ?>
                       </select>
                     </div>
                     </div>
@@ -87,7 +87,7 @@
                       <div class="col-sm-8">
                       <select style="margin:5px auto" class="form-control select2" class="direktorat" name="direktorat" required>
                         <option value="" disabled selected>-- Pilih Deputi --</option>
-                        <?php $report->selectDeputi(); ?>
+                        <?php $report->selectDeputi(0); ?>
                       </select>
                     </div>
                     </div>

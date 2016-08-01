@@ -24,7 +24,7 @@
       }  
     }
 
-    public function selectDeputi(){
+    public function selectDeputi($opsi){
       // $kode_direktorat = $_SESSION["direktorat"];
       // $sql_direktorat = "SELECT direktorat from grup where kode='$kode_direktorat' ";
       $kdgrup = $_SESSION['direktorat'];
@@ -67,7 +67,7 @@
      // echo $where;
      $query ="SELECT DISTINCT KDGIAT, NMGIAT from rkakl_full where KDGIAT in ".$kodegiat;
      $res_deputi = $this->query($query);
-     echo "<option value=$kodegiat >Semua Pilihan</option>";
+     if($opsi==1) echo "<option value=$kodegiat >Semua Pilihan</option>";
      while ($fetch = $this->fetch_array($res_deputi)) {
 
           echo "<option value='$fetch[KDGIAT]'>$fetch[KDGIAT] $fetch[NMGIAT]</option>";
@@ -3202,6 +3202,14 @@ public function daftar_peng_riil($result,$det){
 
     public function rekap_realisasi_daya_serap($dir, $tanggal ) {
       // $sql = " SELECT kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun, value  FROM rabfull group by kdgiat, kdoutput, kdsoutput,kdkmpnen, kdskmpnen, kdakun order by kdgiat asc, kdoutput asc, kdsoutput asc, kdkmpnen asc, kdskmpnen asc, kdakun asc ";
+      $where_kdgiat;
+      if(strlen($dir)>4){
+        $where_kdgiat = " KDGIAT in $dir' ";
+
+      }
+      else{
+        $where_kdgiat = " KDGIAT = '$dir' ";
+      }
       $sql    = "SELECT nmgiat FROM rkakl_full where kdgiat = '$dir'";
       $result = $this->query($sql);
       $fetch  = $this->fetch_object($result);
