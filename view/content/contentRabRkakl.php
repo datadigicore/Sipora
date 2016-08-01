@@ -44,7 +44,7 @@
                     <td>
                       <select id="direktorat2" name="direktorat2" class="form-control" onchange="search()">
                         <?php echo $rab->kdkegiatanbyGrup();?>
-                        <option value="">Semua Deputi</option>
+                        <!-- <option value="">Semua Deputi</option> -->
                       </select>
                     </td>
                   </tr>
