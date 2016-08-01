@@ -25,7 +25,6 @@
       $email      = $data['email'];
       $level      = $data['level'];
       $direktorat = $data['direktorat'];
-      $grup = $data['grup'];
       $status     = $data['status'];
 
       $query      = "INSERT INTO pengguna SET
@@ -35,10 +34,8 @@
         email     = '$email',
         level     = '$level',
         direktorat= '$direktorat',
-        kdgrup    = '$grup',
         status    = '$status'
       ";
-
       $result = $this->query($query);
       return $result;
     }
