@@ -28,9 +28,9 @@
             2 = berita terkait
             3 = berita kementerian
           */
-          $arrBerita = $berita->getBerita(array(1,2),4);
-          $arrBeritaTerkait = $berita->getBerita(array(2),5);
-          $arrBeritaKementerian = $berita->getBerita(array(3),5);
+          $arrBerita = $berita->getBerita(array(0,2),4);
+          // $arrBeritaTerkait = $berita->getBerita(array(2),5);
+          // $arrBeritaKementerian = $berita->getBerita(array(3),5);
 
           $arrPengumuman = $berita->getPengumuman();
             

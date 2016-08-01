@@ -14,7 +14,7 @@
                   <article class="col-xs-12">
                     <div class="media">
                       <div class="media-body">
-                        <h2 class="media-heading"><a href="#"><?php echo $arrBerita[judul][$key] ?></a></h2>
+                        <h4 class="media-heading"><a href="#"><?php echo $arrBerita[judul][$key] ?></a></h4>
                         <p><?php echo $arrBerita[isi][$key] ?></p>            
                       <ul class="list-inline pull-right">
                         <li><a href="#">Selengkapnya</a></li>
