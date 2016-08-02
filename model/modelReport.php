@@ -28,7 +28,7 @@
       // $kode_direktorat = $_SESSION["direktorat"];
       // $sql_direktorat = "SELECT direktorat from grup where kode='$kode_direktorat' ";
       $kdgrup = $_SESSION['direktorat'];
-    $query = "SELECT * FROM grup WHERE kode = '$kdgrup'";
+    $query = "SELECT * FROM grup WHERE kode like '%$kdgrup%'";
     $res = $this->_fetch_array($query,1);
 
     $direktorat = explode(",", $res[0]['direktorat']);
@@ -65,9 +65,15 @@
       }
     }
      // echo $where;
-     $query ="SELECT DISTINCT KDGIAT, NMGIAT from rkakl_full where KDGIAT in ".$kodegiat;
+     if($_SESSION["level"]==0){
+      $where = "";
+     }
+     else{
+      $where = " where KDGIAT in ".$kodegiat;
+     }
+     $query ="SELECT DISTINCT KDGIAT, NMGIAT from rkakl_full";
      $res_deputi = $this->query($query);
-     if($opsi==1) echo "<option value=$kodegiat >Semua Pilihan</option>";
+     if($opsi==1 and $_SESSION["level"]>0) echo "<option value=$kodegiat >Semua Pilihan</option>";
      while ($fetch = $this->fetch_array($res_deputi)) {
 
           echo "<option value='$fetch[KDGIAT]'>$fetch[KDGIAT] $fetch[NMGIAT]</option>";
