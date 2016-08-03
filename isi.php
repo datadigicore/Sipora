@@ -48,6 +48,9 @@
         case 'edtpengguna':          
           include "./view/content/contentEditProfile.php";
         break;
+        case 'edit_pass':          
+          include "./view/content/contentEditPass.php";
+        break;
         case 'addpengguna':
           if ($_SESSION['level'] == 0) {
             $group = $pengguna->getGroup();

@@ -105,7 +105,7 @@
     }
     public function updatePass($data) {
       $id         = $data['id'];
-      $newpassword       = $utility->sha512($data['newpassword']);
+      $newpassword       = $data['newpassword'];
       $query       = "UPDATE pengguna SET
         password       = '$newpassword'
         WHERE id   = '$id'

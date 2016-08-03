@@ -17,7 +17,7 @@
           </div>
           <div class="box-body">
             <?php include "view/include/contentAlert.php" ?>
-            <form class="form-horizontal" role="form" id="frmMode1" enctype="multipart/form-data" method="post" action="<?= $url_rewrite ?>process/user/edt2">
+            <form class="form-horizontal" role="form" id="frmMode1" enctype="multipart/form-data" method="post" action="<?= $base_process ?>pengguna/edt2">
               <div class="form-group ">
                 <label class="col-md-2 control-label">Nama</label>
                 <div class="col-md-9">
@@ -27,7 +27,7 @@
               <div class="form-group ">
                 <label class="col-md-2 control-label">Username</label>
                 <div class="col-md-9">
-                  <input type="text" class="form-control input-profile" value="<?= $_SESSION['username'] ?>" id="username" name="username" placeholder="Username" readonly="true">
+                  <input type="text" class="form-control" value="<?= $_SESSION['username'] ?>" id="username" name="username" placeholder="Username" readonly="true">
                 </div>
               </div>
               <div class="form-group ">

@@ -214,13 +214,13 @@ switch ($link[3 - config::$root]) {
           'category' => "success",
           'messages' => "Password berhasil diubah"
         );
-        $utility->location("content/edit_pass", $flash);
+        $utility->location("content/edtpengguna", $flash);
       } else {
         $flash  = array(
           'category' => "warning",
           'messages' => "Password gagal diubah, password lama tidak sesuai"
         );
-        $utility->location("content/edit_pass", $flash);
+        $utility->location("content/edtpengguna", $flash);
       }
       
     } else {
@@ -228,12 +228,16 @@ switch ($link[3 - config::$root]) {
         'category' => "warning",
         'messages' => "Password Gagal Diubah, Password baru tidak sama"
       );
-      $utility->location("content/edit_pass", $flash);
+      $utility->location("content/edtpengguna", $flash);
     }
   break;
   case 'edt2':
     $pengguna->updatePengguna2($data_pengguna);
-    $utility->location("content/edit_profile","success","Data berhasil diubah");
+    $flash  = array(
+          'category' => "success",
+          'messages' => "Profil berhasil diubah"
+        );
+    $utility->location("content/edtpengguna", $flash);
   break;
   case 'edit':
     if (!empty($_POST['password'])) {

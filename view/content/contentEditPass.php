@@ -15,7 +15,7 @@
 
           <div class="box-body">
             <?php include "view/include/alert.php" ?>
-            <form class="form-horizontal" role="form" id="frmMode1" enctype="multipart/form-data" method="post" action="<?= $url_rewrite ?>process/user/edt-pass">
+            <form class="form-horizontal" role="form" id="frmMode1" enctype="multipart/form-data" method="post" action="<?= $base_process ?>pengguna/edt-pass">
               
               <div class="form-group ">
                 <label class="col-md-2 control-label">Masukkan Password Lama</label>
