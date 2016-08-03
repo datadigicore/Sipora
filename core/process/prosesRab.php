@@ -83,36 +83,50 @@ switch ($link[3 - config::$root]) {
     $query = "SELECT * FROM grup WHERE kode = '$kdgrup'";
     $res = $db->_fetch_array($query,1);
 
-    $direktorat = explode(",", $res[0]['direktorat']);
-    $kodegiat = '(';
-    foreach ($direktorat as $key => $value) {
+    $kdoutput = explode(",", $res[0]['kdoutput']);
+    $kodegiat = ' ';
+    $i=0;$temp='';
+    foreach ($kdoutput as $key => $value) {
+      $kodegiat .= '(';
       $pecah = explode("-", $value);
-      $kodegiat .= "'".$pecah[1]."',";
+      $kodegiat .= "KDGIAT = '".$pecah[1]."' AND KDOUTPUT = '".$pecah[2]."'";
+      $kodegiat .= ") OR ";
+      
+      if ($pecah[1] != $temp) {
+        $i=0;
+      }
+      $temp = $pecah[1];
+      $out[$temp][$i] = $pecah[2];
+      $i++;
     }
-    $kodegiat = substr($kodegiat,0,-1);
-    $kodegiat .= ")";
-    // print_r($kodegiat);
-    // die;
+    $kodegiat = substr($kodegiat,0,-3);
 
     $swhere = "";
     if ($_POST['tahun'] != "") {
       $swhere="WHERE THANG = '".$_POST['tahun']."' ";
     }
 
-    if ($_SESSION['kdgrup'] != "") {
+    if ($_SESSION['level'] == 0) {
       if ($_POST['direktorat'] != "") {
         if ($swhere == "") {
-          $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."' ";
+          $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."'";
         }else{
-          $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' ";
+          $swhere .= "AND KDGIAT = '".$_POST['direktorat']."'";
         }
       }
     }else{
       if ($_POST['direktorat'] != "") {
+        $output = implode("','", $out[$_POST['direktorat']]);
         if ($swhere == "") {
-          $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."' ";
+          $swhere .= "WHERE KDGIAT = '".$_POST['direktorat']."' AND KDOUTPUT in ('".$output."')";
         }else{
-          $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' ";
+          $swhere .= "AND KDGIAT = '".$_POST['direktorat']."' AND KDOUTPUT in ('".$output."')";
+        }
+      }else{
+        if ($swhere == "") {
+          $swhere .= "WHERE ".$kodegiat." ";
+        }else{
+          $swhere .= "AND ".$kodegiat." ";
         }
       }
     }
