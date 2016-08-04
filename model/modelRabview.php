@@ -57,6 +57,9 @@
       ";
 
       $result = $this->query($query);
+
+      $this->insertlograbview($this->insert_id($result), 'INSERT');
+
       return $result;
     }
 
@@ -114,12 +117,14 @@
                 WHERE id = '$id'
       ";
       $result = $this->query($query);
+      $this->insertlograbview($id, 'UPDATE');
 
       return $result;
     }
 
     public function deleteRabview($data){
       $id = $data['id'];
+      $this->insertlograbview($id, 'DELETE');
 
       $query = "DELETE FROM rabview where id = '$id'";
       $result = $this->query($query);
@@ -127,16 +132,21 @@
       return $result;
     }
 
-    public function insertlograbview($id){
+    public function insertlograbview($id, $tipe){
       $query = "SELECT * from rabview where id = '$id'";
-      $result=$this->_fetch_array($query,1);
+      $result=$this->_fetch_object($query,1);
 
       $query = "INSERT INTO rabview_log SET ";
       foreach($result[0] as $key => $value) {
-        if (!ctype_digit($key)) {
+        if (!ctype_digit($key) && $key != 'id') {
           $query .= " $key = '$value' ,";
         }
       }
+      $log_by = $_SESSION['id'];
+      $log_at = date("Y-m-d H:i:s");
+
+      $query .= " log_by = '$log_by', log_at='$log_at', tipe = '$tipe'";
+      $result = $this->query($query);
     }
 
     public function cekpagu($idrkakl, $jumlah, $idtriwulan, $idrab=null){
