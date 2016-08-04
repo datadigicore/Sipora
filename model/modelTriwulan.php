@@ -75,6 +75,28 @@
       $result  = $this->query($query);
       return $result->num_rows;
     }
+    public function gettriwulanactive() {
+      $query  = "SELECT id, thang, nama FROM triwulan WHERE status = 1";
+      $result = $this->query($query);
+      $fetch  = $this->fetch_object($result);
+      return $fetch;
+    }
+    public function getdirectoratactive($id,$thang) {
+      $query  = "SELECT rabview.kdgiat,rkakl_full.nmgiat FROM rabview INNER JOIN rkakl_full ON rabview.kdgiat = rkakl_full.kdgiat where rabview.idtriwulan=$id AND rkakl_full.thang=$thang group by rabview.kdgiat";
+      $result = $this->query($query);
+      while ($fetch  = $this->fetch_array($result)) {
+        $newfetch[$fetch[kdgiat]] = $fetch[nmgiat];
+      }
+      return $newfetch;
+    }
+    public function getdirectoratnactive($id,$thang) {
+      $query  = "SELECT rabview.kdgiat,rkakl_full.nmgiat FROM rabview INNER JOIN rkakl_full ON rabview.kdgiat = rkakl_full.kdgiat where rabview.idtriwulan!=$id AND rkakl_full.thang=$thang group by rabview.kdgiat";
+      $result = $this->query($query);
+      while ($fetch  = $this->fetch_array($result)) {
+        $newfetch[$fetch[kdgiat]] = $fetch[nmgiat];
+      }
+      return $newfetch;
+    }
     public function addTriwulan($data) {
       $query   = "INSERT INTO triwulan (id,thang,nama,start_date,end_date,status) VALUES 
         ('','$data[thang]','Triwulan 1','$data[thang]-01-01','$data[thang]-00-00','1'),
