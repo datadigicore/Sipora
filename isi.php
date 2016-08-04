@@ -8,7 +8,8 @@
       include './view/include/contentJavascript.php';
       include './view/include/contentHeader.php';
       switch ($link[2 - config::$root]) {
-        case 'home':          
+        case 'home':
+          $gettriwulan = $triwulan->gettriwulanactive();          
           include "./view/content/contentHome.php";
         break;
         case 'diagram':          

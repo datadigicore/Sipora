@@ -116,6 +116,58 @@ switch ($link[3 - config::$root]) {
                     FROM triwulan ";
     $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter, $dataArray);
   break;
+  case 'tablesudah':
+    $id = $_POST['id'];
+    $thang = $_POST['thang'];
+    $dataArray['directorat'] = $triwulan->getdirectoratactive($id,$thang);
+    $tableKey   = "rabview";
+    $primaryKey = "id";
+    $columns    = array('id',
+                        'kdgiat',
+                        'kdgiat',
+                        'status',
+                        );
+    $formatter  = array(
+      '2' => array('formatter' => function($d,$row,$data){ 
+          return $data[directorat][$d];
+        }),
+      '3' => array('formatter' => function($d,$row,$data){ 
+          if ($d == 1) {
+            $status = "Sudah lapor";
+          }
+          return $status;
+        })
+      );
+    $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+                    FROM rabview where idtriwulan=$id group by kdgiat";
+    $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter, $dataArray);
+  break;
+  case 'tablebelum':
+    $id = $_POST['id'];
+    $thang = $_POST['thang'];
+    $dataArray['directorat'] = $triwulan->getdirectoratnactive($id,$thang);
+    $tableKey   = "rabview";
+    $primaryKey = "id";
+    $columns    = array('id',
+                        'kdgiat',
+                        'kdgiat',
+                        'status',
+                        );
+    $formatter  = array(
+      '2' => array('formatter' => function($d,$row,$data){ 
+          return $data[directorat][$d];
+        }),
+      '3' => array('formatter' => function($d,$row,$data){ 
+          if ($d != 1) {
+            $status = "Belum lapor";
+          }
+          return $status;
+        })
+      );
+    $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
+                    FROM rabview where idtriwulan!=$id group by kdgiat";
+    $datatable->get_table($tableKey, $primaryKey, $columns, $query, $formatter, $dataArray);
+  break;
   case 'tablepro':
 
     $dataArray['url_rewrite'] = $url_rewrite;

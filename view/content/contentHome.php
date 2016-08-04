@@ -11,7 +11,62 @@
   <section class="content">
     <div class="row">
       <section class="col-sm-10 col-sm-offset-1 connectedSortable">
-        <div id="chartDonut"></div>
+        <div class="box">
+          <div class="box-header with-border">
+          <div id="chartDonut"></div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" style="background-color:#2B91CF;color:white;">
+              <h3 class="panel-title">Rekapitulasi Data Hasil Pelaporan <?php echo $gettriwulan->thang;echo " ".$gettriwulan->nama; ?></h3>
+            </div>
+            <div class="panel-group" id="accordion" style="padding:16px">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <a class="panel-title">
+                    <h5 data-toggle="collapse" data-parent="#accordion" href="#collapse1" style="padding:0;margin:0">
+                    Sudah Lapor <?php echo $gettriwulan->nama; ?></h5>
+                  </a>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse in">
+                  <div class="box-body">
+                  <table id="table-sudah" class="display nowrap table table-bordered table-striped" cellspacing="0" width="100%">
+                    <thead style="background-color:#2B91CF;color:white;">
+                      <tr>
+                        <th>No</th>
+                        <th>Kode</th>
+                        <th>Nama Deputi</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <a class="panel-title">
+                    <h5 data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="padding:0;margin:0">
+                    Belum Lapor <?php echo $gettriwulan->nama; ?></h5>
+                  </a>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                  <div class="box-body">
+                    <table id="table-belum" class="display nowrap table table-bordered table-striped" cellspacing="0" width="100%">
+                      <thead style="background-color:#2B91CF;color:white;">
+                        <tr>
+                          <th>No</th>
+                          <th>Kode</th>
+                          <th>Nama Deputi</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> 
+          </div>
+        </div>
       </section>
     </div>
   </section>
@@ -21,6 +76,56 @@
 <script type="text/javascript">
   $(function () {
     $(document).ready(function () {
+      var tablesudah = $("#table-sudah").DataTable({
+        "info":true,
+        "oLanguage": {
+          "sInfoFiltered": ""
+        },
+        "processing": true,
+        "serverSide": true,
+        "scrollX": false,
+        "ajax": {
+          "url": "<?php echo $base_process;?>triwulan/tablesudah",
+          "type": "POST",
+          "data": {id:<?php echo $gettriwulan->id; ?>,thang:<?php echo $gettriwulan->thang; ?>}
+        },
+        "columnDefs" : [
+          {"targets": 0,
+           "searchable": false,
+           "orderable": false},
+        ],
+        "order": [ 1, "asc" ]
+      });
+      tablesudah.on( 'order.dt search.dt draw.dt', function () {
+        tablesudah.column(0, {search:'applied', order:'applied', draw:'applied'}).nodes().each( function (cell, i) {
+          cell.innerHTML = i+1;
+        });
+      }).draw();
+      var tablebelum = $("#table-belum").DataTable({
+        "info":true,
+        "oLanguage": {
+          "sInfoFiltered": ""
+        },
+        "processing": true,
+        "serverSide": true,
+        "scrollX": false,
+        "ajax": {
+          "url": "<?php echo $base_process;?>triwulan/tablebelum",
+          "type": "POST",
+          "data": {id:<?php echo $gettriwulan->id; ?>,thang:<?php echo $gettriwulan->thang; ?>}
+        },
+        "columnDefs" : [
+          {"targets": 0,
+           "searchable": false,
+           "orderable": false},
+        ],
+        "order": [ 1, "asc" ]
+      });
+      tablebelum.on( 'order.dt search.dt draw.dt', function () {
+        tablebelum.column(0, {search:'applied', order:'applied', draw:'applied'}).nodes().each( function (cell, i) {
+          cell.innerHTML = i+1;
+        });
+      }).draw();
       $.ajax({
         type: "post",
         url : "<?php echo $base_process.'laporan/chart_pie'; ?>",
