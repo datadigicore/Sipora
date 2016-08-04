@@ -35,7 +35,7 @@
                         <th>No</th>
                         <th>Kode</th>
                         <th>Nama Deputi</th>
-                        <th>Persentase</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                   </table>
@@ -56,7 +56,7 @@
                         <th>No</th>
                         <th>Kode</th>
                         <th>Nama Deputi</th>
-                        <th>Persentase</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                   </table>

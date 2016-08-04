@@ -130,6 +130,12 @@ switch ($link[3 - config::$root]) {
     $formatter  = array(
       '2' => array('formatter' => function($d,$row,$data){ 
           return $data[directorat][$d];
+        }),
+      '3' => array('formatter' => function($d,$row,$data){ 
+          if ($d == 1) {
+            $status = "Sudah lapor";
+          }
+          return $status;
         })
       );
     $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
@@ -150,6 +156,12 @@ switch ($link[3 - config::$root]) {
     $formatter  = array(
       '2' => array('formatter' => function($d,$row,$data){ 
           return $data[directorat][$d];
+        }),
+      '3' => array('formatter' => function($d,$row,$data){ 
+          if ($d != 1) {
+            $status = "Belum lapor";
+          }
+          return $status;
         })
       );
     $query      =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $columns)."
