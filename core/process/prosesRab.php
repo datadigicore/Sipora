@@ -297,6 +297,7 @@ switch ($link[3 - config::$root]) {
                         'status',
                         'tanggal_akhir',
                         'tempat',
+                        'dokumen',
                         );
     $formatter  = array(
         '3' => array('formatter' => function($d,$row,$data){ 
@@ -319,15 +320,24 @@ switch ($link[3 - config::$root]) {
         }),
         '7' => array('formatter' => function($d,$row,$data){ 
           $button = '<div class="col-md-12">';
+          //bukan admin
           if($_SESSION['level'] != 0 && ($d == 1 || $d == 4)){
             $button .= '<a id="btn-trans" href="'.$data['url_rewrite'].'content/kegiatan-edit/'.$row[0].'/'.$data['idrkakl'].'" class="btn btn-flat btn-warning btn-sm col-md-6" ><i class="fa fa-pencil"></i>&nbsp; Edit</a>';
             if ($d == 1) {
               $button .= '<a id="btn-del" href="#delete" class="btn btn-flat btn-danger btn-sm col-md-6" data-toggle="modal"><i class="fa fa-close"></i>&nbsp; Delete</a>';
             }
+            if ($row[10] != "") {
+              $button .= '<a href="'.$data['url_rewrite'].'static/uploads/'.$row[10].'" download class="btn btn-flat btn-info btn-sm col-md-12"><i class="fa fa-file"></i>&nbsp; Download</a>';
+            }
           }
           elseif(($_SESSION['level'] != 0 && $d == 0) || ($_SESSION['level'] == 0 && $d == 1) ){
-            $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"> - </a>';
+            if ($row[10] != "") {
+              $button .= '<a href="'.$data['url_rewrite'].'static/uploads/'.$row[10].'" download class="btn btn-flat btn-info btn-sm col-md-12"><i class="fa fa-file"></i>&nbsp; Download</a>';
+            }else{
+              $button .= '<a style="margin:1px 2px;" class="btn btn-flat btn-sm btn-default col-md-12"> - </a>';
+            }
           }
+          //admin
           elseif($_SESSION['level'] == 0 && $d == 0){
             $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-unlock-alt"></i>&nbsp; Unlock</a>';
           }
@@ -450,6 +460,18 @@ switch ($link[3 - config::$root]) {
     break;
   case 'save':  
     $idrkakl = $_POST['idrkakl'];
+
+    if(isset($_POST) && !empty($_FILES['fileimport']['name'])) {
+      $path = $_FILES['fileimport']['name'];
+      $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+      $time = time();
+      $target_dir = $path_upload;
+      $target_name = basename(date("Ymd-His-\R\A\B.",$time).$ext);
+      $target_file = $target_dir . $target_name;
+      $response = move_uploaded_file($_FILES['fileimport']['tmp_name'],$target_file);
+    }
+
     $cek = $rabview->cekpagu($idrkakl,$_POST['jumlah'],$_POST['idtriwulan']);
       
     if ($cek == 'error') {
@@ -459,7 +481,7 @@ switch ($link[3 - config::$root]) {
           );
       $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
     }elseif ($cek == 'berhasil') {
-      $rabview->insertRabview($_POST);
+      $rabview->insertRabview($_POST, $target_name);
       $flash  = array(
             'category' => "success",
             'messages' => "Data Kegiatan berhasil ditambahkan !"
@@ -476,6 +498,19 @@ switch ($link[3 - config::$root]) {
   case 'edit':
     $idrkakl = $_POST['idrkakl'];
     $cek = $rabview->cekpagu($idrkakl,$_POST['jumlah'],$_POST['idtriwulan'], $_POST['id']);
+    if(!empty($_FILES['fileimport']['name'])) {
+      $path = $_FILES['fileimport']['name'];
+      $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+      $time = time();
+      $target_dir = $path_upload;
+      $target_name = basename(date("Ymd-His-\R\A\B.",$time).$ext);
+      $target_file = $target_dir . $target_name;
+      $response = move_uploaded_file($_FILES['fileimport']['tmp_name'],$target_file);
+    }else{
+      $target_name = $_POST['filelama'];
+    }
+
     if ($cek == 'error') {
       $flash  = array(
             'category' => "warning",
@@ -483,7 +518,7 @@ switch ($link[3 - config::$root]) {
           );
       $utility->location("content/kegiatan-rinci/".$idrkakl,$flash);
     }elseif ($cek == 'berhasil') {
-      $rabview->updateRabview($_POST);
+      $rabview->updateRabview($_POST, $target_name);
       $flash  = array(
             'category' => "success",
             'messages' => "Data Kegiatan berhasil diubah !"

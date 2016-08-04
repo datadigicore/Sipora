@@ -92,6 +92,15 @@
                     <label>Realisasi</label>
                     <input type="text" class="form-control uang" id="jumlah" name="jumlah" placeholder="Jumlah" required value="<?php echo number_format($getview['jumlah']);?>"/>
                   </div> 
+                  <div class="form-group">
+                    <label>Dokumen Pendukung</label>
+                  </div>
+                  <div class="form-group">
+                      <input type="file" id="fileimport" name="fileimport" style="display:none;">
+                      <a id="selectbtn" class="btn btn-flat btn-primary" style="position:absolute;right:16px;">Select File</a>
+                      <input type="text" id="filename" class="form-control" placeholder="<?php echo $getview['dokumen'];?>" readonly>
+                  </div> 
+                  <input type="hidden" name="filelama" value="<?php echo $getview['dokumen'];?>"/>
                 </div>
               </div>
             </div>
@@ -149,6 +158,13 @@ $(function() {
   $('.tanggal').mask('00/00/0000');
     $('.uang').mask('000.000.000.000.000.000.000', {reverse: true});
     $('.nomor').mask('0000');
+
+  $('#selectbtn').click(function () {
+    $("#fileimport").trigger('click');
+  });
+  $("#fileimport").change(function(){
+    $("#filename").attr('value', $(this).val().replace(/C:\\fakepath\\/i, ''));
+  });
 });
 
 function cektanggal(){

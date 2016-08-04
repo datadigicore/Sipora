@@ -3,7 +3,7 @@
 
   class modelRabview extends mysql_db {
 
-    public function insertRabview($data){
+    public function insertRabview($data, $filename=""){
       $thang     = $data['thang'];
       $kdprogram = $data['kdprogram'];
       $kdgiat    = $data['kdgiat'];
@@ -51,6 +51,7 @@
                 satuan    = '$satuan',
                 jumlah    = '$jumlah',
                 status    = '$status',
+                dokumen    = '$filename',
                 created_by = '$created_by',
                 created_at = '$created_at'
       ";
@@ -59,7 +60,7 @@
       return $result;
     }
 
-    public function updateRabview($data){
+    public function updateRabview($data, $filename=""){
       $id        = $data['id'];
       $thang     = $data['thang'];
       $kdprogram = $data['kdprogram'];
@@ -107,7 +108,7 @@
                 volume    = '$volume',
                 satuan    = '$satuan',
                 jumlah    = '$jumlah',
-
+                dokumen   = '$filename',
                 updated_by = '$updated_by',
                 updated_at = '$updated_at'
                 WHERE id = '$id'
