@@ -103,7 +103,7 @@
       unset($pecahid[$countarr-1]);
       unset($pecahid[$countarr-2]);
       $idrkakl = implode(".", $pecahid);
-      $query  = "SELECT KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, SUM(JUMLAH) as JUMLAH FROM rkakl_full as r where IDRKAKL like '$idrkakl%'   ";
+      $query  = "SELECT KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, SUM(JUMLAH) as JUMLAH FROM rkakl_full as r where KDGIAT = '3804'   ";
       $fetch=$this->_fetch_array($query,1);
 
       $query2="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` 

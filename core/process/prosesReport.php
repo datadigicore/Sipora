@@ -21,7 +21,8 @@ switch ($link[3 - config::$root]) {
     $report->getChartIDRKAKL($_POST['id']);
   break;
   case 'chart_all_column':
-    $report->getAllChartIDRKAKL2();
+    $triwulan = $_POST['triwulan'];
+    $report->getAllChartIDRKAKL2($triwulan);
   break;
   case 'Rincian_Biaya_PD':
 

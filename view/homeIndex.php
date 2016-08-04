@@ -106,10 +106,10 @@ var chartpie4;
     $.ajax({
         type: "post",
         url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        data: { triwulan : "1" },
         dataType: "json",
         success: function(result)
         {
-            // alert(result);
           chartpie1.series[0].setData(result[0]);
         }
       });
@@ -140,6 +140,7 @@ var chartpie4;
         },
         yAxis: {
             min: 0,
+            max: 100,
             title: {
                 text: 'Realisasi'
             }
@@ -190,6 +191,7 @@ var chartpie4;
     $.ajax({
         type: "post",
         url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        data: { triwulan : "2" },
         dataType: "json",
         success: function(result)
         {
@@ -223,6 +225,7 @@ var chartpie4;
         },
         yAxis: {
             min: 0,
+            max: 100,
             title: {
                 text: 'Realisasi'
             }
@@ -273,6 +276,7 @@ var chartpie4;
     $.ajax({
         type: "post",
         url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        data: { triwulan : "3" },
         dataType: "json",
         success: function(result)
         {
@@ -306,6 +310,7 @@ var chartpie4;
         },
         yAxis: {
             min: 0,
+            max: 100,
             title: {
                 text: 'Realisasi'
             }
@@ -356,6 +361,7 @@ var chartpie4;
     $.ajax({
         type: "post",
         url : "<?php echo $base_process.'laporan/chart_all_column'; ?>",
+        data: { triwulan : "4" },
         dataType: "json",
         success: function(result)
         {
@@ -389,6 +395,7 @@ var chartpie4;
         },
         yAxis: {
             min: 0,
+            max: 100,
             title: {
                 text: 'Realisasi'
             }
