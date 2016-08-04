@@ -109,7 +109,7 @@ var chartpie4;
         dataType: "json",
         success: function(result)
         {
-            // alert(result);
+            alert(result);
           chartpie1.series[0].setData(result[0]);
         }
       });

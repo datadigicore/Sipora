@@ -50,16 +50,18 @@
                   </a>
                 </div>
                 <div id="collapse2" class="panel-collapse collapse">
-                  <table id="table-belum" class="display nowrap table table-bordered table-striped" cellspacing="0" width="100%">
-                    <thead style="background-color:#2B91CF;color:white;">
-                      <tr>
-                        <th>No</th>
-                        <th>Kode</th>
-                        <th>Nama Deputi</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                  </table>
+                  <div class="box-body">
+                    <table id="table-belum" class="display nowrap table table-bordered table-striped" cellspacing="0" width="100%">
+                      <thead style="background-color:#2B91CF;color:white;">
+                        <tr>
+                          <th>No</th>
+                          <th>Kode</th>
+                          <th>Nama Deputi</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div> 
@@ -81,7 +83,7 @@
         },
         "processing": true,
         "serverSide": true,
-        "scrollX": true,
+        "scrollX": false,
         "ajax": {
           "url": "<?php echo $base_process;?>triwulan/tablesudah",
           "type": "POST",
@@ -106,7 +108,7 @@
         },
         "processing": true,
         "serverSide": true,
-        "scrollX": true,
+        "scrollX": false,
         "ajax": {
           "url": "<?php echo $base_process;?>triwulan/tablebelum",
           "type": "POST",
