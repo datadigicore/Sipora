@@ -178,104 +178,105 @@
     }
 
     public function getAllChartIDRKAKL2($triwulan){
-      $query = "SELECT THANG, KDPROGRAM, KDGIAT, 
-                      SUM(JUMLAH) as `JUMLAH` , 
-                      SUM(TRIWULAN1) as `TRIWULAN1` , 
-                      SUM(TRIWULAN2) as `TRIWULAN2` , 
-                      SUM(TRIWULAN3) as `TRIWULAN3` , 
-                      SUM(TRIWULAN4) as `TRIWULAN4` 
-                from rkakl_full group by KDGIAT";
-      $result=$this->_fetch_array($query,1);
-      $datarab =array();
-      if (!is_null($result)) {
-        foreach ($result as $key => $value) {
-          $thang=$value['THANG'];
-          $kdprogram=$value['KDPROGRAM'];
-          $kdgiat=$value['KDGIAT'];
-          $jumlah=$value['JUMLAH'];
-          $triwulan1=$value['TRIWULAN1'];
-          $triwulan2=$value['TRIWULAN2'];
-          $triwulan3=$value['TRIWULAN3'];
-          $triwulan4=$value['TRIWULAN4'];
-          $datarab["$thang-$kdprogram-$kdgiat"]['rkakl'] += $jumlah;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan1'] = 0;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan2'] = 0;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan3'] = 0;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan4'] = 0;
-        }
-      }
-      #realisasi
-      $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` FROM `rabview` " ;
-      $result=$this->_fetch_array($query,1);
-      if (!is_null($result)) {
-        foreach ($result as $key => $value) {
-          $id=$value['id'];
-          $thang=$value['thang'];
-          $kdprogram=$value['kdprogram'];
-          $kdgiat=$value['kdgiat'];
-          $kdoutput=$value['kdoutput'];
-          $kdsoutput=$value['kdsoutput'];
-          $kdkmpnen=$value['kdkmpnen'];
-          $kdskmpnen=$value['kdskmpnen'];
-          $idtriwulan=$value['idtriwulan'];
-          $jumlah=$value['jumlah'];
-          $datarab["$thang-$kdprogram-$kdgiat"]["triwulan$idtriwulan"] += $jumlah;
-        }
-      }
+      $cektri = "SELECT status FROM triwulan where id ='$triwulan' ";
+      $restri = $this->_fetch_array($cektri,1);
+      $status = $restri[0]['status'];
 
-      // print_r($datarab);
-      // die();
-
-      // $prev_value = array('value' => null, 'amount' => null);
-      // $i = 1;
-      // foreach ($results as $data) {
-      //   $jmlData = count($data);
-      //   for ($j=0; $j <$jmlData ; $j++) { 
-      //     unset($prev_value);
-      //     if ($data[$j] == 0) {
-      //       $prev_value = array('value' => 'KDGIAT - '.$data[$j][KDGIAT], 'total' => '0', 'amount' => '0');
-      //     }
-      //     else {
-      //       $val1 = floatval($data[$j]['SUM(TRIWULAN'.$i.')']);
-      //       $val2 = floatval($data[$j]['SUM(JUMLAH)']);
-      //       $persentase = ($val1 / $val2) * 100;
-      //       $totsentase = (($val2 / $val2) * 100) - $persentase;
-      //       $prev_value = array('value' => 'KDGIAT - '.$data[$j][KDGIAT], 'total' => $totsentase, 'amount' => $persentase);
-      //     }
-      //     $newResults['SUM(TRIWULAN'.$i.')'][] =& $prev_value;
-      //   }
-      //   $i++;
-      // }
-      
-      // for ($i=1; $i <= 4 ; $i++) { 
-      $i = $triwulan;
-        $j=0;
-        foreach ($datarab as $key => $value) {
-          // print_r($value);
-          $indeks = $key;
-          $pecah = explode("-", $indeks);
-          $kode[$j] = $pecah[2];
-          
-          if ($i == 1) {
-            $persen[$j] = ($value['triwulan1'] / $value['rkakl']) * 100;
-          }elseif ($i == 2) {
-            $persen[$j] = (($value['triwulan1'] + $value['triwulan2']) / $value['rkakl']) * 100;
-          }elseif ($i == 3) {
-            // echo ($value['triwulan1'] + $value[2]['jumlah'] + $value[3]['jumlah']).'--'.$value['rkakl'].'<br>';
-            $persen[$j] = (($value['triwulan1'] + $value['triwulan2'] + $value['triwulan3']) / $value['rkakl']) * 100;
-          }elseif ($i == 4) {
-            $persen[$j] = (($value['triwulan1'] + $value['triwulan2'] + $value['triwulan3'] + $value['triwulan4']) / $value['rkakl']) * 100;
+      if ($status != 3) {
+        $query = "SELECT THANG, KDPROGRAM, KDGIAT, 
+                        SUM(JUMLAH) as `JUMLAH` , 
+                        SUM(TRIWULAN1) as `TRIWULAN1` , 
+                        SUM(TRIWULAN2) as `TRIWULAN2` , 
+                        SUM(TRIWULAN3) as `TRIWULAN3` , 
+                        SUM(TRIWULAN4) as `TRIWULAN4` 
+                  from rkakl_full group by KDGIAT";
+        $result=$this->_fetch_array($query,1);
+        $datarab =array();
+        if (!is_null($result)) {
+          foreach ($result as $key => $value) {
+            $thang=$value['THANG'];
+            $kdprogram=$value['KDPROGRAM'];
+            $kdgiat=$value['KDGIAT'];
+            $jumlah=$value['JUMLAH'];
+            $triwulan1=$value['TRIWULAN1'];
+            $triwulan2=$value['TRIWULAN2'];
+            $triwulan3=$value['TRIWULAN3'];
+            $triwulan4=$value['TRIWULAN4'];
+            $datarab["$thang-$kdprogram-$kdgiat"]['rkakl'] += $jumlah;
+            $datarab["$thang-$kdprogram-$kdgiat"]['triwulan1'] = 0;
+            $datarab["$thang-$kdprogram-$kdgiat"]['triwulan2'] = 0;
+            $datarab["$thang-$kdprogram-$kdgiat"]['triwulan3'] = 0;
+            $datarab["$thang-$kdprogram-$kdgiat"]['triwulan4'] = 0;
           }
-
-          $newresult[$i-1][$j][] =& $kode[$j];
-          $newresult[$i-1][$j][] =& $persen[$j];
-          $j++;
         }
-      // }
-        // die;
-      // echo "<pre>";
-      // print_r($newresult);die;
-      echo json_encode($newresult);
+        #realisasi
+        $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` FROM `rabview` " ;
+        $result=$this->_fetch_array($query,1);
+        if (!is_null($result)) {
+          foreach ($result as $key => $value) {
+            $id=$value['id'];
+            $thang=$value['thang'];
+            $kdprogram=$value['kdprogram'];
+            $kdgiat=$value['kdgiat'];
+            $kdoutput=$value['kdoutput'];
+            $kdsoutput=$value['kdsoutput'];
+            $kdkmpnen=$value['kdkmpnen'];
+            $kdskmpnen=$value['kdskmpnen'];
+            $idtriwulan=$value['idtriwulan'];
+            $jumlah=$value['jumlah'];
+            $datarab["$thang-$kdprogram-$kdgiat"]["triwulan$idtriwulan"] += $jumlah;
+          }
+        }
+
+        // print_r($datarab);
+        // die();
+
+        // $prev_value = array('value' => null, 'amount' => null);
+        // $i = 1;
+        // foreach ($results as $data) {
+        //   $jmlData = count($data);
+        //   for ($j=0; $j <$jmlData ; $j++) { 
+        //     unset($prev_value);
+        //     if ($data[$j] == 0) {
+        //       $prev_value = array('value' => 'KDGIAT - '.$data[$j][KDGIAT], 'total' => '0', 'amount' => '0');
+        //     }
+        //     else {
+        //       $val1 = floatval($data[$j]['SUM(TRIWULAN'.$i.')']);
+        //       $val2 = floatval($data[$j]['SUM(JUMLAH)']);
+        //       $persentase = ($val1 / $val2) * 100;
+        //       $totsentase = (($val2 / $val2) * 100) - $persentase;
+        //       $prev_value = array('value' => 'KDGIAT - '.$data[$j][KDGIAT], 'total' => $totsentase, 'amount' => $persentase);
+        //     }
+        //     $newResults['SUM(TRIWULAN'.$i.')'][] =& $prev_value;
+        //   }
+        //   $i++;
+        // }
+
+        // for ($i=1; $i <= 4 ; $i++) { 
+        $i = $triwulan;
+          $j=0;
+          foreach ($datarab as $key => $value) {
+            $indeks = $key;
+            $pecah = explode("-", $indeks);
+            $kode[$j] = $pecah[2];
+            
+            if ($i == 1) {
+              $persen[$j] = ($value['triwulan1'] / $value['rkakl']) * 100;
+            }elseif ($i == 2) {
+              $persen[$j] = (($value['triwulan1'] + $value['triwulan2']) / $value['rkakl']) * 100;
+            }elseif ($i == 3) {
+              // echo ($value['triwulan1'] + $value[2]['jumlah'] + $value[3]['jumlah']).'--'.$value['rkakl'].'<br>';
+              $persen[$j] = (($value['triwulan1'] + $value['triwulan2'] + $value['triwulan3']) / $value['rkakl']) * 100;
+            }elseif ($i == 4) {
+              $persen[$j] = (($value['triwulan1'] + $value['triwulan2'] + $value['triwulan3'] + $value['triwulan4']) / $value['rkakl']) * 100;
+            }
+
+            $newresult[$i-1][$j][] =& $kode[$j];
+            $newresult[$i-1][$j][] =& $persen[$j];
+            $j++;
+          }
+        echo json_encode($newresult);
+      }
     }
 
     public function get_kd_akun($id){
