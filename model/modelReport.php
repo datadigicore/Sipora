@@ -198,30 +198,30 @@
           $triwulan3=$value['TRIWULAN3'];
           $triwulan4=$value['TRIWULAN4'];
           $datarab["$thang-$kdprogram-$kdgiat"]['rkakl'] += $jumlah;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan1'] += $triwulan1;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan2'] += $triwulan2;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan3'] += $triwulan3;
-          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan4'] += $triwulan4;
+          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan1'] = 0;
+          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan2'] = 0;
+          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan3'] = 0;
+          $datarab["$thang-$kdprogram-$kdgiat"]['triwulan4'] = 0;
         }
       }
       #realisasi
-      // $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` FROM `rabview` " ;
-      // $result=$this->_fetch_array($query,1);
-      // if (!is_null($result)) {
-      //   foreach ($result as $key => $value) {
-      //     $id=$value['id'];
-      //     $thang=$value['thang'];
-      //     $kdprogram=$value['kdprogram'];
-      //     $kdgiat=$value['kdgiat'];
-      //     $kdoutput=$value['kdoutput'];
-      //     $kdsoutput=$value['kdsoutput'];
-      //     $kdkmpnen=$value['kdkmpnen'];
-      //     $kdskmpnen=$value['kdskmpnen'];
-      //     $idtriwulan=$value['idtriwulan'];
-      //     $jumlah=$value['jumlah'];
-      //     $datarab["$thang-$kdprogram-$kdgiat"]["$idtriwulan"]['jumlah'] += $jumlah;
-      //   }
-      // }
+      $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` FROM `rabview` " ;
+      $result=$this->_fetch_array($query,1);
+      if (!is_null($result)) {
+        foreach ($result as $key => $value) {
+          $id=$value['id'];
+          $thang=$value['thang'];
+          $kdprogram=$value['kdprogram'];
+          $kdgiat=$value['kdgiat'];
+          $kdoutput=$value['kdoutput'];
+          $kdsoutput=$value['kdsoutput'];
+          $kdkmpnen=$value['kdkmpnen'];
+          $kdskmpnen=$value['kdskmpnen'];
+          $idtriwulan=$value['idtriwulan'];
+          $jumlah=$value['jumlah'];
+          $datarab["$thang-$kdprogram-$kdgiat"]["triwulan$idtriwulan"] += $jumlah;
+        }
+      }
 
       // print_r($datarab);
       // die();
@@ -246,13 +246,12 @@
       //   }
       //   $i++;
       // }
-      // echo "<pre>";
-      // print_r($datarab);
-
+      
       // for ($i=1; $i <= 4 ; $i++) { 
       $i = $triwulan;
         $j=0;
         foreach ($datarab as $key => $value) {
+          // print_r($value);
           $indeks = $key;
           $pecah = explode("-", $indeks);
           $kode[$j] = $pecah[2];
@@ -273,6 +272,7 @@
           $j++;
         }
       // }
+        // die;
       // echo "<pre>";
       // print_r($newresult);die;
       echo json_encode($newresult);
