@@ -3508,22 +3508,27 @@ public function daftar_peng_riil($result,$det){
       $tot_nilai_57 = 0;
       $tot_sisa=0;
       $acc_alokasi = 0;
+      $acc_realisasi = 0;
 
       foreach ($res as $value) {
         if($kd_dir!=$value['kdgiat']){
           $nmdir = $this->get_nama($value['kdgiat'],"","","","","");
-          $dipa_51 = $this->get_nama($value['kdgiat'],"","","","","51");
-          $dipa_52 = $this->get_nama($value['kdgiat'],"","","","","52");
-          $dipa_53 = $this->get_nama($value['kdgiat'],"","","","","53");
-          $dipa_57 = $this->get_nama($value['kdgiat'],"","","","","57");
-          $nilai_51 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"51");
-          $nilai_52 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"52");
-          $nilai_53 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"53");
-          $nilai_57 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"57");
-          $jml = $nilai['jml_lalu']+$nilai['jumlah'];
+          $dipa_all = $this->get_nama($value['kdgiat'],"","","","","");
+          // $dipa_51 = $this->get_nama($value['kdgiat'],"","","","","51");
+          // $dipa_52 = $this->get_nama($value['kdgiat'],"","","","","52");
+          // $dipa_53 = $this->get_nama($value['kdgiat'],"","","","","53");
+          // $dipa_57 = $this->get_nama($value['kdgiat'],"","","","","57");
+          $nilai_all = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,0);
+          // $nilai_51 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"51");
+          // $nilai_52 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"52");
+          // $nilai_53 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"53");
+          // $nilai_57 = $this->get_realisasi($tanggal, $value['kdgiat'],0,0,0,0,"57");
+          $jml = $nilai_all['jml_lalu']+$nilai_all['jumlah'];
           $sisa = $nmdir['jumlah']-$jml;
-          $jml_dipa = $dipa_51['jumlah']+$dipa_52['jumlah']+$dipa_53['jumlah']+$dipa_57['jumlah'];
-          $jml_nilai = $nilai_51['jumlah']+$nilai_52['jumlah']+$nilai_53['jumlah']+$nilai_57['jumlah'];
+          $jml_dipa = $dipa_all['jumlah'];
+          // $jml_dipa = $dipa_51['jumlah']+$dipa_52['jumlah']+$dipa_53['jumlah']+$dipa_57['jumlah'];
+          $jml_nilai = $nilai_all['jumlah'];
+          // $jml_nilai = $nilai_51['jumlah']+$nilai_52['jumlah']+$nilai_53['jumlah']+$nilai_57['jumlah'];
           $tot_dipa_51 += $dipa_51['jumlah'];
           $tot_dipa_52 += $dipa_52['jumlah'];
           $tot_dipa_53 += $dipa_53['jumlah'];
@@ -3534,6 +3539,7 @@ public function daftar_peng_riil($result,$det){
           $tot_nilai_57 += $nilai_57['jumlah'];
           $tot_sisa+=$jml_dipa-$jml_nilai;
           $acc_alokasi += $jml_dipa;
+          $acc_realisasi += $jml_nilai;
 
           $acc_sisa_ang += $sisa;
           echo '<tr>
@@ -3565,18 +3571,21 @@ public function daftar_peng_riil($result,$det){
 
         if(($kd_dir!=$value['kdgiat'] and $kdout!=$value['kdoutput']) or ($kd_dir!=$value['kdgiat']) or ($kd_dir==$value['kdgiat'] and $kdout!=$value['kdoutput'])){
           $nmdir = $this->get_nama($value['kdgiat'], $value['kdoutput'],"","","","" );
-          $dipa_51 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","51");
-          $dipa_52 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","52");
-          $dipa_53 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","53");
-          $dipa_57 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","57");
-          $nilai_51 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"51");
-          $nilai_52 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"52");
-          $nilai_53 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"53");
-          $nilai_57 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"57");
+          // $dipa_51 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","51");
+          // $dipa_52 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","52");
+          // $dipa_53 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","53");
+          // $dipa_57 = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","57");
+          // $nilai_51 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"51");
+          // $nilai_52 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"52");
+          // $nilai_53 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"53");
+          // $nilai_57 = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,"57");
           $jml = $nilai['jml_lalu']+$nilai['jumlah'];
-          
-          $jml_dipa = $dipa_51['jumlah']+$dipa_52['jumlah']+$dipa_53['jumlah']+$dipa_57['jumlah'];
-          $jml_nilai = $nilai_51['jumlah']+$nilai_52['jumlah']+$nilai_53['jumlah']+$nilai_57['jumlah'];
+          $dipa_all = $this->get_nama($value['kdgiat'],$value['kdoutput'],"","","","");
+          $nilai_all = $this->get_realisasi($tanggal, $value['kdgiat'],$value['kdoutput'],0,0,0,0);
+          // $jml_dipa = $dipa_51['jumlah']+$dipa_52['jumlah']+$dipa_53['jumlah']+$dipa_57['jumlah'];
+          $jml_dipa = $dipa_all['jumlah'];
+          // $jml_nilai = $nilai_51['jumlah']+$nilai_52['jumlah']+$nilai_53['jumlah']+$nilai_57['jumlah'];
+          $jml_nilai = $nilai_all['jumlah'];
           $sisa=$jml_dipa-$jml_nilai;
          echo '<tr>
                   <td style="border-left:1px solid;" align="center" >'.$value['kdoutput'].'</td>
@@ -3616,8 +3625,8 @@ public function daftar_peng_riil($result,$det){
         <td style="border:1px solid; text-align:right;  ">'.number_format($tot_nilai_53,2,",",".").'</td>
         <td style="border:1px solid; text-align:right;  ">'.number_format($tot_dipa_57,2,",",".").'</td>
         <td style="border:1px solid; text-align:right;  ">'.number_format($tot_nilai_57,2,",",".").'</td>
-        <td style="border:1px solid; text-align:right; ">'.number_format($jml_dipa,2,",",".").'</td>
-        <td style="border:1px solid; text-align:right; ">'.number_format($jml_nilai,2,",",".").'</td>
+        <td style="border:1px solid; text-align:right; ">'.number_format($acc_alokasi,2,",",".").'</td>
+        <td style="border:1px solid; text-align:right; ">'.number_format($acc_realisasi,2,",",".").'</td>
         <td style="border:1px solid; text-align:right;  ">'.'-'.'</td>
         <td style="border:1px solid; text-align:right;  ">'.'-'.'</td>
         <td style="border:1px solid; text-align:right;  ">'.number_format($tot_sisa,2,",",".").'</td>
@@ -3773,7 +3782,7 @@ public function daftar_peng_riil($result,$det){
       $kode_suboutput = "";
       $kode_komponen = "";
       $kode_subkomponen = "";
-      
+      $first_counter = 0;
       foreach ($sql_results as $value) {
         $jumlah_pagu +=$value[JUMLAH];
         if($kode_output!=$value[KDOUTPUT]){
@@ -3817,53 +3826,54 @@ public function daftar_peng_riil($result,$det){
           $sheet->getStyle('A'.$row.':L'.$row)->getFont()->setBold(true);
           $sheet->getStyle('C'.$row)->getFont()->setItalic(true);
           $row++;
-          // ------------------------------------------------------------------ 
 
-          // Mencetak Detil Pagu dan Anggaran per Sub-output
-          // if($value[KDSOUTPUT]!=""){
-          //   $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT];
-          //   $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], "", "");
-          //   $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+          // AWAL DARI PENCETAKAN KODE KOMPONEN //
+          
+          
+          if($first_counter==0){
+            $idrkakl              =$value[KDGIAT].$value[KDOUTPUT].$value[KDKMPNEN];
+            $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN],"");
+            $jumlah_realisasi     +=$realisasi["jumlah"];
+            $presentase_anggaran  = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
+            $jumlah_pagu          +=$realisasi["pagu"];
+            $jml_presentase_angg  +=$presentase_anggaran;
+            $jml_presentase_vol   +=$presentase_volume;
+            $no++;
+            // $cell->setCellValue('A'.$row, $no);
+            $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDKMPNEN]);
+            $cell->setCellValue('C'.$row, $value[NMKMPNEN]);
+            $cell->setCellValue('D'.$row, $realisasi["pagu"]);
 
-          //   $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
-          //   $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
-          //   $cell->setCellValue('D'.$row, $realisasi["pagu"]);
-          //   $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
-          //   $cell->setCellValue('F'.$row, $presentase_anggaran);
-          //   $jml_presentase_vol   +=$presentase_volume;
-          //   // $no++;
-          //   // $cell->setCellValue('A'.$row, $no);
-          //   $cell->setCellValue('B'.$row, $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDSOUTPUT]);
-          //   $cell->setCellValue('C'.$row, $value[NMSOUTPUT]);
-          //   $cell->setCellValue('D'.$row, $realisasi["pagu"]);
+            if($realisasi["jumlah"]>0){            
+              $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
+            }
+            else{
+              $cell->setCellValue('E'.$row, 0);
+            }
 
-          //   if($realisasi["jumlah"]>0){            
-          //     $cell->setCellValue('E'.$row, $realisasi["jumlah"]);
-          //   }
-          //   else{
-          //     $cell->setCellValue('E'.$row, 0);
-          //   }
+            $cell->setCellValue('F'.$row, $presentase_anggaran);
+            $cell->setCellValue('G'.$row, $realisasi["volume_pagu"]);
+            $cell->setCellValue('G'.$row, $realisasi["satuan_pagu"]);
+            $cell->setCellValue('I'.$row, $realisasi["volume"]);
+            $cell->setCellValue('J'.$row, $realisasi["satuan_pagu"]);
 
-          //   $cell->setCellValue('F'.$row, $presentase_anggaran);
-          //   $cell->setCellValue('G'.$row, $realisasi["volume_pagu"]);
-          //   $cell->setCellValue('H'.$row, $realisasi["satuan_pagu"]);
-          //   $cell->setCellValue('I'.$row, $realisasi["volume"]);
-          //   $cell->setCellValue('J'.$row, $realisasi["satuan_pagu"]);
-
-          //   // $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(false);
-          //   $kode_output = $value[KDGIAT].".".$value[KDOUTPUT];
-          //   $sheet->getStyle('B'.$row)->applyFromArray($left);
-          //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
-          //   $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
-          //   $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
-          //   $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            // $sheet->getStyle('A'.$row.':B'.$row)->getFont()->setBold(true);
+            $kode_komponen = $value[KDGIAT].".".$value[KDOUTPUT].".".$value[KDKMPNEN];
+            $sheet->getStyle('B'.$row)->applyFromArray($left);
+            $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($border);
+            $cell->getStyle('D'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $cell->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
+            $cell->getStyle('F'.$row)->getNumberFormat()->setFormatCode('#,##0.00');
     
-          //   $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
-          //   // $sheet->getStyle('A'.$row.':L'.$row)->getFont()->setBold(true);
-          //   $sheet->getStyle('C'.$row)->getFont()->setItalic(true);
-          //   $row++;
-          // }
-          // ------------------------------------------------------------------
+            $sheet->getStyle('A'.$row.':L'.$row)->applyFromArray($vertical);
+            // $sheet->getStyle('A'.$row.':L'.$row)->getFont()->setBold(true);
+            $sheet->getStyle('C'.$row)->getFont()->setItalic(true);
+            $row++;
+            $first_counter=1;
+          }
+          
+          // AWAL DRI PENCETAKAN SUBKOMPONEN //
+
 
         $kode_output = $value[KDOUTPUT];
         }
@@ -3896,7 +3906,7 @@ public function daftar_peng_riil($result,$det){
           $row++;
           $kode_komponen = $value[KDKMPNEN];
         }
-        elseif($kode_subkomponen!=$value[KDSKMPNEN]){
+        elseif($kode_subkomponen!=$value[KDSKMPNEN] and $value[KDSKMPNEN]!="-"){
             $idrkakl =$value[KDGIAT].$value[KDOUTPUT].$value[KDSOUTPUT].$value[KDKMPNEN].$value[KDSKMPNEN];
             $realisasi = $this->realisasi_by_id($bulan, $value[KDGIAT], $value[KDOUTPUT], $value[KDSOUTPUT], $value[KDKMPNEN],$value[KDSKMPNEN]);
             $presentase_anggaran = ($realisasi["jumlah"]/$realisasi["pagu"])*100;
