@@ -164,6 +164,7 @@
       $idrkakl = implode(".", $pecahid);
 
       $query = "SELECT COUNT(IDRKAKL) as banyak, 
+                        KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN,
                         GROUP_CONCAT(IDRKAKL) as grupid, 
                         SUM(JUMLAH) as `JUMLAH`, 
                         SUM(TRIWULAN1) as `TRIWULAN1`, 
@@ -174,10 +175,29 @@
                 WHERE IDRKAKL LIKE '".$idrkakl."%'  GROUP BY THANG,KDPROGRAM,KDGIAT,KDOUTPUT,KDSOUTPUT,KDKMPNEN,KDSKMPNEN";
       $result=$this->_fetch_array($query,1);
 
-      $sisapagu = $result[0]['JUMLAH'] - (($result[0]['TRIWULAN1'] + $result[0]['TRIWULAN2'] + $result[0]['TRIWULAN3'] + $result[0]['TRIWULAN4']) - $valuelama);
+      $datarab["triwulan1"] = 0;
+      $datarab["triwulan2"] = 0;
+      $datarab["triwulan3"] = 0;
+      $datarab["triwulan4"] = 0;
+
+      $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` 
+              FROM `rabview` WHERE kdprogram = '".$result[0][KDPROGRAM]."' and kdgiat = '".$result[0][KDGIAT]."' and kdoutput = '".$result[0][KDOUTPUT]."' and kdsoutput = '".$result[0][KDSOUTPUT]."' and kdkmpnen = '".$result[0][KDKMPNEN]."' and kdskmpnen = '".$result[0][KDSKMPNEN]."'" ;
+        $resultrab=$this->_fetch_array($query,1);
+
+        if (!is_null($resultrab)) {
+          foreach ($resultrab as $key => $value) {
+            $id=$value['id'];
+            $thang=$value['thang'];
+            $idtriwulan=$value['idtriwulan'];
+            $jumlahrab=$value['jumlah'];
+            $datarab["triwulan$idtriwulan"] += $jumlahrab;
+          }
+        }
+
+      $sisapagu = $result[0]['JUMLAH'] - (($datarab['triwulan1'] + $datarab['triwulan2'] + $datarab['triwulan3'] + $datarab['triwulan4']) - $valuelama);
       $jumlah  = explode(".", $jumlah);
       $jumlah  = implode("", $jumlah);
-      // print_r($sisapagu);echo "<br>";print_r($jumlah); die;
+      // print_r($result[0]['JUMLAH']);echo "<br>";print_r($jumlah); die;
       if ($sisapagu < $jumlah) {
         return 'error';
       }else{

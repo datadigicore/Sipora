@@ -103,11 +103,11 @@
       unset($pecahid[$countarr-1]);
       unset($pecahid[$countarr-2]);
       $idrkakl = implode(".", $pecahid);
-      $query  = "SELECT KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, SUM(JUMLAH) as JUMLAH FROM rkakl_full as r where KDGIAT = '3804'   ";
+      $query  = "SELECT KDPROGRAM, KDGIAT, KDOUTPUT, KDSOUTPUT, KDKMPNEN, KDSKMPNEN, SUM(JUMLAH) as JUMLAH FROM rkakl_full WHERE KDPROGRAM = '".$pecahid[2]."' and KDGIAT = '".$pecahid[3]."' and KDOUTPUT = '".$pecahid[4]."' and KDSOUTPUT = '".$pecahid[5]."' and KDKMPNEN = '".$pecahid[6]."' and KDSKMPNEN = '".$pecahid[7]."' ";
       $fetch=$this->_fetch_array($query,1);
-
+      // print_r($fetch);die;
       $query2="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `deskripsi`, `tanggal`, `tanggal_akhir`, `tempat`, `lokasi`, `volume`, `satuan`, `jumlah`, `status`, `created_at`, `created_by`, `idtriwulan` 
-              FROM `rabview` WHERE kdprogram = '".$fetch[0][KDPROGRAM]."' and kdgiat = '".$fetch[0][KDGIAT]."' and kdoutput = '".$fetch[0][KDOUTPUT]."' and kdsoutput = '".$fetch[0][KDSOUTPUT]."' and kdkmpnen = '".$fetch[0][KDKMPNEN]."' and kdskmpnen = '".$fetch[0][KDSKMPNEN]."'" ;
+              FROM `rabview` WHERE kdprogram = '".$pecahid[2]."' and kdgiat = '".$pecahid[3]."' and kdoutput = '".$pecahid[4]."' and kdsoutput = '".$pecahid[5]."' and kdkmpnen = '".$pecahid[6]."' and kdskmpnen = '".$pecahid[7]."'" ;
       $result2=$this->_fetch_array($query2,1);
 
       if (!is_null($result2)) {
