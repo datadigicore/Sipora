@@ -3277,12 +3277,12 @@ public function daftar_peng_riil($result,$det){
                   <td  align="left">-</td>
                 </tr>
                 <tr>
-                  <td colspan="2">Kemajuan Fisik (%)</td>
+                  <td colspan="2">Realisasi Kinerja (%)</td>
                   <td>:</td>
                   <td align="left">-</td>
                 </tr>
                 <tr>
-                  <td colspan="2">Kemajuan Keu. (%)</td>
+                  <td colspan="2">Realisasi Anggaran (%)</td>
                   <td>:</td>
                   <td align="left">-</td>
                 </tr>
@@ -3291,26 +3291,17 @@ public function daftar_peng_riil($result,$det){
 
       echo '<table  style="width: 100%;  text-align:left; border-collapse:collapse; font-size:0.75em;">
               <tr>
-                <td rowspan="2" style="text-align:center; border:1px solid;">No. Kode</td>
-                <td rowspan="2" colspan="2" style="text-align:center; border:1px solid;">Uraian Kegiatan/Jenis Pengeluaran</td>
-                <td rowspan="2" style="text-align:center; border:1px solid; ">Volume Kegiatan</td>
-                <td rowspan="2" style="text-align:center; border:1px solid; ">Alokasi Dana Dalam DIPA</td>
-                <td colspan="3" style="text-align:center; border:1px solid;">Jumlah Pengeluaran s/d Bulan Lalu</td>
-                <td colspan="3" style="text-align:center; border:1px solid;">Jumlah Pengeluaran Bulan Ini </td>
-                <td rowspan="2" style="text-align:center; border:1px solid;">Jumlah Pengeluaran</td>
-                <td rowspan="2" style="text-align:center; border:1px solid;">Sisa Anggaran</td>
-                <td colspan="2" style="text-align:center; border:1px solid;">Presentasi Daya Serap</td>
+                <td style="text-align:center; border:1px solid;">No. Kode</td>
+                <td style="text-align:center; border:1px solid;">Uraian Kegiatan/Jenis Pengeluaran</td>
+                <td style="text-align:center; border:1px solid; ">Sasaran Kegiatan</td>
+                <td style="text-align:center; border:1px solid;">Realisasi Kinerja</td>
+                <td style="text-align:center; border:1px solid; ">Alokasi Dana Dalam DIPA</td>
+                <td style="text-align:center; border:1px solid;">Realisasi Anggaran Bulan Lalu</td>
+                <td style="text-align:center; border:1px solid;">Realisasi Anggaran Bulan Ini </td>
+                <td style="text-align:center; border:1px solid;">Jumlah Realisasi Anggaran</td>
+                <td style="text-align:center; border:1px solid;">Sisa Anggaran</td>
               </tr>
-              <tr>
-                <td style="text-align:center; border:1px solid;">SP2D LS</td>
-                <td style="text-align:center; border:1px solid;">SP2D GU</td>
-                <td style="text-align:center; border:1px solid;">Jumlah</td>
-                <td style="text-align:center; border:1px solid;">SPM LS</td>
-                <td style="text-align:center; border:1px solid;">SPM GU</td>
-                <td style="text-align:center; border:1px solid;">Jumlah</td>
-                <td style="text-align:center; border:1px solid;">%Fisik</td>
-                <td style="text-align:center; border:1px solid;">%keu</td>
-              </tr>';
+              ';
       $kd_dir=""; $kdout=""; $kdsout=""; $kdkmp=""; $kdskmp="";
       $acc_alokasi = 0;
       $acc_sp2d_ls_lalu = 0;
@@ -3337,23 +3328,24 @@ public function daftar_peng_riil($result,$det){
           $fisik = ($jml/$nmdir['jumlah'])*100;
 
           echo '<tr>
-                  <td colspan="15" style="border-bottom:1px solid"></td>
+                  <td colspan="9" style="border-bottom:1px solid"></td>
                 </tr>';
           echo '<tr>
                   <td style="border-left:1px solid; font-weight:bold;" align="left" >'.$value['kdgiat'].'</td>
-                  <td style="border-left:1px solid; font-weight:bold; " colspan="2">'.$nmdir['kdgiat'].'</td>
+                  <td style="border-left:1px solid; font-weight:bold; " >'.$nmdir['kdgiat'].'</td>
                   <td style="border-left:1px solid;">'.'-'.'</td>
+                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
                   <td style="border-left:1px solid; text-align:right; font-weight:bold;">'.number_format($nmdir['jumlah'],2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
+                  
+                  
                   <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($nilai['jml_lalu'],2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
+                  
+                  
                   <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($nilai['jumlah'],2,",",".").'</td>
                   <td style="border-left:1px solid; text-align:right; font-weight:bold;">'.number_format($jml,2,",",".").'</td>
-                  <td style="border-left:1px solid; text-align:right; font-weight:bold; ">'.number_format($sisa,2,",",".").'</td>
-                  <td style="border-left:1px solid;text-align:center;">'.number_format($fisik,1,",",".").'</td>
-                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
+                  <td style="border-right:1px solid; text-align:right; font-weight:bold; ">'.number_format($sisa,2,",",".").'</td>
+                  
+                  
                 </tr>';
         }
 
@@ -3366,19 +3358,19 @@ public function daftar_peng_riil($result,$det){
           $fisik = ($jml/$nmdir['jumlah'])*100;
           echo '<tr>
                   <td style="border-left:1px solid; " align="center">'.$value['kdoutput'].'</td>
-                  <td style="border-left:1px solid; " colspan="2">'.$nmdir['kdout'].'</td>
+                  <td style="border-left:1px solid; " >'.$nmdir['kdout'].'</td>
                   <td style="border-left:1px solid;">'.'-'.'</td>
+                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
                   <td style="border-left:1px solid; text-align:right; ">'.number_format($nmdir['jumlah'],2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
+                  
+                  
                   <td style="border-left:1px solid; text-align:right;  ">'.number_format($nilai['jml_lalu'],2,",",".").'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
+                  
+                  
                   <td style="border-left:1px solid; text-align:right;  ">'.number_format($nilai['jumlah'],2,",",".").'</td>
                   <td style="border-left:1px solid; text-align:right; ">'.number_format($jml,2,",",".").'</td>
-                  <td style="border-left:1px solid; text-align:right;  ">'.number_format($sisa,2,",",".").'</td>
-                  <td style="border-left:1px solid;text-align:center;">'.number_format($fisik,1,",",".").'</td>
-                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
+                  <td style="border-right:1px solid; text-align:right;  ">'.number_format($sisa,2,",",".").'</td>
+                  
                 </tr>';
         }
 
@@ -3417,16 +3409,10 @@ public function daftar_peng_riil($result,$det){
               
               <td style="border:1px solid; text-align:center;" colspan="4">'.'TOTAL'.'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_alokasi,2,",",".").'</td>
-              <td style="border:1px solid; text-align:right;">'.'-'.'</td>
-              <td style="border:1px solid; text-align:right; ">'.'-'.'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_sp2d_lalu,2,",",".").'</td>
-              <td style="border:1px solid;">'.'-'.'</td>
-              <td style="border:1px solid;">'.'-'.'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold; ">'.number_format($acc_sp2d_ini,2,",",".").'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_tot_spp,2,",",".").'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold; ">'.number_format($acc_sisa_ang,2,",",".").'</td>
-              <td style="border:1px solid;">'.'-'.'</td>
-              <td style="border:1px solid; border-right:1px solid;">'.'-'.'</td>
             </tr>';
       echo '<tr>
               <td colspan="15" style="border-top:1px solid"></td>
