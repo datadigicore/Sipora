@@ -13,7 +13,10 @@
       $kdskmpnen = $data['kdskmpnen'];
 
       $vol_target    = $data['vol_target'];
-      $vol_real    = $data['vol_real'];
+      $vol_real1    = $data['vol_real1'];
+      $vol_real2    = $data['vol_real2'];
+      $vol_real3    = $data['vol_real3'];
+      $vol_real4    = $data['vol_real4'];
 
       // if ($data['idtriwulan'] == "1") {
       //   $tambahan = "vol_real1 = '$vol_real', ";
@@ -40,7 +43,10 @@
                 kdskmpnen = '$kdskmpnen',
 
                 vol_target = '$vol_target',
-                vol_real  = '$vol_real',
+                vol_real  = '$vol_real1',
+                vol_real2  = '$vol_real2',
+                vol_real3  = '$vol_real3',
+                vol_real4  = '$vol_real4',
                 satuan    = '$satuan',
 
                 created_by = '$created_by',
@@ -62,7 +68,10 @@
       $kdskmpnen = $data['kdskmpnen'];
 
       $vol_target    = $data['vol_target'];
-      $vol_real    = $data['vol_real'];
+      $vol_real1    = $data['vol_real1'];
+      $vol_real2    = $data['vol_real2'];
+      $vol_real3    = $data['vol_real3'];
+      $vol_real4    = $data['vol_real4'];
 
       // if ($data['idtriwulan'] == "1") {
       //   $tambahan = "vol_real1 = '$vol_real', ";
@@ -89,7 +98,10 @@
                 kdskmpnen = '$kdskmpnen',
 
                 vol_target = '$vol_target',
-                vol_real  = '$vol_real',
+                vol_real  = '$vol_real1',
+                vol_real2  = '$vol_real2',
+                vol_real3  = '$vol_real3',
+                vol_real4  = '$vol_real4',
                 satuan    = '$satuan',
 
                 updated_by = '$updated_by',

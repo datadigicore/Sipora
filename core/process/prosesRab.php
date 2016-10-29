@@ -51,7 +51,7 @@ switch ($link[3 - config::$root]) {
     }
 
     #volume
-    $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `vol_target`, `vol_real`, `vol_real1`, `vol_real2`, `vol_real3`, `vol_real4`, `satuan`, `created_at`, `created_by` FROM `volume` order by id desc" ;
+    $query="SELECT `id`, `thang`, `kdprogram`, `kdgiat`, `kdoutput`, `kdsoutput`, `kdkmpnen`, `kdskmpnen`, `vol_target`, `vol_real`, `vol_real2`, `vol_real3`, `vol_real4`, `satuan`, `created_at`, `created_by` FROM `volume` order by id desc" ;
     $result=$db->_fetch_array($query,1);
     $rabview =array();
 
@@ -72,10 +72,13 @@ switch ($link[3 - config::$root]) {
         $vol_real3=$value['vol_real3'];
         $vol_real4=$value['vol_real4'];
         $satuan=$value['satuan'];
-        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_target'] = $vol_target;
-        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_real'] = $vol_real;
-        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['satuan'] = $satuan;
-        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['id_vol'] = $id_vol;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['vol_target'] += $vol_target;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['vol_real1'] += $vol_real;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['vol_real2'] += $vol_real2;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['vol_real3'] += $vol_real3;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['vol_real4'] += $vol_real4;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['satuan'] = $satuan;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['id_vol'] = $id_vol;
       }
     }
 
@@ -146,11 +149,11 @@ switch ($link[3 - config::$root]) {
                         'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
                         'SUM(JUMLAH)',
                         'IDRKAKL',
-                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
-                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
-                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
-                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
-                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT,"-",KDKMPNEN,"-",KDSKMPNEN)',
+                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT)',
+                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT)',
+                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT)',
+                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT)',
+                        'CONCAT(KDPROGRAM,"-",KDGIAT,"-",KDOUTPUT,"-",KDSOUTPUT)',
                         );
     $formatter  = array(
       '6' => array('formatter' => function($d,$row,$data){ 
@@ -237,7 +240,7 @@ switch ($link[3 - config::$root]) {
       '12' => array('formatter' => function($d,$row,$data){ 
         $button = '<div class="col-md-12">';
         $button .= '<a href="'.$data['base_content'].'kegiatan-rinci/'.$d.'" class="btn btn-flat btn-primary btn-sm col-md-12" ><i class="fa fa-list"></i>&nbsp; Kegiatan</a>';
-        $button .= '<a id="btn-vol" href="#mdl-vol" class="btn btn-flat btn-warning btn-sm col-md-12" data-toggle="modal"><i class="fa fa-pencil"></i>&nbsp; Edit Volume</a>';
+        $button .= '<a id="btn-vol" href="#mdl-vol" class="btn btn-flat btn-warning btn-sm col-md-12" data-toggle="modal"><i class="fa fa-pencil"></i>&nbsp; Realisasi Kinerja</a>';
         if ($data[$row[17]]['lock'] == 0 && $_SESSION['level'] == 0) {
           $button .= '<a id="btn-unlock" href="#unlock" class="btn btn-flat btn-danger btn-sm col-md-12" data-toggle="modal"><i class="fa fa-unlock-alt"></i>&nbsp; Unlock</a>';
         }elseif($data[$row[17]]['lock'] > 0 && $_SESSION['level'] == 0){
@@ -268,8 +271,29 @@ switch ($link[3 - config::$root]) {
         }
       }),
       '16' => array('formatter' => function($d,$row,$data){ 
-        if (isset($data[$d]['vol_real'])) {
-          return $data[$d]['vol_real'];
+        if (isset($data[$d]['vol_real1'])) {
+          return $data[$d]['vol_real1'];
+        }else{
+          return 0;
+        }
+      }),
+      '17' => array('formatter' => function($d,$row,$data){ 
+        if (isset($data[$d]['vol_real2'])) {
+          return $data[$d]['vol_real2'];
+        }else{
+          return 0;
+        }
+      }),
+      '18' => array('formatter' => function($d,$row,$data){ 
+        if (isset($data[$d]['vol_real3'])) {
+          return $data[$d]['vol_real3'];
+        }else{
+          return 0;
+        }
+      }),
+      '19' => array('formatter' => function($d,$row,$data){ 
+        if (isset($data[$d]['vol_real4'])) {
+          return $data[$d]['vol_real4'];
         }else{
           return 0;
         }

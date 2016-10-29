@@ -145,7 +145,8 @@
       $log_by = $_SESSION['id'];
       $log_at = date("Y-m-d H:i:s");
 
-      $query .= " log_by = '$log_by', log_at='$log_at', tipe = '$tipe'";
+      $query .= " tipe = '$tipe'";
+      // print_r($query);die;
       $result = $this->query($query);
     }
 
