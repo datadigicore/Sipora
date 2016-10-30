@@ -82,7 +82,7 @@
 <div class="modal fade" id="mdl-vol">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="<?php echo $url_rewrite;?>process/kegiatan/editvol" method="POST">
+      <form id="volForm" action="<?php echo $url_rewrite;?>process/kegiatan/editvol" method="POST" onsubmit="return kirimVol()">
         <div class="modal-header" style="background-color:#2B91CF !important; color:white;">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true" style="color:white">×</span></button>
@@ -102,26 +102,62 @@
               </div>
               <div class="col-md-4">
                 <label>Satuan</label>
-                <input type="text" class="form-control" id="satuan" name="satuan" onchange="inputrute(this.id,this.value)" placeholder="Satuan" required oncha/>
+                <input type="text" readonly class="form-control" id="satuan" name="satuan" placeholder="Satuan" value="%"/>
               </div>
             </div>
           </div>
           <div class="form-group">
             <div class="row">
               <div class="col-md-8">
-                <label>Realisasi Volume</label>
-                <input type="text" class="form-control nomor" id="vol_real" name="vol_real" placeholder="Realisasi Volume" required />
+                <label>Realisasi Volume Quarter 1</label>
+                <input type="text" class="form-control nomor" id="vol_real1" name="vol_real1" placeholder="Realisasi Volume 1" <?php echo $t1?> />
               </div>
               <div class="col-md-4">
-                <label>Satuan Kegiatan</label>
-                <input type="text" readonly class="form-control" id="satuan2" placeholder="Satuan" />
+                <label>Satuan</label>
+                <input type="text" readonly class="form-control satuan2" placeholder="Satuan"  value="%"/>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-8">
+                <label>Realisasi Volume Quarter 2</label>
+                <input type="text" class="form-control nomor" id="vol_real2" name="vol_real2" placeholder="Realisasi Volume 2" <?php echo $t2?> />
+              </div>
+              <div class="col-md-4">
+                <label>Satuan</label>
+                <input type="text" readonly class="form-control satuan2" placeholder="Satuan" value="%" />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-8">
+                <label>Realisasi Volume Quarter 3</label>
+                <input type="text" class="form-control nomor" id="vol_real3" name="vol_real3" placeholder="Realisasi Volume 3" <?php echo $t3?> />
+              </div>
+              <div class="col-md-4">
+                <label>Satuan</label>
+                <input type="text" readonly class="form-control satuan2" placeholder="Satuan" value="%" />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-8">
+                <label>Realisasi Volume Quarter 4</label>
+                <input type="text" class="form-control nomor" id="vol_real4" name="vol_real4" placeholder="Realisasi Volume 4" <?php echo $t4?> />
+              </div>
+              <div class="col-md-4">
+                <label>Satuan</label>
+                <input type="text" readonly class="form-control satuan2" placeholder="Satuan" value="%" />
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
-          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+          <button class="btn btn-flat btn-success" >Ya</button>
         </div>
       </form>
     </div>
@@ -169,7 +205,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
-          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+          <button class="btn btn-flat btn-success">Ya</button>
         </div>
       </form>
     </div>
@@ -256,12 +292,16 @@ var table;
       satuan =tabrow.data()[13]; 
       id_volume =tabrow.data()[14]; 
       vol_target =tabrow.data()[15]; 
-      vol_real =tabrow.data()[16]; 
+      vol_real1 =tabrow.data()[16]; 
+      vol_real2 =tabrow.data()[17]; 
+      vol_real3 =tabrow.data()[18]; 
+      vol_real4 =tabrow.data()[19]; 
       $("#idrkakl_vol").val(idrkakl_vol);
       $("#vol_target").val(vol_target);
-      $("#vol_real").val(vol_real);
-      $("#satuan").val(satuan);
-      $("#satuan2").val(satuan);
+      $("#vol_real1").val(vol_real1);
+      $("#vol_real2").val(vol_real2);
+      $("#vol_real3").val(vol_real3);
+      $("#vol_real4").val(vol_real4);
       $("#id_volume").val(id_volume);
     });
 
@@ -349,9 +389,49 @@ var table;
     });
   }
 
+  function kirimVol(){
+    var vol_target=0;
+    var vol1=0;
+    var vol2=0;
+    var vol3=0;
+    var vol4=0;
+    var total=0;
+    vol_target = $('#vol_target').val();
 
-  function inputrute(id,val){
-    var satuan = $('#satuan').val();
-    $('#satuan2').val(satuan);
+    if ($('#vol_real1').val() !== "") {
+      vol1 = parseInt($('#vol_real1').val());
+    }else{
+      vol1 = 0;
+    };
+    if ($('#vol_real2').val() !== "") {
+      vol2 = parseInt($('#vol_real2').val());
+    }else{
+      vol2 = 0;
+    };
+    if ($('#vol_real3').val() !== "") {
+      vol3 = parseInt($('#vol_real3').val());
+    }else{
+      vol3 = 0;
+    };
+    if ($('#vol_real4').val() !== "") {
+      vol4 = parseInt($('#vol_real4').val());
+    }else{
+      vol4 = 0;
+    };
+
+    total = vol1 + vol2 + vol3 + vol4;
+
+    if (vol_target > 100) {
+      alert('Volume Target melebihi 100 persen');
+      return false;
+    }
+    else if (total > vol_target) {
+      alert('Volume Kegiatan melebihi Volume Target');
+      return false;
+    }
+    else{
+      $('#volForm').submit();
+      return true;
+    };
   }
 </script>

@@ -18,7 +18,21 @@
         case 'anggaran':          
           include "./view/content/contentRkakl.php";
         break;
-        case 'kegiatan':          
+        case 'kegiatan':
+          $gettriwulan = $triwulan->gettriwulanactive();  
+          $t1 = "readonly";
+          $t2 = "readonly";
+          $t3 = "readonly";
+          $t4 = "readonly";
+          if ($gettriwulan->id == 1) {
+            $t1 = "";
+          }elseif ($gettriwulan->id == 2) {
+            $t2 = "";
+          }elseif ($gettriwulan->id == 3) {
+            $t3 = "";
+          }elseif ($gettriwulan->id == 4) {
+            $t4 = "";
+          }
           include "./view/content/contentRabRkakl.php";
         break;
         case 'kegiatan-rinci':       
