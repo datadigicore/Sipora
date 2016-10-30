@@ -3333,8 +3333,8 @@ public function daftar_peng_riil($result,$det){
           echo '<tr>
                   <td style="border-left:1px solid; font-weight:bold;" align="left" >'.$value['kdgiat'].'</td>
                   <td style="border-left:1px solid; font-weight:bold; " >'.$nmdir['kdgiat'].'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
+                  <td style="border-left:1px solid; text-align:center;">'.$nilai['volume_pagu'].'</td>
+                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.$nilai['volume'].'</td>
                   <td style="border-left:1px solid; text-align:right; font-weight:bold;">'.number_format($nmdir['jumlah'],2,",",".").'</td>
                   
                   
@@ -3359,8 +3359,8 @@ public function daftar_peng_riil($result,$det){
           echo '<tr>
                   <td style="border-left:1px solid; " align="center">'.$value['kdoutput'].'</td>
                   <td style="border-left:1px solid; " >'.$nmdir['kdout'].'</td>
-                  <td style="border-left:1px solid;">'.'-'.'</td>
-                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.number_format($fisik,1,",",".").'</td>
+                  <td style="border-left:1px solid; text-align:center;">'.$nilai['volume_pagu'].'</td>
+                  <td style="border-left:1px solid; border-right:1px solid; text-align:center;">'.$nilai['volume'].'</td>
                   <td style="border-left:1px solid; text-align:right; ">'.number_format($nmdir['jumlah'],2,",",".").'</td>
                   
                   
@@ -3368,7 +3368,7 @@ public function daftar_peng_riil($result,$det){
                   
                   
                   <td style="border-left:1px solid; text-align:right;  ">'.number_format($nilai['jumlah'],2,",",".").'</td>
-                  <td style="border-left:1px solid; text-align:right; ">'.number_format($jml,2,",",".").'</td>
+                  <td style="border-left:1px solid; text-align:right; border-right:1px solid;">'.number_format($jml,2,",",".").'</td>
                   <td style="border-right:1px solid; text-align:right;  ">'.number_format($sisa,2,",",".").'</td>
                   
                 </tr>';
@@ -3411,7 +3411,7 @@ public function daftar_peng_riil($result,$det){
               <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_alokasi,2,",",".").'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_sp2d_lalu,2,",",".").'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold; ">'.number_format($acc_sp2d_ini,2,",",".").'</td>
-              <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_tot_spp,2,",",".").'</td>
+              <td style="border:1px solid; text-align:right; font-weight:bold;">'.number_format($acc_sp2d_ini+$acc_sp2d_lalu,2,",",".").'</td>
               <td style="border:1px solid; text-align:right; font-weight:bold; ">'.number_format($acc_sisa_ang,2,",",".").'</td>
             </tr>';
       echo '<tr>
@@ -4291,10 +4291,11 @@ public function daftar_peng_riil($result,$det){
     }
       function realisasi_by_id($tanggal, $kdgiat, $kdout, $kdsout, $kdkmp, $kdskmp)
       {
-        $q_out = $q_sout = $q_kmp = $q_skmp = $kd_akun = " ";
+        $q_out = $q_sout = $q_kmp = $q_skmp = $group_by = " ";
         if($kdout!=""){ 
           $q_out = " and KDOUTPUT='$kdout' "; 
           $k_out = " ,NMOUTPUT "; 
+          $group_by = " GROUP BY KDOUTPUT "; 
         }
         if($kdsout!=""){ 
           $q_sout = " and KDSOUTPUT='$kdsout' "; 
@@ -4311,25 +4312,33 @@ public function daftar_peng_riil($result,$det){
 
 
         // echo "akuns : ".$kdakun;
+        $count_vol = "select count(*) total_record from volume where kdgiat like '$kdgiat%' ";
         $query = " SELECT SUM(jumlah) as jumlah  FROM rabview WHERE kdgiat LIKE '%$kdgiat%' and month(tanggal)<='$tanggal' ".$q_out.$q_sout.$q_kmp.$q_skmp;
         $query_pagu = " SELECT SUM(JUMLAH) as jumlah FROM rkakl_full WHERE kdgiat like '%$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp;
         // print_r($query);
-        $sql_volume = "SELECT vol_target, vol_real1+vol_real2+vol_real3+vol_real4 as volume, satuan from volume
-                        where kdgiat like '%$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp;
-         // print($sql_volume);               
-        if($kdskmp!="") $res_vol    = $this->query($sql_volume);
+        $sql_volume = "SELECT sum(vol_target) vol_target, sum(vol_real1+vol_real2+vol_real3+vol_real4) as volume, satuan from volume
+                        where kdgiat like '$kdgiat%' ".$q_out.$q_sout.$q_kmp.$q_skmp;
+        // echo "<pre>";
+        // print($sql_volume);
+        // print($count_vol);
+        // echo "</pre>";               
+        $res_vol    = $this->query($sql_volume);
+        $res_count    = $this->query($count_vol);
         $res        = $this->query($query);
         $res_pagu   = $this->query($query_pagu);
         $data_pagu  = $this->fetch_array($res_pagu);
         if($this->num_rows($res)>0) {
           $data = $this->fetch_array($res);
-          if($kdskmp!="") $data_vol = $this->fetch_array($res_vol);
+          $data_vol = $this->fetch_array($res_vol);
+          $data_count = $this->fetch_array($res_count);
+          $avg_pagu_vol = $data_vol['vol_target']/$data_count['total_record'];
+          $avg_real_vol = ($data_vol['volume']/$data_vol['vol_target'])*100;
           $data = array(
                 "pagu"        => $data_pagu['jumlah'],
                 "jumlah"      => $data['jumlah'],
-                "volume"      =>$data_vol['volume'],
+                "volume"      =>number_format($avg_real_vol,2,",","."),
                 "satuan"      =>$data['satuan'],
-                "volume_pagu" =>$data_vol['vol_target'],
+                "volume_pagu" =>number_format($avg_pagu_vol,2,",","."),
                 "satuan_pagu" =>$data_vol['satuan']
                 ); 
         }
