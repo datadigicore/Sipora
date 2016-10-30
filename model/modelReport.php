@@ -3240,7 +3240,10 @@ public function daftar_peng_riil($result,$det){
       $res = $this->query($sql);
       $res_sql = $this->query("SELECT * from rkakl_view where status=1 ");
       $rkl_view = $this->fetch_array($res_sql);
-
+      $header_realisasi = $this->realisasi_by_id($tanggal, $value['kdgiat'], "", "", "", "", "");
+      $header_pagu = $this->get_nama($value['kdgiat'],"","","","","");
+      $jml_vol_realisasi = ($header_realisasi['volume']/$header_realisasi['vol_target'])*100;
+      $jml_header_realisasi = (($header_realisasi['jml_lalu']+$header_realisasi['jumlah'])/$header_pagu['jumlah'])*100;
       ob_start();
       echo '<table style="width: 100%;  text-align:left; border-collapse:collapse; font-size:0.95em;">
                 <tr>
@@ -3279,12 +3282,12 @@ public function daftar_peng_riil($result,$det){
                 <tr>
                   <td colspan="2">Realisasi Kinerja (%)</td>
                   <td>:</td>
-                  <td align="left">-</td>
+                  <td align="left">'.$jml_vol_realisasi.'</td>
                 </tr>
                 <tr>
                   <td colspan="2">Realisasi Anggaran (%)</td>
                   <td>:</td>
-                  <td align="left">-</td>
+                  <td align="left">'.number_format($jml_header_realisasi,2,",",".").'</td>
                 </tr>
                 
                 </table>';
@@ -4332,7 +4335,7 @@ public function daftar_peng_riil($result,$det){
           $data_vol = $this->fetch_array($res_vol);
           $data_count = $this->fetch_array($res_count);
           $avg_pagu_vol = $data_vol['vol_target']/$data_count['total_record'];
-          $avg_real_vol = ($data_vol['volume']/$data_vol['vol_target'])*100;
+          $avg_real_vol = $data_vol['volume']/$data_count['total_record'];
           $data = array(
                 "pagu"        => $data_pagu['jumlah'],
                 "jumlah"      => $data['jumlah'],
