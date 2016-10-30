@@ -98,7 +98,7 @@
             <div class="row">
               <div class="col-md-8">
                 <label>Target Volume</label>
-                <input type="text" onChange="ubahVolTarget()" class="form-control nomor" id="vol_target" name="vol_target" placeholder="Target Volume" required />
+                <input type="text" class="form-control nomor" id="vol_target" name="vol_target" placeholder="Target Volume" required />
               </div>
               <div class="col-md-4">
                 <label>Satuan</label>
@@ -110,7 +110,7 @@
             <div class="row">
               <div class="col-md-8">
                 <label>Realisasi Volume Quarter 1</label>
-                <input type="text" onChange="ubahVol()" class="form-control nomor" id="vol_real1" name="vol_real1" placeholder="Realisasi Volume 1" <?php echo $t1?> />
+                <input type="text" class="form-control nomor" id="vol_real1" name="vol_real1" placeholder="Realisasi Volume 1" <?php echo $t1?> />
               </div>
               <div class="col-md-4">
                 <label>Satuan</label>
@@ -122,7 +122,7 @@
             <div class="row">
               <div class="col-md-8">
                 <label>Realisasi Volume Quarter 2</label>
-                <input type="text" onChange="ubahVol()" class="form-control nomor" id="vol_real2" name="vol_real2" placeholder="Realisasi Volume 2" <?php echo $t2?> />
+                <input type="text" class="form-control nomor" id="vol_real2" name="vol_real2" placeholder="Realisasi Volume 2" <?php echo $t2?> />
               </div>
               <div class="col-md-4">
                 <label>Satuan</label>
@@ -134,7 +134,7 @@
             <div class="row">
               <div class="col-md-8">
                 <label>Realisasi Volume Quarter 3</label>
-                <input type="text" onChange="ubahVol()" class="form-control nomor" id="vol_real3" name="vol_real3" placeholder="Realisasi Volume 3" <?php echo $t3?> />
+                <input type="text" class="form-control nomor" id="vol_real3" name="vol_real3" placeholder="Realisasi Volume 3" <?php echo $t3?> />
               </div>
               <div class="col-md-4">
                 <label>Satuan</label>
@@ -146,7 +146,7 @@
             <div class="row">
               <div class="col-md-8">
                 <label>Realisasi Volume Quarter 4</label>
-                <input type="text" onChange="ubahVol()" class="form-control nomor" id="vol_real4" name="vol_real4" placeholder="Realisasi Volume 4" <?php echo $t4?> />
+                <input type="text" class="form-control nomor" id="vol_real4" name="vol_real4" placeholder="Realisasi Volume 4" <?php echo $t4?> />
               </div>
               <div class="col-md-4">
                 <label>Satuan</label>
@@ -205,7 +205,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" data-dismiss="modal" class="btn btn-flat btn-warning">Tidak</button>
-          <button type="submit" class="btn btn-flat btn-success">Ya</button>
+          <button class="btn btn-flat btn-success">Ya</button>
         </div>
       </form>
     </div>
@@ -390,18 +390,43 @@ var table;
   }
 
   function kirimVol(){
-    $vol_target = $('#vol_target').val();
-    $vol1 = $('#vol_real1').val();
-    $vol2 = $('#vol_real2').val();
-    $vol3 = $('#vol_real3').val();
-    $vol4 = $('#vol_real4').val();
-    $total = $vol1 + $vol2 + $vol3 + $vol4;
-    if ($vol_target > 100) {
+    var vol_target=0;
+    var vol1=0;
+    var vol2=0;
+    var vol3=0;
+    var vol4=0;
+    var total=0;
+    vol_target = $('#vol_target').val();
+
+    if ($('#vol_real1').val() !== "") {
+      vol1 = parseInt($('#vol_real1').val());
+    }else{
+      vol1 = 0;
+    };
+    if ($('#vol_real2').val() !== "") {
+      vol2 = parseInt($('#vol_real2').val());
+    }else{
+      vol2 = 0;
+    };
+    if ($('#vol_real3').val() !== "") {
+      vol3 = parseInt($('#vol_real3').val());
+    }else{
+      vol3 = 0;
+    };
+    if ($('#vol_real4').val() !== "") {
+      vol4 = parseInt($('#vol_real4').val());
+    }else{
+      vol4 = 0;
+    };
+
+    total = vol1 + vol2 + vol3 + vol4;
+
+    if (vol_target > 100) {
       alert('Volume Target melebihi 100 persen');
       return false;
     }
-    else if ($total > 100) {
-      alert('Volume Kegiatan melebihi 100 persen');
+    else if (total > vol_target) {
+      alert('Volume Kegiatan melebihi Volume Target');
       return false;
     }
     else{
