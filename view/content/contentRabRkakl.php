@@ -1,20 +1,20 @@
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
-      Data Rencana Kegiatan
-      <small>Menu</small>
+      Rencana dan Pelaksanaan Kegiatan
+      <!-- <small>Menu</small> -->
     </h1>
-    <ol class="breadcrumb">
+    <!-- <ol class="breadcrumb">
       <li><i class="fa fa-table"></i> <b>Data Kegiatan</b></li>
-    </ol>
+    </ol> -->
   </section>
   <section class="content">
     <div class="row">
       <div class="col-sm-12">
-        <div class="box">
+        <div class="box"><!-- 
           <div class="box-header">
             <h3 class="box-title" style="margin-top:6px;">Tabel Rencana Kegiatan</h3>
-          </div>
+          </div> -->
           <div class="box-body">
             <?php include "view/include/contentAlert.php" ?>
             <div class="row">

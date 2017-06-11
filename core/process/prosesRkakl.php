@@ -25,15 +25,19 @@ switch ($link[3 - config::$root]) {
           $target_dir  = $path_upload;
           $target_name = basename(date("Ymd-His-\R\K\A\K\L.",$time).$ext);
           $target_file = $target_dir . $target_name;
+          print_r($_FILES);
           $response    = move_uploaded_file($_FILES['fileimport']['tmp_name'],$target_file);
+          echo $_FILES['fileimport']['tmp_name'];
           if($response) {
             try {
               $objPHPExcel = PHPExcel_IOFactory::load($target_file);
+
             }
             catch(Exception $e) {
               die('Kesalahan! Gagal dalam mengupload file : "'.pathinfo($_FILES['excelupload']['name'],PATHINFO_BASENAME).'": '.$e->getMessage());
             }
             $allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(NULL,TRUE,FALSE,TRUE);
+            print_r($allDataInSheet);
             $data_insert = array(
               "tanggal"    => $tanggal,
               "no_dipa"    => $no_dipa,

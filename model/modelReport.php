@@ -3247,7 +3247,7 @@ public function daftar_peng_riil($result,$det){
       ob_start();
       echo '<table style="width: 100%;  text-align:left; border-collapse:collapse; font-size:0.95em;">
                 <tr>
-                  <td colspan="15" style="text-align:center; font-weight:bold">LAPORAN REALISASI DAYA SERAP PER KEGIATAN</td>
+                  <td colspan="15" style="text-align:center; font-weight:bold">LAPORAN REALISASI DAYA SERAP PER KEGIATAN TRIWULAN __ TAHUN _____</td>
                 </tr>
                 <tr>
                   <td colspan="2">Nama Satker</td>
@@ -3296,8 +3296,8 @@ public function daftar_peng_riil($result,$det){
               <tr>
                 <td style="text-align:center; border:1px solid;">No. Kode</td>
                 <td style="text-align:center; border:1px solid;">Uraian Kegiatan/Jenis Pengeluaran</td>
-                <td style="text-align:center; border:1px solid; ">Sasaran Kegiatan</td>
-                <td style="text-align:center; border:1px solid;">Realisasi Kinerja</td>
+                <td style="text-align:center; border:1px solid; ">Volume (Target / Output)</td>
+                <td style="text-align:center; border:1px solid;">Capaian Target / Output</td>
                 <td style="text-align:center; border:1px solid; ">Alokasi Dana Dalam DIPA</td>
                 <td style="text-align:center; border:1px solid;">Realisasi Anggaran Bulan Lalu</td>
                 <td style="text-align:center; border:1px solid;">Realisasi Anggaran Bulan Ini </td>

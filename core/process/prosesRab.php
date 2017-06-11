@@ -79,6 +79,13 @@ switch ($link[3 - config::$root]) {
         $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['vol_real4'] += $vol_real4;
         $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['satuan'] = $satuan;
         $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput"]['id_vol'] = $id_vol;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_target'] = $vol_target;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_real'] = $vol_real;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_real2'] = $vol_real2;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_real3'] = $vol_real3;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['vol_real4'] = $vol_real4;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['satuan'] = $satuan;
+        $dataArray["$kdprogram-$kdgiat-$kdoutput-$kdsoutput-$kdkmpnen-$kdskmpnen"]['id_vol'] = $id_vol;
       }
     }
 
